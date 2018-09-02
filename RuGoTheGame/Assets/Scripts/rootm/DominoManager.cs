@@ -33,19 +33,20 @@ public class DominoManager : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit))
             {
-                GameObject d = Instantiate(domino, this.transform);
-                d.transform.position = hit.point;
-
                 //TODO FIX FALL THROUGH DOMINOS
-                Vector3 position = d.transform.position;
-                position.y = 0.025f;
+                Vector3 finalizedPosition = hit.point;
+                finalizedPosition.y = 0.025f;
+
+                GameObject d = Instantiate(domino, this.transform);
+                d.transform.position = finalizedPosition;
+
                 dominos.Add(d);
 
                 if (dominos.Count == 1) {
-                    startPosition = position;
+                    startPosition = finalizedPosition;
                 }
                 else {
-                    endPosition = position;
+                    endPosition = finalizedPosition;
                 }
             }
         }
