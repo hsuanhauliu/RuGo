@@ -207,8 +207,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   domino: {fileID: 1632293209305324, guid: 3a717ea17c85243cd8cc62c410813bbc, type: 2}
-  dominoSpacing: 0.03
-  pushForce: 0.25
+  dominoSpacing: 0.035
+  pushForce: 0.3
 --- !u!4 &709163718
 Transform:
   m_ObjectHideFlags: 0

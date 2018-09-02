@@ -33,7 +33,6 @@ public class DominoManager : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit))
             {
-                //TODO FIX FALL THROUGH DOMINOS
                 Vector3 finalizedPosition = hit.point;
                 finalizedPosition.y = 0.025f;
 
@@ -52,7 +51,6 @@ public class DominoManager : MonoBehaviour
         }
         if (Input.GetKeyDown("space"))
         {
-            //TODO: Account for Rotation
             Transform t = domino.transform;
             Vector3 pathDirection = endPosition - startPosition;
             Vector3 normalizedPath = pathDirection.normalized;
@@ -61,7 +59,13 @@ public class DominoManager : MonoBehaviour
             {
                 GameObject d = Instantiate(domino, this.transform);
                 d.transform.position = startPosition + (normalizedPath * i);
+                dominos.Add(d);
             }
+
+            dominos.ForEach((GameObject d) =>
+            {
+                d.transform.rotation = Quaternion.LookRotation(pathDirection);
+            });
         }
         if (Input.GetKeyDown(KeyCode.K))
         {
@@ -69,6 +73,8 @@ public class DominoManager : MonoBehaviour
             GameObject firstDomino = dominos[0];
             Rigidbody body = firstDomino.GetComponent<Rigidbody>();
             body.AddForce(firstDomino.transform.forward * pushForce);
+
+            dominos.Clear();
         }
     }
 }
