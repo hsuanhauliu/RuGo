@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 65738978196275064}
   - component: {fileID: 54542896583515474}
   m_Layer: 0
-  m_Name: Test Cube
+  m_Name: Brick
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
