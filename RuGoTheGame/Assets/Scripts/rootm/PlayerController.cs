@@ -13,10 +13,23 @@ public class PlayerController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (Input.GetKeyDown(KeyCode.L))
+        if (currentlySelectedObject)
         {
-            if (currentlySelectedObject) {
-                currentlySelectedObject.transform.position += transform.forward * 0.2f;
+            if (Input.GetKeyDown(KeyCode.L))
+            {
+                currentlySelectedObject.transform.Translate(Vector3.right * 0.02f);
+            }
+            if (Input.GetKeyDown(KeyCode.J))
+            {
+                currentlySelectedObject.transform.Translate(Vector3.left * 0.02f);
+            }
+            if (Input.GetKeyDown(KeyCode.I))
+            {
+                currentlySelectedObject.transform.Translate(Vector3.forward * 0.02f);
+            }
+            if (Input.GetKeyDown(KeyCode.M))
+            {
+                currentlySelectedObject.transform.Translate(Vector3.back * 0.02f);
             }
         }
     }
