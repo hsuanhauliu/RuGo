@@ -5,7 +5,7 @@ using UnityEngine;
 public class GadgetPicker : MonoBehaviour
 {
 
-    public PlayerController player;
+    public Player player;
 
     // Use this for initialization
     void Start()

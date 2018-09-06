@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour {
+public class Player : MonoBehaviour {
 
     public Gadget currentGadget;
 
+    public GadgetSelectorMenu gadgetMenu;
 
 	// Use this for initialization
 	void Start () {
@@ -29,10 +30,12 @@ public class PlayerController : MonoBehaviour {
             {
                 currentGadget.transform.Translate(Vector3.forward * 0.02f);
             }
-            if (Input.GetKeyDown(KeyCode.M))
-            {
-                currentGadget.transform.Translate(Vector3.back * 0.02f);
-            }
+           
+        }
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            Debug.Log("TOGGLE MENU");
+            gadgetMenu.ToggleMenu();
         }
     }
 }
