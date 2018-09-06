@@ -23,6 +23,7 @@ GameObject:
   - component: {fileID: 23313409734588492}
   - component: {fileID: 65292682168279616}
   - component: {fileID: 54229473381546368}
+  - component: {fileID: 114103792476723374}
   m_Layer: 0
   m_Name: Domino
   m_TagString: Untagged
@@ -112,3 +113,14 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &114103792476723374
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1632293209305324}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7aae8bb4e61e34b69912469ef4f48d6c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
