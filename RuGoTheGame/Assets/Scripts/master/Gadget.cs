@@ -6,6 +6,8 @@ public class Gadget : MonoBehaviour {
 
     public Color originalColor;
 
+    private Vector3 lastSavedPosition;
+
     void Start()
     {
         Renderer r = this.GetComponent<Renderer>();
@@ -22,5 +24,12 @@ public class Gadget : MonoBehaviour {
         Renderer r = this.GetComponent<Renderer>();
         r.material.color = Color.black;
         Debug.Log("Color should be restored");
+
+        lastSavedPosition = this.transform.position;
+    }
+
+    public virtual void Reset() {
+        this.transform.position = lastSavedPosition;
+        this.Deselect();
     }
 }

@@ -173,7 +173,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &417352961
 GameObject:
@@ -185,7 +185,7 @@ GameObject:
   - component: {fileID: 417352964}
   - component: {fileID: 417352963}
   m_Layer: 0
-  m_Name: RuGoGameManager
+  m_Name: GameManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -202,8 +202,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2587cb3e1465438d937b0e1b8218aa9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 1634606817}
+  manipulator: {fileID: 1634606817}
   box: {fileID: 1545272941542206, guid: c87eb6ff6d3b342769f1871dc674139f, type: 2}
+  gadgetSelectorMenu: {fileID: 1800283392}
 --- !u!4 &417352964
 Transform:
   m_ObjectHideFlags: 0
@@ -215,7 +216,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &680486214
 GameObject:
@@ -298,7 +299,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &709163717
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -325,47 +326,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &907922587
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 907922589}
-  - component: {fileID: 907922588}
-  m_Layer: 0
-  m_Name: GadgetPicker
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &907922588
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 907922587}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 968afabe804db4643b6f2b6c83063a56, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 1634606817}
---- !u!4 &907922589
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 907922587}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1011244408
 GameObject:
@@ -588,7 +548,7 @@ GameObject:
   - component: {fileID: 1634606818}
   - component: {fileID: 1634606817}
   m_Layer: 0
-  m_Name: Player
+  m_Name: GadgetManipulator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -605,8 +565,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b9630de44bfa4753b4efb6e4f94da47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentGadget: {fileID: 0}
-  gadgetMenu: {fileID: 1800283392}
+  selectedGadget: {fileID: 0}
   translationDelta: 0.01
 --- !u!4 &1634606818
 Transform:
@@ -619,7 +578,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1751013125
 GameObject:
@@ -807,7 +766,7 @@ RectTransform:
   m_Children:
   - {fileID: 1011244409}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
