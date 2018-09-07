@@ -8,6 +8,8 @@ public class Player : MonoBehaviour {
 
     public GadgetSelectorMenu gadgetMenu;
 
+    public float translationDelta = 0.01f;
+
 	// Use this for initialization
 	void Start () {
 		
@@ -18,19 +20,28 @@ public class Player : MonoBehaviour {
     {
         if (currentGadget)
         {
-            if (Input.GetKeyDown(KeyCode.L))
+            if (Input.GetKeyDown(KeyCode.RightArrow))
             {
-                currentGadget.transform.Translate(Vector3.right * 0.02f);
+                currentGadget.transform.Translate(Vector3.right * translationDelta);
             }
-            if (Input.GetKeyDown(KeyCode.J))
+            if (Input.GetKeyDown(KeyCode.LeftArrow))
             {
-                currentGadget.transform.Translate(Vector3.left * 0.02f);
+                currentGadget.transform.Translate(Vector3.left * translationDelta);
             }
-            if (Input.GetKeyDown(KeyCode.I))
+            if (Input.GetKeyDown(KeyCode.UpArrow))
             {
-                currentGadget.transform.Translate(Vector3.forward * 0.02f);
+                currentGadget.transform.Translate(Vector3.forward * translationDelta);
             }
-           
+            if (Input.GetKeyDown(KeyCode.DownArrow))
+            {
+                currentGadget.transform.Translate(Vector3.back * translationDelta);
+            }
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                currentGadget.Deselect();
+                currentGadget = null;
+            }
+
         }
         if (Input.GetKeyDown(KeyCode.M))
         {

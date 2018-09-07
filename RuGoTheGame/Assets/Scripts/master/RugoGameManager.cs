@@ -19,7 +19,12 @@ public class RugoGameManager : MonoBehaviour {
 	}
 
     public void CreateGadget(string name) {
+        //TODO Delegate creation of gadgets to GadgetFactory
+        //GadgetFactory factory = GadgetFactory.GetInstance();
+        //Gadget gadget = factory.CreateGadget(gadgetName);
         GameObject d = Instantiate(box, this.transform);
-        player.currentGadget = d.GetComponent<Gadget>();
+        Gadget gadget = d.GetComponent<Gadget>();
+        gadget.Highlight();
+        player.currentGadget = gadget;
     }
 }
