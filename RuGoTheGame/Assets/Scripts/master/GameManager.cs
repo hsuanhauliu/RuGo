@@ -31,7 +31,10 @@ public class GameManager : MonoBehaviour
         if (BuildModeEnabled)
         {
             // Listen for left click
-            if (Input.GetMouseButtonDown(0) && Manipulator.ModifyModeEnabled())
+            if (Input.GetMouseButtonDown(0) &&
+                Manipulator.ModifyModeEnabled() &&
+                !Manipulator.GadgetSelected()
+               )
             {
                 SelectExistingGadget();
             }
