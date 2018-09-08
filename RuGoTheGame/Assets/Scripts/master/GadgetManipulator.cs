@@ -21,7 +21,7 @@ public class GadgetManipulator : MonoBehaviour
     void Update ()
     {
         // Receive inputs only when a gadget is selected
-        if (selectedGadget)
+        if (GadgetSelected())
         {
             // Control movement of the selected gadget
             if (Input.GetKeyDown(KeyCode.RightArrow))
@@ -118,6 +118,17 @@ public class GadgetManipulator : MonoBehaviour
         selectedGadget.Transparent();
     }
 
+    // Function: GadgetSelected
+    // Input: none
+    // Output:
+    //  - A boolean value.
+    // Description:
+    //  - Check if a gadget is being selected.
+    public bool GadgetSelected ()
+    {
+        return selectedGadget != null;
+    }
+
     // Function: Activate
     // Input: none
     // Output: none
@@ -157,7 +168,7 @@ public class GadgetManipulator : MonoBehaviour
     {
         Debug.Log("GadgetManipulator is being reset.");
 
-        if (selectedGadget)
+        if (GadgetSelected())
         {
             if (ModifyModeEnabled())
             {
