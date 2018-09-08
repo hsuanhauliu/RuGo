@@ -1,7 +1,7 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System;
 
-public class CameraController : MonoBehaviour
+public class CameraControlBall : MonoBehaviour
 {
     public GameObject player;
     Vector3 offset;
