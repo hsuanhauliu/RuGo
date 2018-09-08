@@ -1,29 +1,26 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class GadgetManipulator : MonoBehaviour
 {
-    // Local Variables
-    private Gadget selectedGadget;  // keep track of which gadget is currently being selected
-    private int currentMode;        // 0 for default, 1 for selecting stamp mode,
-                                    // 2 for modify mode
+    public World World;
 
-    public World world;            // a reference to the world object
+    // TODO might want to set it to private later
+    public float translationDelta = 0.01f;
 
-    // Control for the moving speed
-    public float translationDelta = 0.01f;  // TODO might want to set it to private later
+    private enum Mode { Modify, Create };
+    private Gadget selectedGadget;
+    private Mode currentMode;
 
-    // Use this for initialization
-    void Start()
+
+    void Start ()
     {
         selectedGadget = null;
-        currentMode = 0;
+        currentMode = Mode.Modify;
     }
 
-    // Listen for input when a gadget is selected
-    void Update()
+    void Update ()
     {
-        // Receive input only when a gadget is selected
+        // Receive inputs only when a gadget is selected
         if (selectedGadget)
         {
             // Control movement of the selected gadget
@@ -47,17 +44,18 @@ public class GadgetManipulator : MonoBehaviour
             // Place gadget
             if (Input.GetKeyDown(KeyCode.Return))
             {
-                if (currentMode == 1)
+                if (ModifyModeEnabled())
                 {
-                    // make a copy
-                    world.CreateGadgetFromTemplate(selectedGadget);
-                    Debug.Log("A object is placed!");
+                    Debug.Log("Object is being set.");
+
+                    selectedGadget.Deselect();
+                    selectedGadget = null;
                 }
                 else
                 {
-                    selectedGadget.Deselect();
-                    selectedGadget = null;
-                    currentMode = 0;
+                    Debug.Log("An object is created!");
+
+                    World.CreateGadgetFromTemplate(selectedGadget);
                 }
             }
         }
@@ -66,87 +64,111 @@ public class GadgetManipulator : MonoBehaviour
 
     /************************** Public Functions **************************/
 
-    // Function: Set
+    // Function: ModifyModeEnabled
+    // Input: none
+    // Output:
+    //  - A boolean value.
+    // Description:
+    //  - Check if the manipulator is currently in modify mode.
+    public bool ModifyModeEnabled ()
+    {
+        return currentMode == Mode.Modify ? true : false;
+    }
+
+    // Function: CreateModeEnabled
+    // Input: none
+    // Output:
+    //  - A boolean value.
+    // Description:
+    //  - Check if the manipulator is currently in create mode.
+    public bool CreateModeEnabled ()
+    {
+        return currentMode == Mode.Create ? true : false;
+    }
+
+    // Function: EnableModifyMode
     // Input:
-    // - newGadget: reference to the selected gadget
-    // - mode: which mode we are entering
+    // - gadget: reference to a gadget component.
     // Output: none
     // Description:
-    // - A function that is used to set manipulator parameters when we switch
-    //   to manipulate mode. Currently this should be invoked by GameManager only.
-    public void Set(Gadget gadget, int mode)
+    // - Enter modify mode while a gadget is being selected. This function
+    //   should be invoked by GameManager.
+    public void EnableModifyMode (Gadget gadget)
     {
-        if (IsValidSetMode(mode))
-        {
-            selectedGadget = gadget;
-            currentMode = mode;
+        Debug.Log("Enter manipulator modify mode.");
 
-            if (currentMode == 1)
-            {
-                // TODO material can't change for some reason...
-                selectedGadget.Transparent();
-            }
-            // hightlight the gadget if the game is in modify mode
-            else
-            {
-                selectedGadget.Highlight();
-            }
-        }
-        else
-        {
-            Debug.Log("Invalid input for mode.");
-        }
+        selectedGadget = gadget;
+        currentMode = Mode.Modify;
+        selectedGadget.Highlight();
+    }
+
+    // Function: EnableCreateMode
+    // Input:
+    //  - gadget: reference to a gadget component.
+    // Output: none
+    // Description:
+    //  - Enter create mode while a gadget is being selected. This function
+    //    should be invoked by GameManager.
+    public void EnableCreateMode (Gadget gadget)
+    {
+        Debug.Log("Enter manipulator create mode.");
+
+        selectedGadget = gadget;
+        currentMode = Mode.Create;
+        selectedGadget.Transparent();
+    }
+
+    // Function: Activate
+    // Input: none
+    // Output: none
+    // Description:
+    //  - Activate manipulator gameObject in the scene.
+    public void Activate ()
+    {
+        this.gameObject.SetActive(true);
+    }
+
+    // Function: Deactivate
+    // Input: none
+    // Output: none
+    // Description:
+    //  - Deactivate manipulator gameObject in the scene.
+    public void Deactivate ()
+    {
+        this.Reset();
+        this.gameObject.SetActive(false);
     }
 
     // Function: Reset
     // Input: none
     // Output: none
     // Description:
-    // - Reset manipulator to its initial state.
-    public void Reset()
+    //  - Reset manipulator to its initial state. Depending on which mode the
+    //    game is currently in, the function will perform different actions.
+    //
+    //    1. Modify mode:
+    //       - Simply deselect the current selected gadget.
+    //       - Set selectedGadget to null.
+    //    2. Create mode:
+    //       - Destroy the gadget template.
+    //       - Set mode back to modify mode.
+    //       - Set selectedGadget to null.
+    public void Reset ()
     {
-        Debug.Log("GadgetManipulator got reset.");
+        Debug.Log("GadgetManipulator is being reset.");
 
         if (selectedGadget)
         {
-            // stamp mode
-            if (currentMode == 1)
-            {
-                Destroy(selectedGadget.gameObject);     // destroy gadget stamp
-            }
-            // modify mode
-            else if (currentMode == 2)
+            if (ModifyModeEnabled())
             {
                 selectedGadget.Deselect();
             }
-
+            else
+            {
+                Destroy(selectedGadget.gameObject);
+                currentMode = Mode.Modify;
+            }
             selectedGadget = null;
-            currentMode = 0;
         }
-    }
-
-    // Function: GetMode
-    // Input: none
-    // Output:
-    // - selectMode: the current mode of manipulator
-    // Description:
-    // - Return the mode number for manipulator class.
-    public int GetMode()
-    {
-        return currentMode;
-    }
-
-
-    /************************** Private Functions **************************/
-
-    // Function: IsValidMode
-    // Input:
-    // - mode: code of the mode to be checked
-    // Output: none
-    // Description:
-    // - Check if this is a valid mode to enter.
-    private bool IsValidSetMode(int mode)
-    {
-        return mode == 1 || mode == 2 ? true : false;
     }
 }

@@ -1,26 +1,35 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class GadgetSelectorMenu : MonoBehaviour {
-
-	// Use this for initialization
+public class GadgetSelectorMenu : MonoBehaviour
+{
 	void Start () {
 		
 	}
 	
-	// Update is called once per frame
 	void Update () {
 		
 	}
 
-    // TODO let GameManager toggle instead
-    /* Function name: ToggleMenu
+
+    /************************** Public Functions **************************/
+
+    // Function: Activate
     // Input: none
     // Output: none
-    // Description: Turn the menu on and off by changing its active state.
-    public void ToggleMenu()
+    // Description:
+    //  - Activate GadgetSelectorMenu gameObject in the scene.
+    public void Activate ()
     {
-        this.gameObject.SetActive(!this.gameObject.activeSelf);
-    }*/
+        this.gameObject.SetActive(true);
+    }
+
+    // Function: Deactivate
+    // Input: none
+    // Output: none
+    // Description:
+    //  - Deactivate GadgetSelectorMenu gameObject in the scene.
+    public void Deactivate ()
+    {
+        this.gameObject.SetActive(false);
+    }
 }

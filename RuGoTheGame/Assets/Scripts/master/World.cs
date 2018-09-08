@@ -3,21 +3,30 @@ using UnityEngine;
 
 public class World : MonoBehaviour
 {
-    // Local variable; keep track of the gadgets in the world
     private List<Gadget> gadgetsInWorld;
 
-    // Use this for initialization
     void Start () {
         gadgetsInWorld = new List<Gadget>();
     }
 	
-	// Update is called once per frame
 	void Update () {
 		
 	}
 
+    /************************** Public Functions **************************/
+
+    // Function: CreateGadgetFromTemplate
+    // Input:
+    //  - gadgetTemplate: a reference to the gadget template.
+    // Output: none
+    // Description:
+    //  - In manipulator create mode, we need to add the gadget to the world
+    //    whenever the user wants to create a new one. The gadget template is
+    //    passed in and we duplicate the template and change its color.
     public void CreateGadgetFromTemplate (Gadget gadgetTemplate)
     {
+        Debug.Log("A new gameObject has been created in the World.");
+
         GameObject gadgetObj = Instantiate(gadgetTemplate.gameObject, this.transform);
         Gadget gadget = gadgetObj.GetComponent<Gadget>();
         gadget.Solidify();

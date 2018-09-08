@@ -2,11 +2,9 @@
 
 public class Gadget : MonoBehaviour
 {
-    // The full and transparent materials of the gadget
     public Material SolidMat;
     public Material TransparentMat;
 
-    // Local variables
     private Vector3 lastSavedPosition;
     private Renderer renderer
     {
@@ -16,41 +14,73 @@ public class Gadget : MonoBehaviour
         }
     }
 
-    void Start()
+    void Start ()
     {
     }
 
-    // higtlight the gadget when being clicked in manipulate mode
-    public virtual void Highlight()
+
+    /************************** Public Functions **************************/
+
+    // Function: Highlight
+    // Input: none
+    // Output: none
+    // Description:
+    //  - Change the color of the gadget when being clicked on in manipulate
+    //    mode.
+    public virtual void Highlight ()
     {
-        renderer.material.color = Color.yellow;
         Debug.Log("Highlighting Gadget");
+
+        renderer.material.color = Color.yellow;
     }
 
-    // cancel selection
-    public virtual void Deselect()
+    // Function: Deselect
+    // Input: none
+    // Output: none
+    // Description:
+    //  - Revert the color to its original and save current position.
+    public virtual void Deselect ()
     {
-        Solidify();
         Debug.Log("Color should be restored");
 
+        Solidify();
         lastSavedPosition = this.transform.position;
     }
 
-    public virtual void Reset()
+    // Function: Reset
+    // Input: none
+    // Output: none
+    // Description:
+    //  - Move the gadget back to its original position.
+    public virtual void Reset ()
     {
+        Debug.Log("Gadget position is being reset.");
+
         this.transform.position = lastSavedPosition;
-        this.Deselect();
+        //this.Deselect(); do we need this?
     }
 
-    public virtual void Transparent()
+    // Function: Solidify
+    // Input: none
+    // Output: none
+    // Description:
+    //  - Change the material to solid.
+    public virtual void Solidify ()
     {
-        renderer.material = TransparentMat;
         Debug.Log("Making Gadget transparent");
-    }
 
-    public virtual void Solidify()
-    {
         renderer.material = SolidMat;
+    }
+
+    // Function: Transparent
+    // Input: none
+    // Output: none
+    // Description:
+    //  - Change the material to transparent.
+    public virtual void Transparent ()
+    {
         Debug.Log("Making Gadget transparent");
+
+        renderer.material = TransparentMat;
     }
 }
