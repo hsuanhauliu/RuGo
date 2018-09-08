@@ -94,7 +94,7 @@ public class GameManagerTest : MonoBehaviour
         //TODO currently placing gadget at gameManager's position.
         // Might want to place it in front of the player for a set distance.
         GameObject gadgetObj = Instantiate(box, this.transform);
-        Gadget gadget = gadgetObj.GetComponent<Gadget>();
+        GadgetTest gadget = gadgetObj.GetComponent<GadgetTest>();
         manipulator.Set(gadget, 1);
     }
 
@@ -158,7 +158,7 @@ public class GameManagerTest : MonoBehaviour
         if (Physics.Raycast(ray, out hit))
         {
             // Create a reference to the gadget that we clicked on
-            Gadget gadget = hit.transform.GetComponent<Gadget>();
+            GadgetTest gadget = hit.transform.GetComponent<GadgetTest>();
 
             // Check whether the object that we clicked on was a gadget
             if (gadget)

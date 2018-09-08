@@ -4,7 +4,7 @@ using UnityEngine;
 public class GadgetManipulatorTest : MonoBehaviour
 {
     // Local Variables
-    private Gadget selectedGadget;  // keep track of which gadget is currently being selected
+    private GadgetTest selectedGadget;  // keep track of which gadget is currently being selected
     private int currentMode;        // 0 for default, 1 for selecting stamp mode,
                                     // 2 for modify mode
 
@@ -74,7 +74,7 @@ public class GadgetManipulatorTest : MonoBehaviour
     // Description:
     // - A function that is used to set manipulator parameters when we switch
     //   to manipulate mode. Currently this should be invoked by GameManager only.
-    public void Set (Gadget gadget, int mode)
+    public void Set (GadgetTest gadget, int mode)
     {
         if (IsValidSetMode(mode))
         {
