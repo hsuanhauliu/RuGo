@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class World : MonoBehaviour
@@ -17,10 +16,11 @@ public class World : MonoBehaviour
 		
 	}
 
-    public void AddGadget (GameObject newGadget)
+    public void CreateGadgetFromTemplate (Gadget gadgetTemplate)
     {
-        GameObject gadgetObj = Instantiate(newGadget, this.transform);
+        GameObject gadgetObj = Instantiate(gadgetTemplate.gameObject, this.transform);
         Gadget gadget = gadgetObj.GetComponent<Gadget>();
+        gadget.Solidify();
         gadgetsInWorld.Add(gadget);
     }
 }

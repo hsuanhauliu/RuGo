@@ -1,35 +1,56 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class Gadget : MonoBehaviour {
+public class Gadget : MonoBehaviour
+{
+    // The full and transparent materials of the gadget
+    public Material SolidMat;
+    public Material TransparentMat;
 
-    public Color originalColor;
-
+    // Local variables
     private Vector3 lastSavedPosition;
+    private Renderer renderer
+    {
+        get
+        {
+            return this.GetComponent<Renderer>();
+        }
+    }
 
     void Start()
     {
-        Renderer r = this.GetComponent<Renderer>();
-        originalColor = r.material.color;
     }
 
-    public virtual void Highlight() {
-        Renderer r = this.GetComponent<Renderer>();
-        r.material.color = Color.yellow;
+    // higtlight the gadget when being clicked in manipulate mode
+    public virtual void Highlight()
+    {
+        renderer.material.color = Color.yellow;
         Debug.Log("Highlighting Gadget");
     }
 
-    public virtual void Deselect() {
-        Renderer r = this.GetComponent<Renderer>();
-        r.material.color = Color.black;
+    // cancel selection
+    public virtual void Deselect()
+    {
+        Solidify();
         Debug.Log("Color should be restored");
 
         lastSavedPosition = this.transform.position;
     }
 
-    public virtual void Reset() {
+    public virtual void Reset()
+    {
         this.transform.position = lastSavedPosition;
         this.Deselect();
+    }
+
+    public virtual void Transparent()
+    {
+        renderer.material = TransparentMat;
+        Debug.Log("Making Gadget transparent");
+    }
+
+    public virtual void Solidify()
+    {
+        renderer.material = SolidMat;
+        Debug.Log("Making Gadget transparent");
     }
 }
