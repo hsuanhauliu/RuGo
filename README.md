@@ -30,7 +30,7 @@ Every week when the integrations are performed, the necessary prefabs will be br
 
 ## Materials and Textures
 
-Everytime you create a new material for your scene, please place the material in the **Materials** folder. Please be thoughtful when it comes to naming your materials so that it can be reused by others when building their prototypes. 
+Every time you create a new material for your scene, please place the material in the **Materials** folder. Please be thoughtful when it comes to naming your materials so that it can be reused by others when building their prototypes.
 
 We will follow the same principle for **Textures** folder as well. Good descriptive names go a long way into helping others search for the material and/or textures they want to use with their prototypes.
 
@@ -41,5 +41,18 @@ We will follow the same principle for **Textures** folder as well. Good descript
 At the outset these functions appear to do exactly the same thing but this is not true. The general ordering is, Awake runs first, then OnEnabled and then Start.
 
 But the difference is as follows
-- Awake and Start run only once when the object is first initialized to the scene. Where as OnEnabled runs everytime you SetActive a deactivated object or everytime you SetActive the script component.
+- Awake and Start run only once when the object is first initialized to the scene. Where as OnEnabled runs every time you SetActive a deactivated object or every time you SetActive the script component.
 - If an object and the script is active, both Awake and Start are called. But if the object is active and script is not active when we first start the game, only Awake is called. Start is called at a later time when the script is first activated.
+
+# Game Input Controls
+
+## Keyboard Keys
+
+### GameManager.cs
+M - open/close menu  
+R - reset gadgets (in Build mode only)  
+Left-Click - select a gadget in world (in Build mode only)
+
+### GadgetManipulator.cs
+Enter - place a gadget down  
+Arrows - move the gadget in the   direction corresponding to the key pressed
