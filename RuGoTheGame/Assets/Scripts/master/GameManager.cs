@@ -1,9 +1,11 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
     public GadgetManipulator Manipulator;
     public GadgetSelectorMenu GadgetSelectorMenu;
+    public Text GameModeDisplay;
 
     // TODO: needs to change it later. manually referencing prefabs for now
     public GameObject box;
@@ -22,6 +24,7 @@ public class GameManager : MonoBehaviour
     void Start ()
     {
         currentGameMode = GameMode.Build;
+        GameModeDisplay.text = "Mode: Build";
         Manipulator.Activate();
         GadgetSelectorMenu.Deactivate();
     }
@@ -38,6 +41,8 @@ public class GameManager : MonoBehaviour
             {
                 SelectExistingGadget();
             }
+
+            // TODO should actually make it a feature in play mode.
             if (Input.GetKeyDown(KeyCode.R))
             {
                 this.Reset();
@@ -98,6 +103,7 @@ public class GameManager : MonoBehaviour
         GadgetSelectorMenu.Deactivate();
         Manipulator.Activate();
         this.currentGameMode = GameMode.Build;
+        GameModeDisplay.text = "Mode: Build";
     }
 
     // Function: EnableSelectMode
@@ -110,6 +116,7 @@ public class GameManager : MonoBehaviour
         Manipulator.Deactivate();
         GadgetSelectorMenu.Activate();
         this.currentGameMode = GameMode.Select;
+        GameModeDisplay.text = "Mode: Select";
     }
 
 
