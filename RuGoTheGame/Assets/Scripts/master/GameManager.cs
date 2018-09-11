@@ -80,16 +80,31 @@ public class GameManager : MonoBehaviour
 
     // Function: CreateGadget
     // Input:
-    //  - name: name of the prefab file
+    //  - name: 
     // Output: none
     // Description:
     //  - Create a gameObject using prefab. Invoked by UI buttons.
+
+    /// <summary>
+    /// name of the prefab file.
+    /// </summary>
+    /// <param name="prefabName">The name of the resource to load from Prefab Directory</param>
     public void CreateGadget (string prefabName)
     {
+        GameObject gadgetPrefab;
+
+        if (prefabName == "Ball")
+        {
+            gadgetPrefab = Resources.Load("Ball") as GameObject;
+        }
+        else
+        {
+            gadgetPrefab = box;
+        }
+        GameObject gadgetGameObject = Instantiate(gadgetPrefab, this.transform);
         //TODO currently placing gadget at gameManager's position.
         // Might want to place it in front of the player for a set distance.
-        GameObject gadgetObj = Instantiate(box, this.transform);
-        Gadget gadget = gadgetObj.GetComponent<Gadget>();
+        Gadget gadget = gadgetGameObject.GetComponent<Gadget>();
         Manipulator.EnableCreateMode(gadget);
     }
 
