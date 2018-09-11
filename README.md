@@ -48,11 +48,14 @@ But the difference is as follows
 
 ## Keyboard Keys
 
-### GameManager.cs
+### Master Scene
+
+##### GameManager.cs
+
 M - open/close menu  
 R - reset gadgets (in Build mode only)  
 Left-Click - select a gadget in world (in Build mode only)
 
-### GadgetManipulator.cs
+##### GadgetManipulator.cs
 Enter - place a gadget down  
 Arrows - move the gadget in the   direction corresponding to the key pressed
