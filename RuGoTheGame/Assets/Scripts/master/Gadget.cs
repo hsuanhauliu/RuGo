@@ -14,6 +14,7 @@ public class Gadget : MonoBehaviour
 
     void Start ()
     {
+        gameObject.layer = LayerMask.NameToLayer("Gadget");
     }
 
 
