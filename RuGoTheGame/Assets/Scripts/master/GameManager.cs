@@ -105,8 +105,6 @@ public class GameManager : MonoBehaviour
         Manipulator.Activate();
         this.currentGameMode = GameMode.Build;
         GameModeDisplay.text = "Mode: Build";
-
-        GadgetPhysicsEnable(false);
     }
 
     // Function: EnableSelectMode
@@ -120,15 +118,12 @@ public class GameManager : MonoBehaviour
         GadgetSelectorMenu.Activate();
         this.currentGameMode = GameMode.Select;
         GameModeDisplay.text = "Mode: Select";
-
-        GadgetPhysicsEnable(false);
     }
 
     /// <summary>
     /// Enables the sim mode.
     /// </summary>
     public void EnableSimMode() {
-        GadgetPhysicsEnable(true);
     }
 
 
@@ -155,15 +150,5 @@ public class GameManager : MonoBehaviour
                 Manipulator.EnableModifyMode(gadget);
             }
         }
-    }
-
-    /// <summary>
-    /// Ignores or Enables physics between gadgets. 
-    /// </summary>
-    /// <param name="enabled">If set to <c>true</c> then physics is enabled between gadgets.</param>
-    private void GadgetPhysicsEnable(bool enabled)
-    {
-        int gadgetLayer = LayerMask.NameToLayer("Gadget");
-        Physics.IgnoreLayerCollision(gadgetLayer, gadgetLayer, enabled);
     }
 }

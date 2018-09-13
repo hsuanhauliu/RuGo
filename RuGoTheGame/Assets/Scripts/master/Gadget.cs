@@ -1,27 +1,56 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 
 public enum GadgetInventory
 {
     Box, Ball, RailRamp
 };
 
-public class Gadget : MonoBehaviour
+public abstract class Gadget : MonoBehaviour
 {
     private Vector3 mLastSavedPosition;
 
-    private Renderer GadgetRenderer
-    {
-        get
-        {
-            return this.GetComponent<Renderer>();
+    private List<Renderer> mRenderers;
+
+    protected void InitGadget() {
+        mRenderers = GetRenderers();
+        SetPhysicsMode(false);
+    }
+
+    /// <summary>
+    /// Enables and Disables rigid body physics and collision detection
+    /// </summary>
+    /// <param name="enable">If set to <c>true</c> enable rigid body physics and collision detection.</param>
+    protected virtual void SetPhysicsMode(bool enable) {
+        Rigidbody rigidBody = this.GetComponent<Rigidbody>();
+        if (rigidBody) {
+            rigidBody.isKinematic = !enable;
+            rigidBody.detectCollisions = enable;
+        }
+        else {
+            MakeAllCollidersTrigger(!enable);
         }
     }
 
-    void Start ()
-    {
-        gameObject.layer = LayerMask.NameToLayer("Gadget");
+    protected virtual void MakeAllCollidersTrigger(bool isTrigger) {
+        Collider[] colliders = this.GetComponentsInChildren<Collider>();
+        foreach (Collider c in colliders)
+        {
+            c.isTrigger = isTrigger;
+        }
     }
 
+    protected virtual List<Renderer> GetRenderers() {
+        return new List<Renderer>
+        {
+            this.GetComponent<Renderer>()
+        };
+    }
+   
+    void Awake()
+    {
+        InitGadget();
+    }
 
     /************************** Public Functions **************************/
 
@@ -35,7 +64,10 @@ public class Gadget : MonoBehaviour
     {
         Debug.Log("Highlighting Gadget");
 
-        GadgetRenderer.material.color = Color.yellow;
+        foreach (Renderer GadgetRenderer in mRenderers)
+        {
+            GadgetRenderer.material.color = Color.yellow;
+        }
     }
 
     // Function: Deselect
@@ -71,10 +103,14 @@ public class Gadget : MonoBehaviour
     public virtual void Solidify ()
     {
         Debug.Log("Making Gadget Solid");
+        foreach (Renderer GadgetRenderer in mRenderers)
+        {
+            Color albedo = GadgetRenderer.material.color;
+            albedo.a = 1.0f;
+            GadgetRenderer.material.color = albedo;
+        }
 
-        Color albedo = GadgetRenderer.material.color;
-        albedo.a = 1.0f;
-        GadgetRenderer.material.color = albedo;
+        SetPhysicsMode(true);
     }
 
     // Function: Transparent
@@ -84,10 +120,14 @@ public class Gadget : MonoBehaviour
     //  - Change the material to transparent.
     public virtual void Transparent ()
     {
+        SetPhysicsMode(false);
         Debug.Log("Making Gadget transparent");
 
-        Color albedo = GadgetRenderer.material.color;
-        albedo.a = 0.5f;
-        GadgetRenderer.material.color = albedo;
+        foreach (Renderer GadgetRenderer in mRenderers)
+        {
+            Color albedo = GadgetRenderer.material.color;
+            albedo.a = 0.5f;
+            GadgetRenderer.material.color = albedo;
+        }
     }
 }
