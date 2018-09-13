@@ -17,7 +17,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-
     void Start ()
     {
         EnableBuildMode();
@@ -27,7 +26,7 @@ public class GameManager : MonoBehaviour
     {
         if (BuildModeEnabled)
         {
-            // Listen for left click
+
             if (Input.GetMouseButtonDown(0) &&
                 Manipulator.ModifyModeEnabled() &&
                 !Manipulator.GadgetSelected()
@@ -36,7 +35,6 @@ public class GameManager : MonoBehaviour
                 SelectExistingGadget();
             }
 
-            // TODO should actually make it a feature in play mode.
             if (Input.GetKeyDown(KeyCode.R))
             {
                 this.Reset();
@@ -69,7 +67,7 @@ public class GameManager : MonoBehaviour
     //  - Reset the world to its initial state.
     public void Reset ()
     {
-        //gadgetsInWorld.ForEach((Gadget g) => g.Reset());
+        Manipulator.ResetGadgetsInWorld();
     }
 
     // Function: CreateGadget

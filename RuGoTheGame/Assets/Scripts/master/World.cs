@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class World : MonoBehaviour
@@ -31,5 +32,10 @@ public class World : MonoBehaviour
         Gadget gadget = gadgetObj.GetComponent<Gadget>();
         gadget.Solidify();
         gadgetsInWorld.Add(gadget);
+    }
+
+    internal void Reset()
+    {
+        gadgetsInWorld.ForEach((Gadget g) => g.Reset());
     }
 }

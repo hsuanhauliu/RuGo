@@ -95,9 +95,7 @@ public abstract class Gadget : MonoBehaviour
     public virtual void Deselect()
     {
         Debug.Log("Color should be restored");
-
         Solidify();
-        mLastSavedPosition = this.transform.position;
     }
 
     // Function: Reset
@@ -108,7 +106,6 @@ public abstract class Gadget : MonoBehaviour
     public virtual void Reset()
     {
         Debug.Log("Gadget position is being reset.");
-
         this.transform.position = mLastSavedPosition;
     }
 
@@ -119,6 +116,7 @@ public abstract class Gadget : MonoBehaviour
     //  - Change the material to solid.
     public virtual void Solidify()
     {
+        mLastSavedPosition = this.transform.position;
         Debug.Log("Making Gadget Solid");
         foreach (Renderer GadgetRenderer in mRenderers)
         {

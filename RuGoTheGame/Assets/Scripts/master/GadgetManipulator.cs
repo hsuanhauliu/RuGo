@@ -11,7 +11,7 @@ public class GadgetManipulator : MonoBehaviour
     private Gadget selectedGadget;
     private Mode currentMode;
 
-    private int mRayCastMask = 0;
+    private int mRayCastMask;
 
     void Start ()
     {
@@ -71,7 +71,7 @@ public class GadgetManipulator : MonoBehaviour
     //  - Check if the manipulator is currently in modify mode.
     public bool ModifyModeEnabled ()
     {
-        return currentMode == Mode.Modify ? true : false;
+        return currentMode == Mode.Modify;
     }
 
     // Function: CreateModeEnabled
@@ -82,7 +82,7 @@ public class GadgetManipulator : MonoBehaviour
     //  - Check if the manipulator is currently in create mode.
     public bool CreateModeEnabled ()
     {
-        return currentMode == Mode.Create ? true : false;
+        return currentMode == Mode.Create;
     }
 
     // Function: EnableModifyMode
@@ -180,5 +180,9 @@ public class GadgetManipulator : MonoBehaviour
             }
             selectedGadget = null;
         }
+    }
+
+    public void ResetGadgetsInWorld() {
+        World.Reset();
     }
 }
