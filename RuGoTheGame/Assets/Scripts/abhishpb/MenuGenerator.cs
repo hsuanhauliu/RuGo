@@ -22,7 +22,27 @@ public class MenuGenerator : MonoBehaviour {
     // AllGadgets has all availabel gadgets that can be added to the world 
     //  MakeMenu MAKES menu dynamically from AllGadgets
 
+
+    // Important note rectTransform can be MainMenu.GetComponent<Canvas>().enabled = false;
+    // but when working with game objects they have to be SetActive 
     public Canvas MainMenu;
+
+    //public RectTransform MenuPanel;
+
+    public GameObject MenuPanel;
+
+    public GameObject RollPanel;
+
+    public GameObject MovePanel;
+
+    public GameObject RampPanel;
+
+    public GameObject RecyclablesPanel;
+
+
+
+    public GameObject prefabButton;
+
 
     bool menuStatus = false;
 
@@ -42,33 +62,37 @@ public class MenuGenerator : MonoBehaviour {
 
 
     void Start () {
-        MakeMenu(AllCategorys,false);
-        MainMenu.GetComponent<Canvas>().enabled = false;
+        MakeMenu(AllCategorys, MenuPanel,false);
+        MenuPanel.SetActive(false);
+        MakeMenu(Roll, RollPanel, true);
+        RollPanel.SetActive(false);
+        MakeMenu(Move, MovePanel, true);
+        MovePanel.SetActive(false);
+        MakeMenu(Ramp, RampPanel, true);
+        RampPanel.SetActive(false);
+        MakeMenu(Recyclables, RecyclablesPanel, true);
+        RecyclablesPanel.SetActive(false);
+
+
 
 
     }
-    public RectTransform MenuPanel;
-
-    public GameObject prefabButton;
-
-    // Update is called once per frame
+  
     void Update () {
 
         if (Input.GetKeyDown(KeyCode.M))
         {
             Debug.Log("M was pressed");
-            if (menuStatus)
+            if (MenuPanel.activeInHierarchy)
             {
-                MainMenu.GetComponent<Canvas>().enabled = false;
-                menuStatus = false;
+                MenuPanel.SetActive(false);
                 Debug.Log("Making menu disapper");
-
             }
 
             else
             {
-                MainMenu.GetComponent<Canvas>().enabled = true;
-                menuStatus = true;
+
+                MenuPanel.SetActive(true);
                 Debug.Log("Making menu reapper");
 
             }
@@ -84,19 +108,23 @@ public class MenuGenerator : MonoBehaviour {
         menuStatus = false;
         if(buttonName.Equals("Roll"))
         {
-            MakeMenu(Roll,true);
+            MenuPanel.SetActive(false);
+            RollPanel.SetActive(true);
         }
         if (buttonName.Equals("Move"))
         {
-            MakeMenu(Move,true);
+            MenuPanel.SetActive(false);
+            MovePanel.SetActive(true);
         }
         if (buttonName.Equals("Ramp"))
         {
-            MakeMenu(Ramp,true);
+            MenuPanel.SetActive(false);
+            RampPanel.SetActive(true);
         }
-        if (buttonName.Equals("Recyclables"))
+        if (buttonName.Equals("Recyclable"))
         {
-            MakeMenu(Recyclables,true);
+            MenuPanel.SetActive(false);
+            RecyclablesPanel.SetActive(true);
         }
         MainMenu.GetComponent<Canvas>().enabled = true;
         menuStatus = true;
@@ -104,7 +132,7 @@ public class MenuGenerator : MonoBehaviour {
     }
 
 
-    void MakeMenu (List<string> items,bool back) {
+    void MakeMenu (List<string> items, GameObject workon, bool back) {
         float initialPositionX = -4f;
         float initialPositionY = 4f;
 
@@ -117,7 +145,8 @@ public class MenuGenerator : MonoBehaviour {
             // just for back button 
 
             GameObject goButton = (GameObject)Instantiate(prefabButton);
-            goButton.transform.SetParent(MenuPanel, false);
+            goButton.transform.SetParent(workon.transform, false);
+
             //goButton.transform.localScale = new Vector3(1.7f, 0.5f, 1);
             goButton.transform.position = new Vector3(initialPositionX + 2f, initialPositionY, 1f);
             initialPositionX = initialPositionX + 2f;
@@ -146,7 +175,7 @@ public class MenuGenerator : MonoBehaviour {
             string buttonName = items[i];
 
             GameObject goButton = (GameObject)Instantiate(prefabButton);
-            goButton.transform.SetParent(MenuPanel, false);
+            goButton.transform.SetParent(workon.transform, false);
             //goButton.transform.localScale = new Vector3(1.7f, 0.5f, 1);
             goButton.transform.position = new Vector3(initialPositionX + 2f, initialPositionY, 1f);
             initialPositionX = initialPositionX + 2f;
@@ -170,11 +199,13 @@ public class MenuGenerator : MonoBehaviour {
     }
     void GoBack()
     {
-        MainMenu.GetComponent<Canvas>().enabled = false;
-        menuStatus = false;
-        MakeMenu(AllCategorys,false);
-        MainMenu.GetComponent<Canvas>().enabled = true;
-        menuStatus = true;
+        RollPanel.SetActive(false);
+        MovePanel.SetActive(false);
+        RampPanel.SetActive(false);
+        RecyclablesPanel.SetActive(false);
+        MenuPanel.SetActive(true);
+
+
 
     }
 }
