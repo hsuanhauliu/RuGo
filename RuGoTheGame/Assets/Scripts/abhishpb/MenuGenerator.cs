@@ -118,7 +118,7 @@ public class MenuGenerator : MonoBehaviour {
 
             GameObject goButton = (GameObject)Instantiate(prefabButton);
             goButton.transform.SetParent(MenuPanel, false);
-            goButton.transform.localScale = new Vector3(1.7f, 0.5f, 1);
+            //goButton.transform.localScale = new Vector3(1.7f, 0.5f, 1);
             goButton.transform.position = new Vector3(initialPositionX + 2f, initialPositionY, 1f);
             initialPositionX = initialPositionX + 2f;
 
@@ -147,7 +147,7 @@ public class MenuGenerator : MonoBehaviour {
 
             GameObject goButton = (GameObject)Instantiate(prefabButton);
             goButton.transform.SetParent(MenuPanel, false);
-            goButton.transform.localScale = new Vector3(1.7f, 0.5f, 1);
+            //goButton.transform.localScale = new Vector3(1.7f, 0.5f, 1);
             goButton.transform.position = new Vector3(initialPositionX + 2f, initialPositionY, 1f);
             initialPositionX = initialPositionX + 2f;
 
