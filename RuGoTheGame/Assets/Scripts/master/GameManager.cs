@@ -88,16 +88,8 @@ public class GameManager : MonoBehaviour
     /// <param name="prefabName">The name of the resource to load from Prefab Directory</param>
     public void CreateGadget (string prefabName)
     {
-        GameObject gadgetPrefab;
-
-        if (prefabName == "Ball")
-        {
-            gadgetPrefab = Resources.Load("Ball") as GameObject;
-        }
-        else
-        {
-            gadgetPrefab = box;
-        }
+        GameObject gadgetPrefab = Resources.Load(prefabName) as GameObject;
+       
         GameObject gadgetGameObject = Instantiate(gadgetPrefab, this.transform);
         //TODO currently placing gadget at gameManager's position.
         // Might want to place it in front of the player for a set distance.
