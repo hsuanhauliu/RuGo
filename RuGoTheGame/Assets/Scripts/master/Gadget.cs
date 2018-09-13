@@ -1,5 +1,10 @@
 ﻿using UnityEngine;
 
+public enum GadgetInventory
+{
+    Box, Ball, RailRamp
+};
+
 public class Gadget : MonoBehaviour
 {
     private Vector3 mLastSavedPosition;
@@ -56,7 +61,6 @@ public class Gadget : MonoBehaviour
         Debug.Log("Gadget position is being reset.");
 
         this.transform.position = mLastSavedPosition;
-        //this.Deselect(); do we need this?
     }
 
     // Function: Solidify
