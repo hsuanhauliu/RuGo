@@ -58,4 +58,4 @@ Left-Click - select a gadget in world (in Build mode only)
 
 ##### GadgetManipulator.cs
 Enter - place a gadget down  
-Arrows - move the gadget in the   direction corresponding to the key pressed
+Use mouse cursor to manipulate the objects position
