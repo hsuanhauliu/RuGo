@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 33368166231501202}
   - component: {fileID: 23933199113393560}
   - component: {fileID: 65088007986421342}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Flat
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40,7 +40,7 @@ GameObject:
   - component: {fileID: 33228835396329410}
   - component: {fileID: 23621004414999962}
   - component: {fileID: 65221891058137438}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Side2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -58,7 +58,7 @@ GameObject:
   - component: {fileID: 33777797521572424}
   - component: {fileID: 23640745276739190}
   - component: {fileID: 65972307975625460}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Side1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -74,7 +74,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4237639635558998}
   - component: {fileID: 114089753187058624}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RailRamp
   m_TagString: Untagged
   m_Icon: {fileID: 0}

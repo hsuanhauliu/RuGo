@@ -5,17 +5,20 @@ public class GadgetManipulator : MonoBehaviour
     public World World;
 
     // TODO might want to set it to private later
-    public float translationDelta = 0.01f;
+    public float translationDelta = 0.08f;
 
     private enum Mode { Modify, Create };
     private Gadget selectedGadget;
     private Mode currentMode;
 
+    private int mRayCastMask = 0;
 
     void Start ()
     {
         selectedGadget = null;
         currentMode = Mode.Modify;
+
+        mRayCastMask = ~(1 << LayerMask.NameToLayer("SelectedGadget"));
     }
 
     void Update ()
@@ -23,22 +26,18 @@ public class GadgetManipulator : MonoBehaviour
         // Receive inputs only when a gadget is selected
         if (GadgetSelected())
         {
-            // Control movement of the selected gadget
-            if (Input.GetKeyDown(KeyCode.RightArrow))
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+
+            //https://docs.unity3d.com/Manual/Layers.html
+            //We want to ignore the selected gadget otherwise the raycast will keep intersecting repeatedly translating the object in undesirable ways
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, mRayCastMask))
             {
-                selectedGadget.transform.Translate(Vector3.right * translationDelta);
-            }
-            if (Input.GetKeyDown(KeyCode.LeftArrow))
-            {
-                selectedGadget.transform.Translate(Vector3.left * translationDelta);
-            }
-            if (Input.GetKeyDown(KeyCode.UpArrow))
-            {
-                selectedGadget.transform.Translate(Vector3.forward * translationDelta);
-            }
-            if (Input.GetKeyDown(KeyCode.DownArrow))
-            {
-                selectedGadget.transform.Translate(Vector3.back * translationDelta);
+                Debug.Log("Updating Position of SelectedGadget");
+                selectedGadget.transform.position = hit.point;
+
+                //TODO Come up with something more reasonable for ramp and other objects that are rotated
+                selectedGadget.transform.Translate(Vector3.up * selectedGadget.transform.localScale.y / 2.0f);
             }
 
             // Place gadget
