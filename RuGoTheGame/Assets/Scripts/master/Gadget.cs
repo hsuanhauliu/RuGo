@@ -12,7 +12,13 @@ public abstract class Gadget : MonoBehaviour
 
     private List<Renderer> mRenderers;
 
-    protected void InitGadget() {
+    void Start()
+    {
+        gameObject.layer = LayerMask.NameToLayer("Gadget");
+    }
+
+    protected void InitGadget()
+    {
         mRenderers = GetRenderers();
         SetPhysicsMode(false);
     }
@@ -21,18 +27,22 @@ public abstract class Gadget : MonoBehaviour
     /// Enables and Disables rigid body physics and collision detection
     /// </summary>
     /// <param name="enable">If set to <c>true</c> enable rigid body physics and collision detection.</param>
-    protected virtual void SetPhysicsMode(bool enable) {
+    protected virtual void SetPhysicsMode(bool enable)
+    {
         Rigidbody rigidBody = this.GetComponent<Rigidbody>();
-        if (rigidBody) {
+        if (rigidBody)
+        {
             rigidBody.isKinematic = !enable;
             rigidBody.detectCollisions = enable;
         }
-        else {
+        else
+        {
             MakeAllCollidersTrigger(!enable);
         }
     }
 
-    protected virtual void MakeAllCollidersTrigger(bool isTrigger) {
+    protected virtual void MakeAllCollidersTrigger(bool isTrigger)
+    {
         Collider[] colliders = this.GetComponentsInChildren<Collider>();
         foreach (Collider c in colliders)
         {
@@ -40,13 +50,14 @@ public abstract class Gadget : MonoBehaviour
         }
     }
 
-    protected virtual List<Renderer> GetRenderers() {
+    protected virtual List<Renderer> GetRenderers()
+    {
         return new List<Renderer>
         {
             this.GetComponent<Renderer>()
         };
     }
-   
+
     void Awake()
     {
         InitGadget();
@@ -60,9 +71,15 @@ public abstract class Gadget : MonoBehaviour
     // Description:
     //  - Change the color of the gadget when being clicked on in manipulate
     //    mode.
-    public virtual void Highlight ()
+    public virtual void Highlight()
     {
         Debug.Log("Highlighting Gadget");
+        //TODO Can we simplify this??
+        this.gameObject.layer = LayerMask.NameToLayer("SelectedGadget");
+        foreach (Transform child in transform)
+        {
+            child.gameObject.layer = LayerMask.NameToLayer("SelectedGadget");
+        }
 
         foreach (Renderer GadgetRenderer in mRenderers)
         {
@@ -75,7 +92,7 @@ public abstract class Gadget : MonoBehaviour
     // Output: none
     // Description:
     //  - Revert the color to its original and save current position.
-    public virtual void Deselect ()
+    public virtual void Deselect()
     {
         Debug.Log("Color should be restored");
 
@@ -88,7 +105,7 @@ public abstract class Gadget : MonoBehaviour
     // Output: none
     // Description:
     //  - Move the gadget back to its original position.
-    public virtual void Reset ()
+    public virtual void Reset()
     {
         Debug.Log("Gadget position is being reset.");
 
@@ -100,7 +117,7 @@ public abstract class Gadget : MonoBehaviour
     // Output: none
     // Description:
     //  - Change the material to solid.
-    public virtual void Solidify ()
+    public virtual void Solidify()
     {
         Debug.Log("Making Gadget Solid");
         foreach (Renderer GadgetRenderer in mRenderers)
@@ -108,6 +125,11 @@ public abstract class Gadget : MonoBehaviour
             Color albedo = GadgetRenderer.material.color;
             albedo.a = 1.0f;
             GadgetRenderer.material.color = albedo;
+        }
+
+        foreach (Transform t in transform)
+        {
+            t.gameObject.layer = LayerMask.NameToLayer("Gadget");
         }
 
         SetPhysicsMode(true);
@@ -118,10 +140,17 @@ public abstract class Gadget : MonoBehaviour
     // Output: none
     // Description:
     //  - Change the material to transparent.
-    public virtual void Transparent ()
+    public virtual void Transparent()
     {
         SetPhysicsMode(false);
         Debug.Log("Making Gadget transparent");
+
+        //TODO Remove the duplication between highlight and transparent....
+
+        foreach (Transform child in transform)
+        {
+            child.gameObject.layer = LayerMask.NameToLayer("SelectedGadget");
+        }
 
         foreach (Renderer GadgetRenderer in mRenderers)
         {
