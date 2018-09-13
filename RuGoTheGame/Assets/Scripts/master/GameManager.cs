@@ -7,9 +7,6 @@ public class GameManager : MonoBehaviour
     public GadgetSelectorMenu GadgetSelectorMenu;
     public Text GameModeDisplay;
 
-    // TODO: needs to change it later. manually referencing prefabs for now
-    public GameObject box;
-
     private enum GameMode { Build, Select, Sim };
     private GameMode currentGameMode;
     private bool BuildModeEnabled
