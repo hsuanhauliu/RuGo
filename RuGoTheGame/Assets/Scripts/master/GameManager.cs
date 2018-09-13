@@ -7,10 +7,7 @@ public class GameManager : MonoBehaviour
     public GadgetSelectorMenu GadgetSelectorMenu;
     public Text GameModeDisplay;
 
-    // TODO: needs to change it later. manually referencing prefabs for now
-    public GameObject box;
-
-    private enum GameMode { Build, Select };
+    private enum GameMode { Build, Select, Sim };
     private GameMode currentGameMode;
     private bool BuildModeEnabled
     {
@@ -23,10 +20,7 @@ public class GameManager : MonoBehaviour
 
     void Start ()
     {
-        currentGameMode = GameMode.Build;
-        GameModeDisplay.text = "Mode: Build";
-        Manipulator.Activate();
-        GadgetSelectorMenu.Deactivate();
+        EnableBuildMode();
     }
 
     void Update ()
@@ -80,16 +74,23 @@ public class GameManager : MonoBehaviour
 
     // Function: CreateGadget
     // Input:
-    //  - name: name of the prefab file
+    //  - name: 
     // Output: none
     // Description:
     //  - Create a gameObject using prefab. Invoked by UI buttons.
+
+    /// <summary>
+    /// name of the prefab file.
+    /// </summary>
+    /// <param name="prefabName">The name of the resource to load from Prefab Directory</param>
     public void CreateGadget (string prefabName)
     {
+        GameObject gadgetPrefab = Resources.Load(prefabName) as GameObject;
+       
+        GameObject gadgetGameObject = Instantiate(gadgetPrefab, this.transform);
         //TODO currently placing gadget at gameManager's position.
         // Might want to place it in front of the player for a set distance.
-        GameObject gadgetObj = Instantiate(box, this.transform);
-        Gadget gadget = gadgetObj.GetComponent<Gadget>();
+        Gadget gadget = gadgetGameObject.GetComponent<Gadget>();
         Manipulator.EnableCreateMode(gadget);
     }
 
@@ -104,6 +105,8 @@ public class GameManager : MonoBehaviour
         Manipulator.Activate();
         this.currentGameMode = GameMode.Build;
         GameModeDisplay.text = "Mode: Build";
+
+        GadgetPhysicsEnable(false);
     }
 
     // Function: EnableSelectMode
@@ -117,6 +120,15 @@ public class GameManager : MonoBehaviour
         GadgetSelectorMenu.Activate();
         this.currentGameMode = GameMode.Select;
         GameModeDisplay.text = "Mode: Select";
+
+        GadgetPhysicsEnable(false);
+    }
+
+    /// <summary>
+    /// Enables the sim mode.
+    /// </summary>
+    public void EnableSimMode() {
+        GadgetPhysicsEnable(true);
     }
 
 
@@ -143,5 +155,15 @@ public class GameManager : MonoBehaviour
                 Manipulator.EnableModifyMode(gadget);
             }
         }
+    }
+
+    /// <summary>
+    /// Ignores or Enables physics between gadgets. 
+    /// </summary>
+    /// <param name="enabled">If set to <c>true</c> then physics is enabled between gadgets.</param>
+    private void GadgetPhysicsEnable(bool enabled)
+    {
+        int gadgetLayer = LayerMask.NameToLayer("Gadget");
+        Physics.IgnoreLayerCollision(gadgetLayer, gadgetLayer, enabled);
     }
 }

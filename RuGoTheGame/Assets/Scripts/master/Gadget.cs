@@ -1,12 +1,15 @@
 ﻿using UnityEngine;
 
+public enum GadgetInventory
+{
+    Box, Ball, RailRamp
+};
+
 public class Gadget : MonoBehaviour
 {
-    public Material SolidMat;
-    public Material TransparentMat;
+    private Vector3 mLastSavedPosition;
 
-    private Vector3 lastSavedPosition;
-    private Renderer renderer
+    private Renderer GadgetRenderer
     {
         get
         {
@@ -16,6 +19,7 @@ public class Gadget : MonoBehaviour
 
     void Start ()
     {
+        gameObject.layer = LayerMask.NameToLayer("Gadget");
     }
 
 
@@ -31,7 +35,7 @@ public class Gadget : MonoBehaviour
     {
         Debug.Log("Highlighting Gadget");
 
-        renderer.material.color = Color.yellow;
+        GadgetRenderer.material.color = Color.yellow;
     }
 
     // Function: Deselect
@@ -44,7 +48,7 @@ public class Gadget : MonoBehaviour
         Debug.Log("Color should be restored");
 
         Solidify();
-        lastSavedPosition = this.transform.position;
+        mLastSavedPosition = this.transform.position;
     }
 
     // Function: Reset
@@ -56,8 +60,7 @@ public class Gadget : MonoBehaviour
     {
         Debug.Log("Gadget position is being reset.");
 
-        this.transform.position = lastSavedPosition;
-        //this.Deselect(); do we need this?
+        this.transform.position = mLastSavedPosition;
     }
 
     // Function: Solidify
@@ -67,9 +70,11 @@ public class Gadget : MonoBehaviour
     //  - Change the material to solid.
     public virtual void Solidify ()
     {
-        Debug.Log("Making Gadget transparent");
+        Debug.Log("Making Gadget Solid");
 
-        renderer.material = SolidMat;
+        Color albedo = GadgetRenderer.material.color;
+        albedo.a = 1.0f;
+        GadgetRenderer.material.color = albedo;
     }
 
     // Function: Transparent
@@ -81,6 +86,8 @@ public class Gadget : MonoBehaviour
     {
         Debug.Log("Making Gadget transparent");
 
-        renderer.material = TransparentMat;
+        Color albedo = GadgetRenderer.material.color;
+        albedo.a = 0.5f;
+        GadgetRenderer.material.color = albedo;
     }
 }
