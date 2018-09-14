@@ -3,103 +3,95 @@
 public class GadgetManipulator : MonoBehaviour
 {
     public World World;
-
-    // TODO might want to set it to private later
-    public float translationDelta = 0.08f;
+    public float TranslationDelta = 0.08f;
 
     private enum Mode { Modify, Create };
-    private Gadget selectedGadget;
-    private Mode currentMode;
-
+    private Gadget mSelectedGadget;
+    private Mode mCurrentMode;
     private int mRayCastMask;
 
-    void Start ()
+    void Start()
     {
-        selectedGadget = null;
-        currentMode = Mode.Modify;
-
+        mSelectedGadget = null;
+        mCurrentMode = Mode.Modify;
         mRayCastMask = ~(1 << LayerMask.NameToLayer("SelectedGadget"));
     }
 
-    void Update ()
+    void Update()
     {
         // Receive inputs only when a gadget is selected
         if (GadgetSelected())
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
-
-            //https://docs.unity3d.com/Manual/Layers.html
-            //We want to ignore the selected gadget otherwise the raycast will keep intersecting repeatedly with itself translating the object in undesirable ways
+            /*
+                https://docs.unity3d.com/Manual/Layers.html
+                We want to ignore the selected gadget otherwise the raycast will keep intersecting repeatedly with itself translating the object in undesirable ways
+            */
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, mRayCastMask))
             {
-                Debug.Log("Updating Position of SelectedGadget");
-                selectedGadget.transform.position = hit.point;
+                mSelectedGadget.transform.position = hit.point;
 
-                //TODO Come up with something more reasonable for ramp and other objects that are rotated
-                selectedGadget.transform.Translate(Vector3.up * selectedGadget.transform.localScale.y / 2.0f);
+                //TODO Come up with something more reasonable value for ramp and other objects that are rotated
+                mSelectedGadget.transform.Translate(Vector3.up * mSelectedGadget.transform.localScale.y / 2.0f);
             }
 
-            // Place gadget
             if (Input.GetKeyDown(KeyCode.Return))
             {
                 if (ModifyModeEnabled())
                 {
-                    Debug.Log("Object is being set.");
-
-                    selectedGadget.Deselect();
-                    selectedGadget = null;
+                    PlaceGadget();
                 }
                 else
                 {
-                    Debug.Log("An object is created!");
-
-                    World.CreateGadgetFromTemplate(selectedGadget);
+                    World.CreateGadgetFromTemplate(mSelectedGadget);
                 }
             }
         }
     }
 
+    private void PlaceGadget()
+    {
+        mSelectedGadget.Deselect();
+        mSelectedGadget = null;
+    }
+
     /************************** Public Functions **************************/
-    public bool ModifyModeEnabled ()
+    public bool ModifyModeEnabled()
     {
-        return currentMode == Mode.Modify;
+        return mCurrentMode == Mode.Modify;
     }
 
-    public bool CreateModeEnabled ()
+    public bool CreateModeEnabled()
     {
-        return currentMode == Mode.Create;
+        return mCurrentMode == Mode.Create;
     }
 
-    public void EnableModifyMode (Gadget gadget)
+    public void EnableModifyMode(Gadget gadget)
     {
-        Debug.Log("Enter manipulator modify mode.");
-
-        selectedGadget = gadget;
-        currentMode = Mode.Modify;
-        selectedGadget.Highlight();
+        mSelectedGadget = gadget;
+        mCurrentMode = Mode.Modify;
+        mSelectedGadget.Highlight();
     }
 
-    public void EnableCreateMode (Gadget gadget)
+    public void EnableCreateMode(Gadget gadget)
     {
-        Debug.Log("Enter manipulator create mode.");
-
-        selectedGadget = gadget;
-        currentMode = Mode.Create;
-        selectedGadget.Transparent();
+        mSelectedGadget = gadget;
+        mCurrentMode = Mode.Create;
+        mSelectedGadget.Transparent();
     }
 
-    public bool GadgetSelected ()
+    public bool GadgetSelected()
     {
-        return selectedGadget != null;
+        return mSelectedGadget != null;
     }
 
-    public void Activate ()
+    public void Activate()
     {
         this.gameObject.SetActive(true);
     }
 
-    public void Deactivate ()
+    public void Deactivate()
     {
         this.Reset();
         this.gameObject.SetActive(false);
@@ -119,7 +111,7 @@ public class GadgetManipulator : MonoBehaviour
     //       - Destroy the gadget template.
     //       - Set mode back to modify mode.
     //       - Set selectedGadget to null.
-    public void Reset ()
+    public void Reset()
     {
         Debug.Log("GadgetManipulator is being reset.");
 
@@ -127,18 +119,19 @@ public class GadgetManipulator : MonoBehaviour
         {
             if (ModifyModeEnabled())
             {
-                selectedGadget.Deselect();
+                mSelectedGadget.Deselect();
             }
             else
             {
-                Destroy(selectedGadget.gameObject);
-                currentMode = Mode.Modify;
+                Destroy(mSelectedGadget.gameObject);
+                mCurrentMode = Mode.Modify;
             }
-            selectedGadget = null;
+            mSelectedGadget = null;
         }
     }
 
-    public void ResetGadgetsInWorld() {
+    public void ResetGadgetsInWorld()
+    {
         World.Reset();
     }
 }

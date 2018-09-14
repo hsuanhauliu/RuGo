@@ -11,11 +11,6 @@ public class World : MonoBehaviour
         gadgetsInWorld = new List<Gadget>();
     }
 
-    void Update()
-    {
-
-    }
-
     /************************** Public Functions **************************/
     public void CreateGadgetFromTemplate(Gadget gadgetTemplate)
     {
