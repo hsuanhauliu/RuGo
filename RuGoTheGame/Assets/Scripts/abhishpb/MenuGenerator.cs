@@ -19,8 +19,7 @@ public class MenuGenerator : MonoBehaviour {
                                             };
                                             */
 
-    // AllGadgets has all availabel gadgets that can be added to the world 
-    //  MakeMenu MAKES menu dynamically from AllGadgets
+    //  MakeMenu MAKES menu dynamically from any list of gadgets 
 
 
     // Important note rectTransform can be MainMenu.GetComponent<Canvas>().enabled = false;
@@ -39,12 +38,11 @@ public class MenuGenerator : MonoBehaviour {
 
     public GameObject RecyclablesPanel;
 
-
-
     public GameObject prefabButton;
 
+    GameManager currentManager = new GameManager();
 
-    bool menuStatus = false;
+
 
     List<string> AllCategorys = new List<string>(new string[] { "Roll","Move","Ramp","Recyclable"});
 
@@ -58,6 +56,9 @@ public class MenuGenerator : MonoBehaviour {
 
     List<string> Recyclables = new List<string>(new string[] { "Cardboard", "Cans" });
 
+    // have created instance of GameManager and have called function CreateGadget
+
+
 
 
 
@@ -70,14 +71,24 @@ public class MenuGenerator : MonoBehaviour {
         MovePanel.SetActive(false);
         MakeMenu(Ramp, RampPanel, true);
         RampPanel.SetActive(false);
-        MakeMenu(Recyclables, RecyclablesPanel, true);
+        //MakeMenu(Recyclables, RecyclablesPanel, true);
+        //RecyclablesPanel.SetActive(false);
+
+        // take an Enum and convert to list of string for menu generator 
+        // suggestion making enum for each category and a master enum of all category 
+        string[] AllAvailableGadgets_array = System.Enum.GetNames(typeof(GadgetInventory));
+        List<string> AllAvailableGadgets = new List<string>(AllAvailableGadgets_array);
+        MakeMenu(AllAvailableGadgets, RecyclablesPanel, true);
         RecyclablesPanel.SetActive(false);
 
 
 
 
+
+
+
     }
-  
+
     void Update () {
 
         if (Input.GetKeyDown(KeyCode.M))
@@ -104,30 +115,35 @@ public class MenuGenerator : MonoBehaviour {
     void ButtonClicked(string buttonName)
     {
         Debug.Log("Button clicked = " + buttonName);
-        MainMenu.GetComponent<Canvas>().enabled = false;
-        menuStatus = false;
+
         if(buttonName.Equals("Roll"))
         {
             MenuPanel.SetActive(false);
             RollPanel.SetActive(true);
+            return;
         }
         if (buttonName.Equals("Move"))
         {
             MenuPanel.SetActive(false);
             MovePanel.SetActive(true);
+            return;
         }
         if (buttonName.Equals("Ramp"))
         {
             MenuPanel.SetActive(false);
             RampPanel.SetActive(true);
+            return;
         }
         if (buttonName.Equals("Recyclable"))
         {
             MenuPanel.SetActive(false);
             RecyclablesPanel.SetActive(true);
+            return;
         }
-        MainMenu.GetComponent<Canvas>().enabled = true;
-        menuStatus = true;
+        // if dosen't belong to any category must be a gadget 
+        //currentManager.CreateGadget(buttonName);
+
+   
 
     }
 
@@ -139,8 +155,7 @@ public class MenuGenerator : MonoBehaviour {
         if (back)
         {
             Debug.Log("Back Button was created ");
-            float xBack = -6f;
-            float yBack = -4f;
+
             string backButton = "Back";
             // just for back button 
 
@@ -204,8 +219,6 @@ public class MenuGenerator : MonoBehaviour {
         RampPanel.SetActive(false);
         RecyclablesPanel.SetActive(false);
         MenuPanel.SetActive(true);
-
-
 
     }
 }
