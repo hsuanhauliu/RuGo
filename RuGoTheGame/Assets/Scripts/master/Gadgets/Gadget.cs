@@ -81,7 +81,7 @@ public abstract class Gadget : MonoBehaviour
 
     public virtual void Deselect()
     {
-        Solidify();
+        MakeSolid();
     }
 
     public virtual void Reset()
@@ -89,7 +89,7 @@ public abstract class Gadget : MonoBehaviour
         this.transform.position = mLastSavedPosition;
     }
 
-    public virtual void Solidify()
+    public virtual void MakeSolid()
     {
         mLastSavedPosition = this.transform.position;
 
@@ -108,7 +108,7 @@ public abstract class Gadget : MonoBehaviour
         SetPhysicsMode(true);
     }
 
-    public virtual void Transparent()
+    public virtual void MakeTransparent()
     {
         SetPhysicsMode(false);
 

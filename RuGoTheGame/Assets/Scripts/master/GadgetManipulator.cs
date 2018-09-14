@@ -78,7 +78,7 @@ public class GadgetManipulator : MonoBehaviour
     {
         mSelectedGadget = gadget;
         mCurrentMode = Mode.Create;
-        mSelectedGadget.Transparent();
+        mSelectedGadget.MakeTransparent();
     }
 
     public bool GadgetSelected()

@@ -11,19 +11,18 @@ public class World : MonoBehaviour
         gadgetsInWorld = new List<Gadget>();
     }
 
-    /************************** Public Functions **************************/
+    public void Reset()
+    {
+        gadgetsInWorld.ForEach((Gadget g) => g.Reset());
+    }
+
     public void CreateGadgetFromTemplate(Gadget gadgetTemplate)
     {
-        Debug.Log("A new gameObject has been created in the World.");
+        Debug.Log("A new gameObject has been created and inserted in the World.");
 
         GameObject gadgetObj = Instantiate(gadgetTemplate.gameObject, this.transform);
         Gadget gadget = gadgetObj.GetComponent<Gadget>();
-        gadget.Solidify();
+        gadget.MakeSolid();
         gadgetsInWorld.Add(gadget);
-    }
-
-    internal void Reset()
-    {
-        gadgetsInWorld.ForEach((Gadget g) => g.Reset());
     }
 }

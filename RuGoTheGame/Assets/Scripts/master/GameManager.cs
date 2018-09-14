@@ -17,12 +17,12 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    void Start ()
+    void Start()
     {
         EnableBuildMode();
     }
 
-    void Update ()
+    void Update()
     {
         if (BuildModeEnabled)
         {
@@ -36,7 +36,7 @@ public class GameManager : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.R))
             {
-                this.Reset();
+                this.ResetGadgetsInWorld();
             }
         }
 
@@ -53,18 +53,8 @@ public class GameManager : MonoBehaviour
         }
     }
 
-
     /************************** Public Functions **************************/
-
-    //TODO 1. might need to reset future new classes
-    //     2. should be invoked by UI button instead of key press?
-    //     3. need to make sure no gadget is being selected.
-    // Function: Reset
-    // Input: none
-    // Output: none
-    // Description:
-    //  - Reset the world to its initial state.
-    public void Reset ()
+    public void ResetGadgetsInWorld()
     {
         Manipulator.ResetGadgetsInWorld();
     }
@@ -72,35 +62,37 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// name of the prefab file.
     /// </summary>
-    /// <param name="prefabName">The name of the resource to load from Prefab Directory</param>
-    public void CreateGadget (string prefabName)
+    /// <param name="prefabResourceName">The name of the resource to load from Prefab Directory</param>
+    public void CreateGadget(string prefabResourceName)
     {
-        GameObject gadgetPrefab = Resources.Load(prefabName) as GameObject;
-       
-        GameObject gadgetGameObject = Instantiate(gadgetPrefab, this.transform);
         //TODO currently placing gadget at gameManager's position.
         // Might want to place it in front of the player for a set distance.
+        GameObject gadgetPrefab = Resources.Load(prefabResourceName) as GameObject;
+        GameObject gadgetGameObject = Instantiate(gadgetPrefab, this.transform);
+
         Gadget gadget = gadgetGameObject.GetComponent<Gadget>();
         Manipulator.EnableCreateMode(gadget);
     }
 
-    public void EnableBuildMode () {
+    public void EnableBuildMode()
+    {
         GadgetSelectorMenu.Deactivate();
         Manipulator.Activate();
         this.currentGameMode = GameMode.Build;
         GameModeDisplay.text = "Mode: Build";
     }
 
-    public void EnableSelectMode () {
+    public void EnableSelectMode()
+    {
         Manipulator.Deactivate();
         GadgetSelectorMenu.Activate();
         this.currentGameMode = GameMode.Select;
         GameModeDisplay.text = "Mode: Select";
     }
 
-        /************************** Private Functions **************************/
+    /************************** Private Functions **************************/
 
-    private void SelectExistingGadget ()
+    private void SelectExistingGadget()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
@@ -111,8 +103,6 @@ public class GameManager : MonoBehaviour
 
             if (gadget)
             {
-                Debug.Log("A gadget is being selected.");
-
                 Manipulator.EnableModifyMode(gadget);
             }
         }
