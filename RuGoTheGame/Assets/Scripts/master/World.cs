@@ -16,6 +16,10 @@ public class World : MonoBehaviour
         gadgetsInWorld.ForEach((Gadget g) => g.Reset());
     }
 
+    public void InsertGadget(Gadget g) {
+        gadgetsInWorld.Add(g);
+    }
+
     public void CreateGadgetFromTemplate(Gadget gadgetTemplate)
     {
         Debug.Log("A new gameObject has been created and inserted in the World.");

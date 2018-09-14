@@ -9,6 +9,7 @@ public enum GadgetInventory
 public abstract class Gadget : MonoBehaviour
 {
     private Vector3 mLastSavedPosition;
+    private Quaternion mLastSavedOrientation;
 
     private List<Renderer> mRenderers;
 
@@ -87,11 +88,13 @@ public abstract class Gadget : MonoBehaviour
     public virtual void Reset()
     {
         this.transform.position = mLastSavedPosition;
+        this.transform.rotation = mLastSavedOrientation;
     }
 
     public virtual void MakeSolid()
     {
         mLastSavedPosition = this.transform.position;
+        mLastSavedOrientation = this.transform.rotation;
 
         foreach (Renderer GadgetRenderer in mRenderers)
         {

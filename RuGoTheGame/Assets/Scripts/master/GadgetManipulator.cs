@@ -130,6 +130,10 @@ public class GadgetManipulator : MonoBehaviour
         }
     }
 
+    public void InsertGadgetIntoWorld(Gadget gadget) {
+        World.InsertGadget(gadget);
+    }
+
     public void ResetGadgetsInWorld()
     {
         World.Reset();

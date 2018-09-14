@@ -97,6 +97,7 @@ public class GameManager : MonoBehaviour
                 domino.transform.Translate(new Vector3(0, 0.025f, 0));
                 domino.transform.rotation = Quaternion.LookRotation(pathDirection);
                 domino.Deselect();
+                Manipulator.InsertGadgetIntoWorld(domino);
             }
         }
 
