@@ -2,33 +2,22 @@
 
 public class GadgetSelectorMenu : MonoBehaviour
 {
-	void Start () {
-		
-	}
-	
-	void Update () {
-		
-	}
+    void Start()
+    {
 
+    }
 
-    /************************** Public Functions **************************/
+    void Update()
+    {
 
-    // Function: Activate
-    // Input: none
-    // Output: none
-    // Description:
-    //  - Activate GadgetSelectorMenu gameObject in the scene.
-    public void Activate ()
+    }
+
+    public void Activate()
     {
         this.gameObject.SetActive(true);
     }
 
-    // Function: Deactivate
-    // Input: none
-    // Output: none
-    // Description:
-    //  - Deactivate GadgetSelectorMenu gameObject in the scene.
-    public void Deactivate ()
+    public void Deactivate()
     {
         this.gameObject.SetActive(false);
     }
