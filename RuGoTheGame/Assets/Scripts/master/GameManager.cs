@@ -26,7 +26,6 @@ public class GameManager : MonoBehaviour
     {
         if (BuildModeEnabled)
         {
-
             if (Input.GetMouseButtonDown(0) &&
                 Manipulator.ModifyModeEnabled() &&
                 !Manipulator.GadgetSelected()
@@ -70,13 +69,6 @@ public class GameManager : MonoBehaviour
         Manipulator.ResetGadgetsInWorld();
     }
 
-    // Function: CreateGadget
-    // Input:
-    //  - name: 
-    // Output: none
-    // Description:
-    //  - Create a gameObject using prefab. Invoked by UI buttons.
-
     /// <summary>
     /// name of the prefab file.
     /// </summary>
@@ -92,12 +84,6 @@ public class GameManager : MonoBehaviour
         Manipulator.EnableCreateMode(gadget);
     }
 
-    // Function: EnableBuildMode
-    // Input: none
-    // Output: none
-    // Description:
-    //  - Enable build mode and make sure everything else is taken care of
-    //    before de-activating current mode.
     public void EnableBuildMode () {
         GadgetSelectorMenu.Deactivate();
         Manipulator.Activate();
@@ -105,12 +91,6 @@ public class GameManager : MonoBehaviour
         GameModeDisplay.text = "Mode: Build";
     }
 
-    // Function: EnableSelectMode
-    // Input: none
-    // Output: none
-    // Description:
-    //  - Enable select mode and make sure everything else is taken care of
-    //    before de-activating current mode.
     public void EnableSelectMode () {
         Manipulator.Deactivate();
         GadgetSelectorMenu.Activate();
@@ -118,20 +98,8 @@ public class GameManager : MonoBehaviour
         GameModeDisplay.text = "Mode: Select";
     }
 
-    /// <summary>
-    /// Enables the sim mode.
-    /// </summary>
-    public void EnableSimMode() {
-    }
+        /************************** Private Functions **************************/
 
-
-    /************************** Private Functions **************************/
-
-    // Function: SelectExistingGadget
-    // Input: none
-    // Output: none
-    // Description:
-    //  - Find and select the gadget being clicked on.
     private void SelectExistingGadget ()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);

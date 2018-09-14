@@ -17,7 +17,12 @@ public abstract class Gadget : MonoBehaviour
         gameObject.layer = LayerMask.NameToLayer("Gadget");
     }
 
-    protected void InitGadget()
+    void Awake()
+    {
+        InitializeGadget();
+    }
+
+    protected void InitializeGadget()
     {
         mRenderers = GetRenderers();
         SetPhysicsMode(false);
@@ -58,22 +63,9 @@ public abstract class Gadget : MonoBehaviour
         };
     }
 
-    void Awake()
-    {
-        InitGadget();
-    }
-
     /************************** Public Functions **************************/
-
-    // Function: Highlight
-    // Input: none
-    // Output: none
-    // Description:
-    //  - Change the color of the gadget when being clicked on in manipulate
-    //    mode.
     public virtual void Highlight()
     {
-        Debug.Log("Highlighting Gadget");
         //TODO Can we simplify this??
         this.gameObject.layer = LayerMask.NameToLayer("SelectedGadget");
         foreach (Transform child in transform)
@@ -87,37 +79,20 @@ public abstract class Gadget : MonoBehaviour
         }
     }
 
-    // Function: Deselect
-    // Input: none
-    // Output: none
-    // Description:
-    //  - Revert the color to its original and save current position.
     public virtual void Deselect()
     {
-        Debug.Log("Color should be restored");
         Solidify();
     }
 
-    // Function: Reset
-    // Input: none
-    // Output: none
-    // Description:
-    //  - Move the gadget back to its original position.
     public virtual void Reset()
     {
-        Debug.Log("Gadget position is being reset.");
         this.transform.position = mLastSavedPosition;
     }
 
-    // Function: Solidify
-    // Input: none
-    // Output: none
-    // Description:
-    //  - Change the material to solid.
     public virtual void Solidify()
     {
         mLastSavedPosition = this.transform.position;
-        Debug.Log("Making Gadget Solid");
+
         foreach (Renderer GadgetRenderer in mRenderers)
         {
             Color albedo = GadgetRenderer.material.color;
@@ -133,18 +108,11 @@ public abstract class Gadget : MonoBehaviour
         SetPhysicsMode(true);
     }
 
-    // Function: Transparent
-    // Input: none
-    // Output: none
-    // Description:
-    //  - Change the material to transparent.
     public virtual void Transparent()
     {
         SetPhysicsMode(false);
-        Debug.Log("Making Gadget transparent");
 
         //TODO Remove the duplication between highlight and transparent....
-
         foreach (Transform child in transform)
         {
             child.gameObject.layer = LayerMask.NameToLayer("SelectedGadget");

@@ -30,7 +30,7 @@ public class GadgetManipulator : MonoBehaviour
             RaycastHit hit;
 
             //https://docs.unity3d.com/Manual/Layers.html
-            //We want to ignore the selected gadget otherwise the raycast will keep intersecting repeatedly translating the object in undesirable ways
+            //We want to ignore the selected gadget otherwise the raycast will keep intersecting repeatedly with itself translating the object in undesirable ways
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, mRayCastMask))
             {
                 Debug.Log("Updating Position of SelectedGadget");
@@ -60,38 +60,17 @@ public class GadgetManipulator : MonoBehaviour
         }
     }
 
-
     /************************** Public Functions **************************/
-
-    // Function: ModifyModeEnabled
-    // Input: none
-    // Output:
-    //  - A boolean value.
-    // Description:
-    //  - Check if the manipulator is currently in modify mode.
     public bool ModifyModeEnabled ()
     {
         return currentMode == Mode.Modify;
     }
 
-    // Function: CreateModeEnabled
-    // Input: none
-    // Output:
-    //  - A boolean value.
-    // Description:
-    //  - Check if the manipulator is currently in create mode.
     public bool CreateModeEnabled ()
     {
         return currentMode == Mode.Create;
     }
 
-    // Function: EnableModifyMode
-    // Input:
-    // - gadget: reference to a gadget component.
-    // Output: none
-    // Description:
-    // - Enter modify mode while a gadget is being selected. This function
-    //   should be invoked by GameManager.
     public void EnableModifyMode (Gadget gadget)
     {
         Debug.Log("Enter manipulator modify mode.");
@@ -101,13 +80,6 @@ public class GadgetManipulator : MonoBehaviour
         selectedGadget.Highlight();
     }
 
-    // Function: EnableCreateMode
-    // Input:
-    //  - gadget: reference to a gadget component.
-    // Output: none
-    // Description:
-    //  - Enter create mode while a gadget is being selected. This function
-    //    should be invoked by GameManager.
     public void EnableCreateMode (Gadget gadget)
     {
         Debug.Log("Enter manipulator create mode.");
@@ -117,32 +89,16 @@ public class GadgetManipulator : MonoBehaviour
         selectedGadget.Transparent();
     }
 
-    // Function: GadgetSelected
-    // Input: none
-    // Output:
-    //  - A boolean value.
-    // Description:
-    //  - Check if a gadget is being selected.
     public bool GadgetSelected ()
     {
         return selectedGadget != null;
     }
 
-    // Function: Activate
-    // Input: none
-    // Output: none
-    // Description:
-    //  - Activate manipulator gameObject in the scene.
     public void Activate ()
     {
         this.gameObject.SetActive(true);
     }
 
-    // Function: Deactivate
-    // Input: none
-    // Output: none
-    // Description:
-    //  - Deactivate manipulator gameObject in the scene.
     public void Deactivate ()
     {
         this.Reset();
