@@ -1,16 +1,51 @@
 ﻿using System;
 using UnityEngine;
+using System.Collections.Generic;
 
 public class PathTool : MonoBehaviour
 {
+    private Action<Vector3[]> mPathCompleteCallBack;
+    private bool isActive = false;
+    private List<Vector3> mPathPoints;
+
+    void Start()
+    {
+        mPathPoints = new List<Vector3>();
+    }
+
+    void FixedUpdate()
+    {
+        if (isActive)
+        {
+
+
+            if (Input.GetMouseButtonDown(0))
+            {
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                RaycastHit hit;
+                if (Physics.Raycast(ray, out hit))
+                {
+                    Vector3 positionInWorld = hit.point;
+                    mPathPoints.Add(positionInWorld);
+                    Debug.Log("ADDING POINT");
+                    if (mPathPoints.Count == 2)
+                    {
+                        mPathCompleteCallBack(mPathPoints.ToArray());
+                        Deactivate();
+                    }
+                }
+            }
+        }
+    }
+
+    public void Deactivate() {
+        isActive = false;
+        mPathPoints = new List<Vector3>();
+    }
 
     public void Activate(Action<Vector3[]> createGadgetsAlongPath)
     {
-        Vector3[] pathPoints = new Vector3[2];
-        pathPoints[0] = new Vector3(-0.5f, 0, 0.008f);
-        pathPoints[1] = new Vector3(0.3f, 0, 0.008f);
-
-        //Once the path is finalized, invoke the callback function with the path as a parameter
-        createGadgetsAlongPath(pathPoints);
+        isActive = true;
+        mPathCompleteCallBack = createGadgetsAlongPath;
     }
 }
