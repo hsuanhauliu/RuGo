@@ -37,12 +37,22 @@ public class GadgetSelectorMenu : MonoBehaviour
       
         string buttonIdentifier = gadgetItem.ToString();
         uiButton.GetComponentInChildren<UnityEngine.UI.Text>().text = buttonIdentifier;
-        uiButton.onClick.AddListener(() => SelectGadget(buttonIdentifier));
+
+        //TODO Find a better way to handle the Path Tool
+        if (gadgetItem == GadgetInventory.PathTool) {
+            uiButton.onClick.AddListener(SelectDrawTool);
+        }
+        else {
+            uiButton.onClick.AddListener(() => SelectGadget(buttonIdentifier));
+        }
+    }
+
+    public void SelectDrawTool() {
+        gameManager.EnableDrawMode();
     }
 
     public void SelectGadget(string selectedGagdget) {
         gameManager.CreateGadget(selectedGagdget);
-        gameManager.EnableBuildMode();
     }
 
     public void Activate()
