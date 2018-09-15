@@ -11,15 +11,45 @@ public class RuGoInteraction : MonoBehaviour {
      * ** SCROLL    - 
     */
 
-	// Use this for initialization
-	void Start () {
-        int animation = 3;
-        int lasdlk = 4;
+    public static RuGoInteraction Instance = null;
+    private void MakeSingleton()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else if (Instance != this)
+        {
+            Destroy(gameObject);
+        }
+        DontDestroyOnLoad(gameObject);
+    }
 
+    private SteamVR_ControllerManager ControllerManager;
+    private SteamVR_TrackedObject LeftController;
+    private SteamVR_TrackedObject RightController;
+
+    private void CacheControllers()
+    {
+        ControllerManager = GetComponent<SteamVR_ControllerManager>();
+        
+        LeftController    = ControllerManager.left.GetComponent<SteamVR_TrackedObject>();
+        RightController   = ControllerManager.right.GetComponent<SteamVR_TrackedObject>();
+    }
+
+    void Awake()
+    {
+        MakeSingleton();
+    }
+
+    void Start ()
+    {
+        // We do it here because we want all the VR initializations to be done first
+        CacheControllers();
 	}
 	
-	// Update is called once per frame
-	void Update () {
+	void Update ()
+    {
 		
 	}
 }
