@@ -129,19 +129,14 @@ public class GameManager : MonoBehaviour
 
     /************************** Private Functions **************************/
 
-    private void SelectExistingGadget()
-    {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
+    private void SelectExistingGadget()     {         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);         RaycastHit hit;          if (Physics.Raycast(ray, out hit))         {             Gadget gadget = hit.transform.GetComponent<Gadget>();              if (gadget)             {                 Manipulator.EnableModifyMode(gadget);             }             else             {                 gadget = hit.transform.GetComponentInParent<Gadget>();                 if (gadget)                 {
+                     Manipulator.EnableModifyMode(gadget);                 }
+                else
+                {
 
-        if (Physics.Raycast(ray, out hit))
-        {
-            Gadget gadget = hit.transform.GetComponent<Gadget>();
+                    Debug.Log(hit.transform.root);
 
-            if (gadget)
-            {
-                Manipulator.EnableModifyMode(gadget);
-            }
-        }
-    }
+                }
+
+            }         }     }
 }

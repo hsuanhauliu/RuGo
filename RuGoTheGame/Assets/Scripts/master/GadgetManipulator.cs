@@ -33,7 +33,7 @@ public class GadgetManipulator : MonoBehaviour
                 mSelectedGadget.transform.position = hit.point;
 
                 //TODO Come up with something more reasonable value for ramp and other objects that are rotated
-                mSelectedGadget.transform.Translate(Vector3.up * mSelectedGadget.transform.localScale.y / 2.0f);
+                //mSelectedGadget.transform.Translate(Vector3.up * mSelectedGadget.transform.localScale.y / 2.0f);
             }
 
             if (Input.GetKeyDown(KeyCode.Return))
