@@ -65,20 +65,6 @@ public abstract class Gadget : MonoBehaviour
     }
 
     /************************** Public Functions **************************/
-    public virtual void Highlight()
-    {
-        //TODO Can we simplify this??
-        this.gameObject.layer = LayerMask.NameToLayer("SelectedGadget");
-        foreach (Transform child in transform)
-        {
-            child.gameObject.layer = LayerMask.NameToLayer("SelectedGadget");
-        }
-
-        foreach (Renderer GadgetRenderer in mRenderers)
-        {
-            GadgetRenderer.material.color = Color.yellow;
-        }
-    }
 
     public virtual void Deselect()
     {
