@@ -243,7 +243,7 @@ public class ZEDSteamVRControllerManager : MonoBehaviour, ZEDControllerManager
 		RegisterExistingPads();
 		HideGameObjectFromZED();
 
-		if (UnityEngine.VR.VRDevice.model.Contains("Oculus"))
+		if (UnityEngine.XR.XRDevice.model.Contains("Oculus"))
 		{
 			model = HMD.OCULUS;
 		}

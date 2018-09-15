@@ -215,9 +215,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   record: 0
-  read: 1
+  read: 0
   videoFile: Assets/Debug/ZEDRecording.svo
-  loop: 1
+  loop: 0
   realtimePlayback: 1
   currentFrame: 0
   numberFrameMax: 0

@@ -230,7 +230,7 @@ public class ZEDTransformController : MonoBehaviour
             }
 #endif
 #if ZED_STEAM_VR
-            if (UnityEngine.VR.VRSettings.loadedDeviceName == "OpenVR")
+            if (UnityEngine.XR.XRSettings.loadedDeviceName == "OpenVR")
             {
                 Vector3 moveaxissteamvr = new Vector3(); //Position change by controller. Added to keyboard version if both are applied. 
 
