@@ -71,7 +71,7 @@ public class GadgetManipulator : MonoBehaviour
     {
         mSelectedGadget = gadget;
         mCurrentMode = Mode.Modify;
-        mSelectedGadget.Highlight();
+        mSelectedGadget.MakeTransparent();
     }
 
     public void EnableCreateMode(Gadget gadget)

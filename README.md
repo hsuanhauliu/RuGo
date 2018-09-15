@@ -10,6 +10,55 @@ USC CSCI538 Augmented, Virtual, and Mixed Reality course team project.
 - [Devashree Shirude](https://github.com/DevaShirude)
 - [Sarah Riaz](https://github.com/sriaz08)
 
+--------------------
+
+# Project Overview
+
+## Key Abstractions
+
+### Gadget
+
+Gadgets are the objects from which our Rube Goldberg machine is built with. Each concrete Gadget such as **BoxGadget, DominoGadget, BallGadget** derive from the abstract Gadget class.
+
+The Gadget class manages shared concerns such as transparency, solidification, and toggling between physics modes.
+
+### GameManager
+
+The **GameManager** manages the current mode of the game. It listens for user input to open the **GadgetSelectorMenu**.
+The GameManager also uses the GadgetManipulator to interact with objects in the 3D scene.
+
+Currently there are three modes. 
+
+* Build Mode - The default mode in which the player can pick gadgets in the world for manipulation
+
+* Select Mode - The mode that is set when the GadgetSelectorMenu is active
+
+* Draw Mode - The mode that is set when Draw/Path tooling is enabled
+
+### GadgetManipulator
+
+The **GadgetManipulator** interacts with gadgets in the world. It has a notion of a selected gadget.
+When it has a selected gadget, it will move the selected gadget to the position of the mouse.
+
+The GadgetManipulator also has the ability to insert objects into the **World**
+
+
+## World
+
+A collection of Gadgets that have been inserted into the scene.
+
+
+## Adding New Gadgets 
+
+**This guide is subject to change and is intended to only give a rough overview**
+
+
+1. Create a prefab in the resources folder with the name of your gadget.
+2. Attach a YourGadget.cs file to your prefab. YourGadget.cs must extend the **Gadget** abstract class.
+3. Add the name of your gadget, which matches the name in the resources directory, to the GadgetInventory enum inside Gadget.cs.
+4. If your Gadget is composed of multiple GameObjects, implement GetRenderers to return the renderers you want to make transparent when your gadget is selected
+--------------------
+
 # Development Guidelines
 
 ## Scenes
