@@ -81,12 +81,9 @@ public class GadgetManipulator : MonoBehaviour
         mSelectedGadget.MakeTransparent();
     }
 
-    public bool GadgetSelected
+    public bool GadgetSelected()
     {
-        get
-        {
-            return mSelectedGadget != null;
-        }
+        return mSelectedGadget != null;
     }
 
     public void Activate()
