@@ -94,7 +94,7 @@ public class GameManager : MonoBehaviour
                 Gadget domino = gadgetGameObject.GetComponent<Gadget>();
 
                 domino.transform.position = path[i] + (normalizedPath * j);
-                domino.transform.Translate(new Vector3(0, 0.025f, 0));
+                //domino.transform.Translate(new Vector3(0, 0.025f, 0));
                 domino.transform.rotation = Quaternion.LookRotation(pathDirection);
                 domino.Deselect();
                 Manipulator.InsertGadgetIntoWorld(domino);
