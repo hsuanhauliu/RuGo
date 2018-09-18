@@ -1,18 +1,19 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class DrawingTool : MonoBehaviour
 {
-    public float MinGap = 0.0001f;
-    public float LevelTolerance = 0.01f;
+    public float MinGap = 0.1f;
+    public float LevelTolerance = 0.00001f;
 
-    private List<List<Vector3>> Paths;
     private List<Vector3> singlePath;
+    private List<GameObject> visualizationMarks;
 
     void Start()
     {
-        Paths = new List<List<Vector3>>();
         singlePath = new List<Vector3>();
+        visualizationMarks = new List<GameObject>();
     }
 
     void Update()
@@ -31,15 +32,27 @@ public class DrawingTool : MonoBehaviour
         {
             print("Released");
             StorePosition();
-            EndPath();
         }
-    }
 
-    // store singlePath into Paths and reset singlePath
-    private void EndPath()
-    {
-        Paths.Add(singlePath);
-        singlePath = new List<Vector3>();
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            Mark();
+        }
+
+        if (Input.GetKeyDown(KeyCode.U))
+        {   
+            Unmark();
+        }
+
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            Interpolate();
+        }
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            Report();
+        }
     }
 
     // store the mouse position in world coordinates
@@ -60,12 +73,13 @@ public class DrawingTool : MonoBehaviour
                 // check if the y coordinate is off from the previous point
                 float previousY = previousMark.y;
                 float distance = Vector3.Distance(hit.point, previousMark);
+                print(distance);
 
-                if (hit.point.y - previousY < LevelTolerance && distance >= MinGap)
+                if (Math.Abs(hit.point.y - previousY) < LevelTolerance &&
+                    distance >= MinGap)
                 {
                     print("****** Place item ******");
                     singlePath.Add(hit.point);
-                    PlaceMark(hit.point);
                 }
                 else
                 {
@@ -76,18 +90,75 @@ public class DrawingTool : MonoBehaviour
             {
                 print("****** Place first item ******");
                 singlePath.Add(hit.point);
-                PlaceMark(hit.point);
             }
         }
     }
 
-    // draw spheres for visualization
-    private void PlaceMark(Vector3 markPosition)
+    /* add more points */
+    private void Interpolate()
     {
-        GameObject mark = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-        mark.transform.localScale = new Vector3(0.05f, 0.05f, 0.05f);
-        mark.GetComponent<Renderer>().material.color = Color.green;
-        mark.transform.position = markPosition;
+        for (int i = 1; i < singlePath.Count; i++)
+        {
+            Vector3 difference = singlePath[i] - singlePath[i - 1];
+            Vector3 newPoint = singlePath[i - 1];
+            bool changed = false;
+
+            if (Math.Abs(difference.x) > MinGap)
+            {
+                if (difference.x > 0)
+                {
+                    newPoint += new Vector3(MinGap, 0, 0);
+                }
+                else
+                {
+                    newPoint -= new Vector3(MinGap, 0, 0);
+                }
+                changed = true;
+            }
+            if (Math.Abs(difference.z) > MinGap)
+            {
+                if (difference.z > 0)
+                {
+                    newPoint += new Vector3(0, 0, MinGap);
+                }
+                else
+                {
+                    newPoint -= new Vector3(0, 0, MinGap);
+                }
+                changed = true;
+            }
+            if (changed)
+            {
+                singlePath.Insert(i, newPoint);
+            }
+        }
+    }
+
+    /* Visualization Tools */
+    private void Mark ()
+    {
+        for (int i = visualizationMarks.Count; i < singlePath.Count; i++)
+        {
+            GameObject mark = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            mark.transform.localScale = new Vector3(0.05f, 0.05f, 0.05f);
+            mark.GetComponent<Renderer>().material.color = Color.green;
+            mark.transform.position = singlePath[i];
+            visualizationMarks.Add(mark);
+        }
+    }
+
+    private void Unmark ()
+    {
+        for (int i = visualizationMarks.Count - 1; i > -1; i--)
+        {
+            Destroy(visualizationMarks[i]);
+        }
+        visualizationMarks.Clear();
+    }
+
+    private void Report ()
+    {
+        print(visualizationMarks.Count);
     }
 
 }

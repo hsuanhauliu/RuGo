@@ -36,6 +36,13 @@ public class GadgetManipulator : MonoBehaviour
                 //mSelectedGadget.transform.Translate(Vector3.up * mSelectedGadget.transform.localScale.y / 2.0f);
             }
 
+            if (Input.GetKeyDown(KeyCode.Q))
+            {
+                Quaternion angles = mSelectedGadget.transform.rotation;
+
+                mSelectedGadget.transform.rotation = angles * Quaternion.AngleAxis(5.0f, Vector3.up);
+            }
+
             if (Input.GetKeyDown(KeyCode.Return))
             {
                 if (ModifyModeEnabled())
