@@ -56,6 +56,7 @@ GameObject:
   - component: {fileID: 33311733884195826}
   - component: {fileID: 23423284340775500}
   - component: {fileID: 114934648124226596}
+  - component: {fileID: 64246446635662454}
   m_Layer: 0
   m_Name: SmallCannon
   m_TagString: Untagged
@@ -814,6 +815,20 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1315815900272202}
   m_Mesh: {fileID: 4300020, guid: c9b4f93eb47a74ecba1085840e3c7fc0, type: 3}
+--- !u!64 &64246446635662454
+MeshCollider:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1175089258140068}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 1
+  m_CookingOptions: 14
+  m_SkinWidth: 0.01
+  m_Mesh: {fileID: 4300000, guid: c9b4f93eb47a74ecba1085840e3c7fc0, type: 3}
 --- !u!114 &114934648124226596
 MonoBehaviour:
   m_ObjectHideFlags: 1
