@@ -27,7 +27,7 @@ The Gadget class manages shared concerns such as transparency, solidification, a
 The **GameManager** manages the current mode of the game. It listens for user input to open the **GadgetSelectorMenu**.
 The GameManager also uses the GadgetManipulator to interact with objects in the 3D scene.
 
-Currently there are three modes. 
+Currently there are three modes.
 
 * Build Mode - The default mode in which the player can pick gadgets in the world for manipulation
 
@@ -48,7 +48,7 @@ The GadgetManipulator also has the ability to insert objects into the **World**
 A collection of Gadgets that have been inserted into the scene.
 
 
-## Adding New Gadgets 
+## Adding New Gadgets
 
 **This guide is subject to change and is intended to only give a rough overview**
 
@@ -106,5 +106,22 @@ R - reset gadgets (in Build mode only)
 Left-Click - select a gadget in world (in Build mode only)
 
 ##### GadgetManipulator.cs
+Q - rotate gadget clock-wise around y-axis
 Enter - place a gadget down  
-Use mouse cursor to manipulate the objects position
+Mouse - moving gadget templates
+
+##### CannonGadget.cs
+F - fire cannon
+
+# Current Issues
+
+## Top Priority
+- Fix placement offset for each gadget.
+- Disable select mode in Draw mode.
+
+## Medium Priority
+- Disable gadget functions for the gadget templates until solidified.
+- "F" (fire) will trigger multiple cannon gadgets in the world.
+
+## Low Priority
+- Transformation changed immediately after selecting gadget.
