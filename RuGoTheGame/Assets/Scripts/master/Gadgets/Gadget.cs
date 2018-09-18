@@ -35,11 +35,14 @@ public abstract class Gadget : MonoBehaviour
     /// <param name="enable">If set to <c>true</c> enable rigid body physics and collision detection.</param>
     protected virtual void SetPhysicsMode(bool enable)
     {
-        Rigidbody rigidBody = this.GetComponentInChildren<Rigidbody>();
-        if (rigidBody)
+        Rigidbody[] rigidBodies = this.GetComponentsInChildren<Rigidbody>();
+        if (rigidBodies.Length > 0)
         {
-            rigidBody.isKinematic = !enable;
-            rigidBody.detectCollisions = enable;
+            foreach (Rigidbody body in rigidBodies)
+            {
+                body.isKinematic = !enable;
+                body.detectCollisions = enable;
+            }
         }
         else
         {
