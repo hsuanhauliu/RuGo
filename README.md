@@ -106,7 +106,9 @@ R - reset gadgets (in Build mode only)
 Left-Click - select a gadget in world (in Build mode only)
 
 ##### GadgetManipulator.cs
-Q - rotate gadget clock-wise around y-axis
+D - Removes the gadget from the world
+Q - keeps on rotatating gadget clock-wise around y-axis untill released
+W - keeps on rotatating gadget Anitclock-wise around y-axis untill released
 Enter - place a gadget down  
 Mouse - moving gadget templates
 

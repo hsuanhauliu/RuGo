@@ -80,6 +80,11 @@ public abstract class Gadget : MonoBehaviour
         this.transform.rotation = mLastSavedOrientation;
     }
 
+    public virtual void Remove()
+    {
+        Destroy(this.gameObject);
+    }
+
     public virtual void MakeSolid()
     {
         mLastSavedPosition = this.transform.position;

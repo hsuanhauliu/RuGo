@@ -10,6 +10,8 @@ public class GadgetManipulator : MonoBehaviour
     private Mode mCurrentMode;
     private int mRayCastMask;
 
+    public float turnSpeed = 50f;
+
     void Start()
     {
         mSelectedGadget = null;
@@ -36,11 +38,17 @@ public class GadgetManipulator : MonoBehaviour
                 //mSelectedGadget.transform.Translate(Vector3.up * mSelectedGadget.transform.localScale.y / 2.0f);
             }
 
-            if (Input.GetKeyDown(KeyCode.Q))
+            if (Input.GetKey(KeyCode.Q))
             {
-                Quaternion angles = mSelectedGadget.transform.rotation;
 
-                mSelectedGadget.transform.rotation = angles * Quaternion.AngleAxis(5.0f, Vector3.up);
+                mSelectedGadget.transform.Rotate(Vector3.up, turnSpeed * Time.deltaTime);
+
+            }
+            if (Input.GetKey(KeyCode.W))
+            {
+
+                mSelectedGadget.transform.Rotate(Vector3.up, -turnSpeed * Time.deltaTime);
+
             }
 
             if (Input.GetKeyDown(KeyCode.Return))
@@ -54,12 +62,27 @@ public class GadgetManipulator : MonoBehaviour
                     World.CreateGadgetFromTemplate(mSelectedGadget);
                 }
             }
+
+            if (Input.GetKeyDown(KeyCode.D))
+            {
+                if(ModifyModeEnabled())
+                {
+                    RemoveGadget();
+                }
+            }
+
         }
     }
 
     private void PlaceGadget()
     {
         mSelectedGadget.Deselect();
+        mSelectedGadget = null;
+    }
+
+    private void RemoveGadget()
+    {
+        mSelectedGadget.Remove();
         mSelectedGadget = null;
     }
 
@@ -145,4 +168,6 @@ public class GadgetManipulator : MonoBehaviour
     {
         World.Reset();
     }
+
+ 
 }
