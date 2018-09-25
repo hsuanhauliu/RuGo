@@ -140,8 +140,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37603e5bdee36453d87b806e6835cc66, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MinGap: 0.0001
-  LevelTolerance: 0.01
+  MinGap: 0.1
+  LevelTolerance: 0.00001
 --- !u!4 &887150125
 Transform:
   m_ObjectHideFlags: 0

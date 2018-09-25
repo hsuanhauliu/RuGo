@@ -157,5 +157,7 @@ Sarah:
 - Work on new gadget (pendulum).
 
 Devashree:
+- Finish fan gadget.
+- Fix gadget selection bug.
 
 Darwin:
