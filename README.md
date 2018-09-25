@@ -106,9 +106,9 @@ R - reset gadgets (in Build mode only)
 Left-Click - select a gadget in world (in Build mode only)
 
 ##### GadgetManipulator.cs
-D - Removes the gadget from the world
-Q - keeps on rotatating gadget clock-wise around y-axis untill released
-W - keeps on rotatating gadget Anitclock-wise around y-axis untill released
+D - Removes the gadget from the world  
+Q - keeps on rotatating gadget clock-wise around y-axis untill released  
+W - keeps on rotatating gadget Anitclock-wise around y-axis untill released  
 Enter - place a gadget down  
 Mouse - moving gadget templates
 
@@ -117,13 +117,45 @@ F - fire cannon
 
 # Current Issues
 
-## Top Priority
-- Fix placement offset for each gadget.
+- Add physics materials.
 - Disable select mode in Draw mode.
-
-## Medium Priority
 - Disable gadget functions for the gadget templates until solidified.
 - "F" (fire) will trigger multiple cannon gadgets in the world.
-
-## Low Priority
 - Transformation changed immediately after selecting gadget.
+
+## Needed features
+- Snapping capability for ramps and tracks.
+- Saving and loading function.
+- Simulation mode.
+
+## Needed gadgets
+- Tracks
+- Conveyor belt
+- Support beams
+- Bridge (sort of like a track)
+
+## Assigned Tasks (9/25)
+Kishore:
+- Completely replace input system with Vive controller integration.
+- Explore depth sensing capability of ZED M camera.
+
+Mike:
+- Trigger cannon via other game objects (i.e. a button).
+- Create 2-D blueprint of a game level.
+- Start look into save and load game function.
+- Build a level.
+
+Howard:
+- Complete drawing tool and integrated it to the master scene.
+- Update documents according to the team progress.
+
+Abhi:
+- Fix reset function.
+- Finish up airplane gadget.
+
+Sarah:
+- Work on new gadget (pendulum).
+
+Devashree:
+
+Darwin:
