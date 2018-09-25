@@ -9,4 +9,16 @@ public class FanGadget : Gadget {
         List<Renderer> renderers = new List<Renderer>(this.gameObject.GetComponentsInChildren<Renderer>());
         return renderers;
     }
+
+    private Transform blades;
+
+    void Start()
+    {
+        blades = this.transform.Find("Blades");
+    }
+
+    void Update()
+    {
+        blades.Rotate(new Vector3(0, 0, 45));
+    }
 }
