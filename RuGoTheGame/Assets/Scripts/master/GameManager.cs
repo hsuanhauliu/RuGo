@@ -28,7 +28,7 @@ public class GameManager : MonoBehaviour
     {
         if (BuildModeEnabled)
         {
-            if (Input.GetMouseButtonDown(0) &&
+            if (RuGoInteraction.Instance.IsConfirmPressed &&
                 Manipulator.ModifyModeEnabled() &&
                 !Manipulator.GadgetSelected()
                )
@@ -129,7 +129,7 @@ public class GameManager : MonoBehaviour
 
     /************************** Private Functions **************************/
 
-    private void SelectExistingGadget()     {         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);         RaycastHit hit;          if (Physics.Raycast(ray, out hit))         {             Gadget gadget = hit.transform.GetComponent<Gadget>();              if (gadget)             {                 Manipulator.EnableModifyMode(gadget);             }             else             {                 gadget = hit.transform.GetComponentInParent<Gadget>();                 if (gadget)                 {
+    private void SelectExistingGadget()     {         Ray ray = RuGoInteraction.Instance.SelectorRay;         RaycastHit hit;          if (Physics.Raycast(ray, out hit))         {             Gadget gadget = hit.transform.GetComponent<Gadget>();              if (gadget)             {                 Manipulator.EnableModifyMode(gadget);             }             else             {                 gadget = hit.transform.GetComponentInParent<Gadget>();                 if (gadget)                 {
                      Manipulator.EnableModifyMode(gadget);                 }
                 else
                 {

@@ -48,8 +48,12 @@ public class RuGoInteraction : MonoBehaviour {
     private void CacheControllers()
     {
         ControllerManager = GetComponent<SteamVR_ControllerManager>();
-        LeftTrackedObject = ControllerManager.left.GetComponent<SteamVR_TrackedObject>();
-        RightTrackedObject = ControllerManager.right.GetComponent<SteamVR_TrackedObject>();
+
+        if(ControllerManager != null)
+        {
+            LeftTrackedObject = ControllerManager.left.GetComponent<SteamVR_TrackedObject>();
+            RightTrackedObject = ControllerManager.right.GetComponent<SteamVR_TrackedObject>();
+        }
     }
 
     void Awake()
@@ -95,12 +99,12 @@ public class RuGoInteraction : MonoBehaviour {
         {
             EnableDebugging();
 
-            Ray selectorRay = GetSelectorRay();
+            Ray selectorRay = SelectorRay;
             Debug.DrawRay(selectorRay.origin, selectorRay.direction, Color.red, 0.0f, false);
             DebugCapsule.position = selectorRay.origin;
             DebugCapsule.rotation = Quaternion.LookRotation(selectorRay.direction, Vector3.up);
 
-            if (GetIsConfirmPressed())
+            if (IsConfirmPressed)
             {
                 RaycastHit hit;
                 if (Physics.Raycast(selectorRay, out hit))
@@ -124,50 +128,57 @@ public class RuGoInteraction : MonoBehaviour {
 
     private bool IsSelectorControllerActive()
     {
-        return (IsUserRightHanded && ControllerManager.right.activeSelf) || (!IsUserRightHanded && ControllerManager.left.activeSelf);
+        return ControllerManager != null && ((IsUserRightHanded && ControllerManager.right.activeSelf) || (!IsUserRightHanded && ControllerManager.left.activeSelf));
     }
 
     private Transform GetSelectorController()
     {
-        if(IsUserRightHanded && ControllerManager.right.activeSelf)
+        if (!IsSelectorControllerActive())
+            return null;
+
+        if(IsUserRightHanded)
         {
             return ControllerManager.right.transform;
         }
-        else if(!IsUserRightHanded && ControllerManager.left.activeSelf)
+        else
         {
             return ControllerManager.left.transform;
         }
-
-        return null;
     }
 
-    public Ray GetSelectorRay()
+    public Ray SelectorRay
     {
-        Ray selectorRay = new Ray();
-
-        if (IsSelectorControllerActive())
+        get
         {
-            Transform selectorController = GetSelectorController();
-            selectorRay.origin           = selectorController.localPosition;
-            selectorRay.direction        = selectorController.forward;
-        }
-        else
-        {
-            selectorRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-        }
+            Ray selectorRay = new Ray();
 
-        return selectorRay;
+            if (IsSelectorControllerActive())
+            {
+                Transform selectorController = GetSelectorController();
+                selectorRay.origin = selectorController.localPosition;
+                selectorRay.direction = selectorController.forward;
+            }
+            else
+            {
+                selectorRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+            }
+
+            return selectorRay;
+        }
     }
 
-    public bool GetIsConfirmPressed()
+    public bool IsConfirmPressed
     {
-        if(IsSelectorControllerActive())
+        get
         {
-            return ((IsUserRightHanded && RightController.GetHairTriggerDown()) || (!IsUserRightHanded && LeftController.GetHairTriggerDown()));
-        }
-        else
-        {
-            return Input.GetMouseButtonDown(0);
+            if (IsSelectorControllerActive())
+            {
+                return ((IsUserRightHanded && RightController.GetHairTriggerDown()) || (!IsUserRightHanded && LeftController.GetHairTriggerDown()));
+            }
+            else
+            {
+                return Input.GetMouseButtonDown(0);
+            }
         }
     }
 }
