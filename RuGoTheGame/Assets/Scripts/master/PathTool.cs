@@ -13,12 +13,10 @@ public class PathTool : MonoBehaviour
         mPathPoints = new List<Vector3>();
     }
 
-    void FixedUpdate()
+    void Update()
     {
         if (isActive)
         {
-
-
             if (Input.GetMouseButtonDown(0))
             {
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
