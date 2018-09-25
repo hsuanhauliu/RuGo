@@ -38,7 +38,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4687915438541776}
   m_Layer: 0
-  m_Name: Ramp
+  m_Name: plank
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

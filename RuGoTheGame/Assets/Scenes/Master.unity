@@ -687,6 +687,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   World: {fileID: 452613146}
   TranslationDelta: 0.08
+  turnSpeed: 50
 --- !u!4 &1231634859
 Transform:
   m_ObjectHideFlags: 0
