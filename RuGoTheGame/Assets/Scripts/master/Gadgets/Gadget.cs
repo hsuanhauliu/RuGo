@@ -8,8 +8,10 @@ public enum GadgetInventory
 
 public abstract class Gadget : MonoBehaviour
 {
-    protected Vector3 mLastSavedPosition;
-    protected Quaternion mLastSavedOrientation;
+    private Vector3 mLastSavedPosition;
+    private Quaternion mLastSavedOrientation;
+    private Vector3 mBodyLastSavedPosition;
+    private Quaternion mBodyLastSavedOrientation;
 
     private List<Renderer> mRenderers;
 
@@ -95,8 +97,8 @@ public abstract class Gadget : MonoBehaviour
         Rigidbody body = this.GetComponentInChildren<Rigidbody>();
 
         if (body) {
-            mLastSavedPosition = body.transform.position;
-            mLastSavedOrientation = body.transform.rotation;
+            mBodyLastSavedPosition = body.transform.position;
+            mBodyLastSavedOrientation = body.transform.rotation;
         }
     }
 
@@ -106,8 +108,8 @@ public abstract class Gadget : MonoBehaviour
 
         Rigidbody body = this.GetComponentInChildren<Rigidbody>();
         if (body) {
-            body.transform.position = mLastSavedPosition;
-            body.transform.rotation = mLastSavedOrientation;
+            body.transform.position = mBodyLastSavedPosition;
+            body.transform.rotation = mBodyLastSavedOrientation;
             body.velocity = Vector3.zero;
             body.angularVelocity = Vector3.zero;
         }
