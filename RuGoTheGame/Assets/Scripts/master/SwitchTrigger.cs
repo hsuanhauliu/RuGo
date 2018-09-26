@@ -13,6 +13,9 @@ public class SwitchTrigger : MonoBehaviour {
 
     void OnCollisionEnter(Collision collision)
     {
-        mGadget.PerformSwitchAction();
+        if(mGadget != null)
+        {
+            mGadget.PerformSwitchAction();
+        }
     }
 }
