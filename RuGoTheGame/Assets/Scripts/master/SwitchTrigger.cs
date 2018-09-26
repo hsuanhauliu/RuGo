@@ -11,8 +11,9 @@ public class SwitchTrigger : MonoBehaviour {
         mGadget = this.GetComponentInParent<Gadget>();
     }
 
-    void OnTriggerEnter(Collider other)
+    void OnCollisionEnter(Collision collision)
     {
+        Debug.Log("Collision");
         mGadget.PerformSwitchAction();
     }
 }
