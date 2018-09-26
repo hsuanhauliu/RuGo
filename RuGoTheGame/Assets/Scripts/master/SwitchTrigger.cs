@@ -13,7 +13,6 @@ public class SwitchTrigger : MonoBehaviour {
 
     void OnCollisionEnter(Collision collision)
     {
-        Debug.Log("Collision");
         mGadget.PerformSwitchAction();
     }
 }
