@@ -74,6 +74,10 @@ public abstract class Gadget : MonoBehaviour
         MakeSolid();
     }
 
+    public virtual void PerformSwitchAction() {
+        Debug.Log("Perform Some Action");
+    }
+
     public virtual void Reset()
     {
         this.transform.position = mLastSavedPosition;

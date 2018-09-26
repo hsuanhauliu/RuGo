@@ -11,8 +11,17 @@ public class CannonGadget : Gadget
     private void Start()
     {
         mCannonBallPrefab = Resources.Load("CannonBall") as GameObject;
-        mBarrel = this.transform.Find("Wooden_pillow");
+        mBarrel = this.transform.Find("SmallCannon").Find("Wooden_pillow");
 
+    }
+
+    public override void PerformSwitchAction()
+    {
+        GameObject cannonBall = Instantiate(mCannonBallPrefab, mBarrel);
+        Rigidbody rigidBody = cannonBall.GetComponent<Rigidbody>();
+
+        Vector3 barrelDirection = cannonBall.transform.up;
+        rigidBody.AddForce(barrelDirection * 1.3f, ForceMode.Impulse);
     }
 
     private void Update()
