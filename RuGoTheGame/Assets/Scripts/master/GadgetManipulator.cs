@@ -82,7 +82,7 @@ public class GadgetManipulator : MonoBehaviour
 
     private void RemoveGadget()
     {
-        mSelectedGadget.Remove();
+        World.RemoveGadget(mSelectedGadget);
         mSelectedGadget = null;
     }
 

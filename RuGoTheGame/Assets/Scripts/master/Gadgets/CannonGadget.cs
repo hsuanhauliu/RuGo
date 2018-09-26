@@ -12,7 +12,6 @@ public class CannonGadget : Gadget
     {
         mCannonBallPrefab = Resources.Load("CannonBall") as GameObject;
         mBarrel = this.transform.Find("SmallCannon").Find("Wooden_pillow");
-
     }
 
     public override void PerformSwitchAction()

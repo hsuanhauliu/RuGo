@@ -8,8 +8,8 @@ public enum GadgetInventory
 
 public abstract class Gadget : MonoBehaviour
 {
-    private Vector3 mLastSavedPosition;
-    private Quaternion mLastSavedOrientation;
+    protected Vector3 mLastSavedPosition;
+    protected Quaternion mLastSavedOrientation;
 
     private List<Renderer> mRenderers;
 
@@ -80,20 +80,44 @@ public abstract class Gadget : MonoBehaviour
 
     public virtual void Reset()
     {
-        this.transform.position = mLastSavedPosition;
-        this.transform.rotation = mLastSavedOrientation;
+        this.RestoreState();
     }
 
-    public virtual void Remove()
+    public virtual void RemoveFromScene()
     {
         Destroy(this.gameObject);
     }
 
-    public virtual void MakeSolid()
-    {
+    public virtual void StoreState() {
         mLastSavedPosition = this.transform.position;
         mLastSavedOrientation = this.transform.rotation;
 
+        Rigidbody body = this.GetComponentInChildren<Rigidbody>();
+
+        if (body) {
+            mLastSavedPosition = body.transform.position;
+            mLastSavedOrientation = body.transform.rotation;
+        }
+    }
+
+    public virtual void RestoreState() {
+        this.transform.position = mLastSavedPosition;
+        this.transform.rotation = mLastSavedOrientation;
+
+        Rigidbody body = this.GetComponentInChildren<Rigidbody>();
+        if (body) {
+            body.transform.position = mLastSavedPosition;
+            body.transform.rotation = mLastSavedOrientation;
+            body.velocity = Vector3.zero;
+            body.angularVelocity = Vector3.zero;
+        }
+    }
+
+
+    public virtual void MakeSolid()
+    {
+        this.StoreState();
+    
         foreach (Renderer GadgetRenderer in mRenderers)
         {
             Color albedo = GadgetRenderer.material.color;

@@ -11,6 +11,7 @@ public class World : MonoBehaviour
         gadgetsInWorld = new List<Gadget>();
     }
 
+
     public void Reset()
     {
         gadgetsInWorld.ForEach((Gadget g) => g.Reset());
@@ -28,5 +29,11 @@ public class World : MonoBehaviour
         Gadget gadget = gadgetObj.GetComponent<Gadget>();
         gadget.MakeSolid();
         gadgetsInWorld.Add(gadget);
+    }
+
+    public void RemoveGadget(Gadget gadget)
+    {
+        gadgetsInWorld.Remove(gadget);
+        gadget.RemoveFromScene();
     }
 }
