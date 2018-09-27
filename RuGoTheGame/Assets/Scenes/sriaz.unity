@@ -271,6 +271,42 @@ Prefab:
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 1288074620113432, guid: 109fa4a4c7295924db52e2ace49f0a24, type: 2}
+      propertyPath: m_Name
+      value: Rod
+      objectReference: {fileID: 0}
+    - target: {fileID: 4557573177911820, guid: 109fa4a4c7295924db52e2ace49f0a24, type: 2}
+      propertyPath: m_RootOrder
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4964225249428200, guid: 109fa4a4c7295924db52e2ace49f0a24, type: 2}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4776547376283552, guid: 109fa4a4c7295924db52e2ace49f0a24, type: 2}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4468039872624246, guid: 109fa4a4c7295924db52e2ace49f0a24, type: 2}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4387507298532194, guid: 109fa4a4c7295924db52e2ace49f0a24, type: 2}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4543420078225934, guid: 109fa4a4c7295924db52e2ace49f0a24, type: 2}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1349363752177576, guid: 109fa4a4c7295924db52e2ace49f0a24, type: 2}
+      propertyPath: m_Name
+      value: Bob
+      objectReference: {fileID: 0}
+    - target: {fileID: 4557573177911820, guid: 109fa4a4c7295924db52e2ace49f0a24, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0.1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 109fa4a4c7295924db52e2ace49f0a24, type: 2}
   m_IsPrefabAsset: 0
