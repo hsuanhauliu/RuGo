@@ -16,24 +16,33 @@ public class CannonGadget : Gadget
 
     public override void PerformSwitchAction()
     {
-        GameObject cannonBall = Instantiate(mCannonBallPrefab, mBarrel);
-        Rigidbody rigidBody = cannonBall.GetComponent<Rigidbody>();
-
-        Vector3 barrelDirection = cannonBall.transform.up;
-        rigidBody.AddForce(barrelDirection * 1.3f, ForceMode.Impulse);
+        FireCannon();
     }
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.F))
         {
-            GameObject cannonBall = Instantiate(mCannonBallPrefab, mBarrel);
-            Rigidbody rigidBody = cannonBall.GetComponent<Rigidbody>();
-
-            Vector3 barrelDirection = cannonBall.transform.up;
-            rigidBody.AddForce(barrelDirection * 1.3f, ForceMode.Impulse);
+            FireCannon();
         }
 
     }
 
+    private void FireCannon() {
+        GameObject cannonBall = Instantiate(mCannonBallPrefab, mBarrel);
+        Rigidbody rigidBody = cannonBall.GetComponent<Rigidbody>();
+
+        Vector3 barrelDirection = cannonBall.transform.up;
+        rigidBody.AddForce(barrelDirection * 1.3f, ForceMode.Impulse);
+
+        IEnumerator coroutine = CleanCannon(cannonBall);
+        StartCoroutine(coroutine);
+    }
+
+    private IEnumerator CleanCannon(GameObject cannonBall) {
+        print("Started coroutine to clean cannonball");
+        yield return new WaitForSeconds(2.0f);
+        Destroy(cannonBall);
+        print("Ended coroutine");
+    }
 }
