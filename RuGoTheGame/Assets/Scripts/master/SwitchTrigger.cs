@@ -15,7 +15,12 @@ public class SwitchTrigger : MonoBehaviour {
     {
         if(mGadget != null)
         {
-            mGadget.PerformSwitchAction();
+            Collider collisionCollider = collision.collider;
+            Gadget otherGadget = collisionCollider.gameObject.GetComponentInParent<Gadget>();
+            if (otherGadget != null && otherGadget.GetPhysicsMode())
+            {
+                mGadget.PerformSwitchAction();
+            }
         }
     }
 }

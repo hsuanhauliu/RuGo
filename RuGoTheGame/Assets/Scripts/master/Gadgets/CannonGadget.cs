@@ -36,9 +36,27 @@ public class CannonGadget : Gadget
 
     }
 
+
     public override GadgetInventory GetGadgetType()
     {
         return GadgetInventory.SmallCannon;
     }
 
+    private void FireCannon() 
+    {
+        GameObject cannonBall = Instantiate(mCannonBallPrefab, mBarrel);
+        Rigidbody rigidBody = cannonBall.GetComponent<Rigidbody>();
+
+        Vector3 barrelDirection = cannonBall.transform.up;
+        rigidBody.AddForce(barrelDirection * 1.3f, ForceMode.Impulse);
+
+        IEnumerator coroutine = CleanCannon(cannonBall);
+        StartCoroutine(coroutine);
+    }
+
+    private IEnumerator CleanCannon(GameObject cannonBall) 
+    {
+        yield return new WaitForSeconds(2.0f);
+        Destroy(cannonBall);
+    }
 }
