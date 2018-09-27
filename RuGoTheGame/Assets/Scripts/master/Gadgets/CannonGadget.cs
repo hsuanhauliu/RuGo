@@ -40,9 +40,7 @@ public class CannonGadget : Gadget
     }
 
     private IEnumerator CleanCannon(GameObject cannonBall) {
-        print("Started coroutine to clean cannonball");
         yield return new WaitForSeconds(2.0f);
         Destroy(cannonBall);
-        print("Ended coroutine");
     }
 }
