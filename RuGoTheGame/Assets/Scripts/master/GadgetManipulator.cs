@@ -38,6 +38,7 @@ public class GadgetManipulator : MonoBehaviour
                 //mSelectedGadget.transform.Translate(Vector3.up * mSelectedGadget.transform.localScale.y / 2.0f);
             }
 
+            // #TODO: Unify the controller systems
             if(RuGoInteraction.Instance.IsDoubleTriggerDown)
             {
                 mSelectedGadget.transform.rotation = Quaternion.LookRotation(RuGoInteraction.Instance.ControllerToControllerDirection, Vector3.up);
@@ -56,8 +57,8 @@ public class GadgetManipulator : MonoBehaviour
                 }
             }
             
-
-            if (Input.GetKeyDown(KeyCode.Return))
+            // #TODO: Unify the controller systems
+            if (Input.GetKeyDown(KeyCode.Return) || RuGoInteraction.Instance.IsMenuConfirmPressed)
             {
                 if (ModifyModeEnabled())
                 {

@@ -8,6 +8,9 @@ public class GameManager : MonoBehaviour
     public PathTool PathTool;
     public Text GameModeDisplay;
 
+    // Testing the VR Menu
+    public int CurrentMenuOption = -1;
+
     private enum GameMode { Build, Select, Draw };
     private GameMode currentGameMode;
     private bool BuildModeEnabled
@@ -42,9 +45,21 @@ public class GameManager : MonoBehaviour
             }
         }
 
+        // #TODO: Unify the control systems for menu.
         if(RuGoInteraction.Instance.IsMenuActionPressed)
         {
-            CreateGadget(GadgetInventory.Box.ToString());
+            CurrentMenuOption = (CurrentMenuOption + 1) % (int)GadgetInventory.NUM;
+
+            EnableSelectMode();
+
+            if (CurrentMenuOption == (int)GadgetInventory.PathTool)
+            {
+                EnableDrawMode();
+            }
+            else
+            {
+                CreateGadget(((GadgetInventory)CurrentMenuOption).ToString());
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.M))

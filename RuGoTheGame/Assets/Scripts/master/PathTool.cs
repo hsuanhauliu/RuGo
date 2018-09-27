@@ -22,17 +22,17 @@ public class PathTool : MonoBehaviour
         if (isActive)
         {
 
-            if (Input.GetMouseButtonDown(0))
+            if (RuGoInteraction.Instance.IsConfirmPressed)
             {
                 print("Pressed");
                 StorePosition();
             }
-            else if (singlePath.Count != 0 && Input.GetMouseButton(0))
+            else if (singlePath.Count != 0 && RuGoInteraction.Instance.IsConfirmHeld)
             {
                 print("Hold");
                 StorePosition();
             }
-            else if (singlePath.Count != 0 && Input.GetMouseButtonUp(0))
+            else if (singlePath.Count != 0 && RuGoInteraction.Instance.IsConfirmReleased)
             {
                 print("Released");
                 StorePosition();

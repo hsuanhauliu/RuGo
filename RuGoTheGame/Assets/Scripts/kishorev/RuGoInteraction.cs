@@ -190,6 +190,50 @@ public class RuGoInteraction : MonoBehaviour {
         }
     }
 
+    public bool IsConfirmHeld
+    {
+        get
+        {
+            if (IsSelectorControllerActive())
+            {
+                if (IsUserRightHanded)
+                {
+                    return RightController.GetHairTrigger() && !(LeftController.GetHairTrigger());
+                }
+                else
+                {
+                    return LeftController.GetHairTrigger() && !(RightController.GetHairTrigger());
+                }
+            }
+            else
+            {
+                return Input.GetMouseButton(0);
+            }
+        }
+    }
+
+    public bool IsConfirmReleased
+    {
+        get
+        {
+            if (IsSelectorControllerActive())
+            {
+                if (IsUserRightHanded)
+                {
+                    return RightController.GetHairTriggerUp() && !(LeftController.GetHairTrigger());
+                }
+                else
+                {
+                    return LeftController.GetHairTriggerUp() && !(RightController.GetHairTrigger());
+                }
+            }
+            else
+            {
+                return Input.GetMouseButtonUp(0);
+            }
+        }
+    }
+
     public bool IsDoubleTriggerDown
     {
         get
@@ -234,6 +278,30 @@ public class RuGoInteraction : MonoBehaviour {
                 else
                 {
                     return LeftController.GetPressDown(EVRButtonId.k_EButton_SteamVR_Touchpad);
+                }
+            }
+            else
+            {
+                // FOR PC We want to return false for now until controllers are unified
+                //return Input.GetKeyDown(KeyCode.Return);
+                return false;
+            }
+        }
+    }
+
+    public bool IsMenuConfirmPressed
+    {
+        get
+        {
+            if (IsSelectorControllerActive())
+            {
+                if (IsUserRightHanded)
+                {
+                    return RightController.GetPressDown(EVRButtonId.k_EButton_Grip);
+                }
+                else
+                {
+                    return LeftController.GetPressDown(EVRButtonId.k_EButton_Grip);
                 }
             }
             else
