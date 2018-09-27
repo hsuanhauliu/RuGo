@@ -48,16 +48,16 @@ public abstract class Gadget : MonoBehaviour
         }
         else
         {
-            MakeAllCollidersTrigger(!enable);
+            EnableColliders(enable);
         }
     }
 
-    protected virtual void MakeAllCollidersTrigger(bool isTrigger)
+    protected virtual void EnableColliders(bool enable)
     {
         Collider[] colliders = this.GetComponentsInChildren<Collider>();
         foreach (Collider c in colliders)
         {
-            c.isTrigger = isTrigger;
+            c.enabled = enable;
         }
     }
 
