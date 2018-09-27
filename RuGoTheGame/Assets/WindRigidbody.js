@@ -4,8 +4,8 @@ How to use
 1) Place 'Wind.Rigidbody' prefab in 0,0,0
 2) Extract and Use 'Wind.Remote.Control'
 */
-private var windStrength : float = 4;
-private var radius : float = 1234567;
+private var windStrength : float = 20;
+private var radius : float = .25;
 private var i : int;
 var windStrengthMin : float = 0;
 var windStrengthMax : float = 5;
@@ -29,9 +29,7 @@ function Update()
 						{
 							if(hit.transform.GetComponent.<Rigidbody>())
 							{
-								//AddExplosionForce(512, transform.position, radius, 3.0); //More garbage from old tests . . . 
 								hitColliders[i].GetComponent.<Rigidbody>().AddForce(windTransformPosition.transform.forward * windStrength,ForceMode.Acceleration);
-								//there was '32' instead of windStrength //just a note for myself.
 							}
 						}	
 					}
