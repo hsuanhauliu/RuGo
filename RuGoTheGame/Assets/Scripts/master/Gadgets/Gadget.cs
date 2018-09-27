@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public enum GadgetInventory
 {
-    Box, Ball, RailRamp, PathTool, SmallCannon, Spinner, Fan, FanHD, Airplane
+    Box, Ball, RailRamp, PathTool, SmallCannon, Spinner, Fan, FanHD, Airplane, Pendulum
 };
 
 public abstract class Gadget : MonoBehaviour
