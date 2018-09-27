@@ -24,7 +24,7 @@ public class GadgetManipulator : MonoBehaviour
         // Receive inputs only when a gadget is selected
         if (GadgetSelected())
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            Ray ray = RuGoInteraction.Instance.SelectorRay;
             RaycastHit hit;
             /*
                 https://docs.unity3d.com/Manual/Layers.html
@@ -41,7 +41,9 @@ public class GadgetManipulator : MonoBehaviour
             // #TODO: Unify the controller systems
             if(RuGoInteraction.Instance.IsDoubleTriggerDown)
             {
-                mSelectedGadget.transform.rotation = Quaternion.LookRotation(RuGoInteraction.Instance.ControllerToControllerDirection, Vector3.up);
+                Vector3 lookDirection = RuGoInteraction.Instance.ControllerToControllerDirection;
+                lookDirection.y = 0.0f;
+                mSelectedGadget.transform.rotation = Quaternion.LookRotation(lookDirection, Vector3.up);
             }
             else
             {

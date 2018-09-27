@@ -187,6 +187,9 @@ public class GameManager : MonoBehaviour
     private void SetPlayerLook(bool enabled)
     {
         GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player == null)
+            return;
+
         FirstPersonMove playerMoveScript = player.GetComponent<FirstPersonMove>();
         playerMoveScript.EnableLook = enabled;
     }
