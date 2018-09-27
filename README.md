@@ -107,8 +107,8 @@ Left-Click - select a gadget in world (in Build mode only)
 
 ##### GadgetManipulator.cs
 D - Removes the gadget from the world  
-C - keeps on rotatating gadget clock-wise around y-axis untill released  
-Z - keeps on rotatating gadget Anitclock-wise around y-axis untill released  
+C - keeps on rotating gadget clock-wise around y-axis until released  
+Z - keeps on rotating gadget counter clock-wise around y-axis until released  
 Enter - place a gadget down  
 Mouse - moving gadget templates
 
@@ -116,48 +116,47 @@ Mouse - moving gadget templates
 F - fire cannon
 
 # Current Issues
-
-- Add physics materials.
+- Add physics materials to the gadgets.
 - Disable select mode in Draw mode.
 - Disable gadget functions for the gadget templates until solidified.
 - "F" (fire) will trigger multiple cannon gadgets in the world.
 - Transformation changed immediately after selecting gadget.
+- Change transparency of some gadget templates (airplane, cannon, etc.).
 
-## Needed features
+## Needed Features
 - Snapping capability for ramps and tracks.
+- Snapping feature of all gadgets (to fix the shaky remote situation).
 - Saving and loading function.
 - Simulation mode.
 
-## Needed gadgets
+## Future Gadget Ideas
 - Tracks
 - Conveyor belt
 - Support beams
 - Bridge (sort of like a track)
 
-## Assigned Tasks (9/25)
+## Assigned Tasks (9/27)
 Kishore:
-- Completely replace input system with Vive controller integration.
-- Explore depth sensing capability of ZED M camera.
+- VIVE and ZED M bug fix.
 
 Mike:
-- Trigger cannon via other game objects (i.e. a button).
+- Work on save and load game function.
 - Create 2-D blueprint of a game level.
-- Start look into save and load game function.
-- Build a level.
 
 Howard:
-- Complete drawing tool and integrated it to the master scene.
-- Update documents according to the team progress.
+- Update documentation and clean up Unity folder.
+- VIVE and ZED M bug fix.
 
 Abhi:
-- Fix reset function.
-- Finish up airplane gadget.
+- Fix airplane transparency issue.
+- Design UI features.
 
 Sarah:
-- Work on new gadget (pendulum).
+- Work on UI features and design.
 
 Devashree:
 - Finish fan gadget.
-- Fix gadget selection bug.
+- Work on UI features and design.
 
 Darwin:
+- Optimization of the overall game system.
