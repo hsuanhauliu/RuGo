@@ -28,7 +28,8 @@ public class CannonGadget : Gadget
 
     }
 
-    private void FireCannon() {
+    private void FireCannon() 
+    {
         GameObject cannonBall = Instantiate(mCannonBallPrefab, mBarrel);
         Rigidbody rigidBody = cannonBall.GetComponent<Rigidbody>();
 
@@ -39,7 +40,8 @@ public class CannonGadget : Gadget
         StartCoroutine(coroutine);
     }
 
-    private IEnumerator CleanCannon(GameObject cannonBall) {
+    private IEnumerator CleanCannon(GameObject cannonBall) 
+    {
         yield return new WaitForSeconds(2.0f);
         Destroy(cannonBall);
     }
