@@ -42,6 +42,11 @@ public class GameManager : MonoBehaviour
             }
         }
 
+        if(RuGoInteraction.Instance.IsMenuActionPressed)
+        {
+            CreateGadget(GadgetInventory.Box.ToString());
+        }
+
         if (Input.GetKeyDown(KeyCode.M))
         {
             if (GadgetSelectorMenu.isActiveAndEnabled)
@@ -81,24 +86,39 @@ public class GameManager : MonoBehaviour
     }
 
     public void CreateGadgetAlongPath(Vector3[] path) {
-        float dominoSpace = 0.025f;
         GameObject dominoPreb = Resources.Load("Domino") as GameObject;
-      
-        for (int i = 0; i < path.Length - 1; i++) {
-            Vector3 pathDirection = path[i + 1] - path[i];
-            Vector3 normalizedPath = pathDirection.normalized;
+        int numOfDominos = path.Length;
 
-            for (float j = dominoSpace; j < (pathDirection.magnitude - dominoSpace); j += dominoSpace)
+        if (numOfDominos > 1)
+        {
+            for (int i = 0; i < numOfDominos - 1; i++)
             {
                 GameObject gadgetGameObject = Instantiate(dominoPreb, this.transform);
                 Gadget domino = gadgetGameObject.GetComponent<Gadget>();
 
-                domino.transform.position = path[i] + (normalizedPath * j);
-                //domino.transform.Translate(new Vector3(0, 0.025f, 0));
+                Vector3 pathDirection = path[i + 1] - path[i];
+                domino.transform.position = path[i];
                 domino.transform.rotation = Quaternion.LookRotation(pathDirection);
                 domino.Deselect();
                 Manipulator.InsertGadgetIntoWorld(domino);
             }
+            GameObject lastGadgetGameObject = Instantiate(dominoPreb, this.transform);
+            Gadget lastDomino = lastGadgetGameObject.GetComponent<Gadget>();
+
+            Vector3 lastPathDirection = path[numOfDominos - 1] - path[path.Length - 2];
+            lastDomino.transform.position = path[numOfDominos - 1];
+            lastDomino.transform.rotation = Quaternion.LookRotation(lastPathDirection);
+            lastDomino.Deselect();
+            Manipulator.InsertGadgetIntoWorld(lastDomino);
+        }
+        else if (path.Length == 1)
+        {
+            GameObject gadgetGameObject = Instantiate(dominoPreb, this.transform);
+            Gadget domino = gadgetGameObject.GetComponent<Gadget>();
+
+            domino.transform.position = path[0];
+            domino.Deselect();
+            Manipulator.InsertGadgetIntoWorld(domino);
         }
 
         EnableBuildMode();
@@ -109,6 +129,9 @@ public class GameManager : MonoBehaviour
         PathTool.Activate(CreateGadgetAlongPath);
         this.currentGameMode = GameMode.Draw;
         GameModeDisplay.text = "Mode: Draw Path";
+
+        // Player Enable Look PC_ONLY
+        SetPlayerLook(true);
     }
 
     public void EnableBuildMode()
@@ -117,6 +140,9 @@ public class GameManager : MonoBehaviour
         Manipulator.Activate();
         this.currentGameMode = GameMode.Build;
         GameModeDisplay.text = "Mode: Build";
+
+        // Player Enable Look PC_ONLY
+        SetPlayerLook(true);
     }
 
     public void EnableSelectMode()
@@ -125,6 +151,9 @@ public class GameManager : MonoBehaviour
         GadgetSelectorMenu.Activate();
         this.currentGameMode = GameMode.Select;
         GameModeDisplay.text = "Mode: Select";
+
+        // Player Enable Look PC_ONLY
+        SetPlayerLook(false);
     }
 
     /************************** Private Functions **************************/
@@ -139,4 +168,11 @@ public class GameManager : MonoBehaviour
                 }
 
             }         }     }
+
+    private void SetPlayerLook(bool enabled)
+    {
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        FirstPersonMove playerMoveScript = player.GetComponent<FirstPersonMove>();
+        playerMoveScript.EnableLook = enabled;
+    }
 }
