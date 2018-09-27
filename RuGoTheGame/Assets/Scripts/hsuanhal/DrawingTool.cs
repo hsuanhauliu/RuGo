@@ -46,66 +46,86 @@ public class DrawingTool : MonoBehaviour
                 Unmark();
         }
 
-        if (Input.GetKeyDown(KeyCode.I))
-        {
-            Debug.Log("Interpolated.");
-            Interpolate();
-        }
-
-
         if (Input.GetKeyDown(KeyCode.S))
         {
-            Debug.Log("Smoothed.");
             Smooth();
         }
 
         if (Input.GetKeyDown(KeyCode.G))
         {
-            List<Vector3> newPoints = GetPoints(singlePath);
-            for (int i = 0; i < newPoints.Count; i++)
-            {
-                print(newPoints[i]);
-            }
+            List<Vector3> newPoints = GetEqualDistancePoints(singlePath);
             Mark(newPoints);
         }
     }
 
-    private List<Vector3> GetPoints(List<Vector3> myPoints)
+    private List<Vector3> GetEqualDistancePoints(List<Vector3> myPoints)
     {
         List<Vector3> points = new List<Vector3>();
         if (myPoints.Count > 0)
         {
+            // Add the first point
             points.Add(myPoints[0]);
-            print(myPoints[0]);
-        }
+            float leftover = 0f;
 
-        float leftover = 0f;
-        for (int i = 1; i < myPoints.Count; i++)
-        {
-            float segmentLength = Vector3.Distance(myPoints[i], myPoints[i - 1]);
-            float totalLength = segmentLength + leftover;
-            int counter = 0;
-
-            while (totalLength > DominoDistance)
+            Vector3 previousPoint = myPoints[0];
+            for (int i = 1; i < myPoints.Count; i++)
             {
-                counter += 1;
-                Vector3 directionVector = myPoints[i] - myPoints[i - 1];
-                float pointDistance = DominoDistance - leftover;
-                leftover = 0;
-                totalLength -= pointDistance;
-                Vector3 point = myPoints[i - 1] + counter * (directionVector * pointDistance / segmentLength);
-                points.Add(point);
-                print(point);
+                float segmentLength = Vector3.Distance(myPoints[i], myPoints[i - 1]);
+                Vector3 segmentVector = (myPoints[i] - myPoints[i - 1]) / segmentLength;
+
+                if (leftover == 0)
+                {
+                    int count = (int)(segmentLength / DominoDistance);
+                    for (int n = 0; n < count; n++)
+                    {
+                        Vector3 newPoint = previousPoint + segmentVector * DominoDistance;
+                        points.Add(newPoint);
+                        previousPoint = newPoint;
+                    }
+                    leftover = segmentLength - count * DominoDistance;
+                }
+                else if (Vector3.Distance(previousPoint, myPoints[i]) > DominoDistance)
+                {
+                    float angle_a = getAngle(myPoints[i - 1] - previousPoint, myPoints[i] - myPoints[i - 1]);
+                    float side_b = Vector3.Distance(myPoints[i - 1], previousPoint);
+                    float side_c = calculateSide(DominoDistance, side_b, angle_a);
+                    float remaining_segment = segmentLength - side_c;
+
+                    Vector3 newPoint = myPoints[i - 1] + side_c * segmentVector;
+                    points.Add(newPoint);
+                    previousPoint = newPoint;
+
+                    int count = (int)(remaining_segment / DominoDistance);
+                    for (int n = 0; n < count; n++)
+                    {
+                        newPoint = previousPoint + segmentVector * DominoDistance;
+                        points.Add(newPoint);
+                        previousPoint = newPoint;
+                    }
+                    leftover = remaining_segment - count * DominoDistance;
+                }
             }
-            leftover = totalLength;
-        }
-        if (myPoints.Count > 1)
-        {
-            points.Add(myPoints[myPoints.Count - 1]);
         }
 
         return points;
     }
+
+
+    private float calculateSide(float side_a, float side_b, float angle_a)
+    {
+        float sin_of_angle_a = Mathf.Sin(angle_a * Mathf.PI / 180);
+        float angle_b = Mathf.Asin(side_b * sin_of_angle_a / side_a) * 180 / Mathf.PI;
+        float angle_c = angle_a + angle_b;
+
+        return Mathf.Sin(angle_c * Mathf.PI / 180) * side_a / sin_of_angle_a;
+    }
+
+    // get angle between two vectors
+    private float getAngle(Vector3 from, Vector3 to)
+    {
+        return 180 - Vector3.Angle(from, to);
+    }
+
 
     // store the mouse position in world coordinates
     private void StorePosition()
@@ -151,23 +171,38 @@ public class DrawingTool : MonoBehaviour
         // Smooth the line only when there is more than one point
         if (singlePath.Count > 1)
         {
+            List<Vector3> myPoints = GetEqualDistancePoints(singlePath);
             List<Vector3> smoothedLine = new List<Vector3>();
-            List<Vector3> controlPoints = GetControlPoints();
+            List<Vector3> controlPoints = GetControlPoints(myPoints);
+            smoothedLine.Add(myPoints[0]);
 
-            for (int i = 0; i < singlePath.Count - 1; i++)
+            for (int i = 1; i < myPoints.Count; i++)
             {
-                smoothedLine.Add(singlePath[i]);
-                smoothedLine.Add(controlPoints[2 * i]);
-                smoothedLine.Add(controlPoints[2 * i + 1]);
+                Vector3 newPoint = calculatePoint(0.5f, myPoints[i - 1],
+                                                  controlPoints[2 * (i - 1)],
+                                                  controlPoints[2 * i - 1],
+                                                  myPoints[i]);
+                smoothedLine.Add(newPoint);
+                smoothedLine.Add(myPoints[i]);
             }
-            smoothedLine.Add(singlePath[singlePath.Count - 1]);
             singlePath = smoothedLine;
         }
     }
 
-    private List<Vector3> GetControlPoints()
+    private Vector3 calculatePoint(float t, Vector3 point_a, Vector3 point_b, Vector3 point_c, Vector3 point_d)
     {
-        List<Vector3> knots = singlePath;
+        float reversed = 1 - t;
+        Vector3 first_part = reversed * reversed * reversed * point_a;
+        Vector3 second_part = 3 * reversed * reversed * t * point_b;
+        Vector3 third_part = 3 * reversed * t * t * point_c;
+        Vector3 fourth_part = t * t * t * point_d;
+
+        return first_part + second_part + third_part + fourth_part;
+
+    }
+
+    private List<Vector3> GetControlPoints(List<Vector3> knots)
+    {
         List<Vector3> controlPoints = new List<Vector3>();
 
         // Calculate control points only when there is more than one point
@@ -244,32 +279,6 @@ public class DrawingTool : MonoBehaviour
         }
 
         return returnList;
-    }
-
-    /* add more points */
-    private void Interpolate()
-    {
-        int index = 1;
-        while (index < singlePath.Count)
-        {
-            Vector3 diff = singlePath[index] - singlePath[index - 1];
-            int step_num = (int)(Math.Max(Math.Abs(diff.x), Math.Abs(diff.z)) / MaxGap);
-            Vector3 step_vec = diff / step_num;
-
-            if (step_num != 0)
-            {
-                for (int s = 1; s < step_num; s++)
-                {
-                    Vector3 newPoint = singlePath[index - 1] + step_vec * s;
-                    singlePath.Insert(index - 1 + s, newPoint);
-                }
-                index += step_num;
-            }
-            else
-            {
-                index++;
-            }
-        }
     }
 
     /* Visualization Tools */
