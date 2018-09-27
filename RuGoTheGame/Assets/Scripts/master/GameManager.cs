@@ -109,6 +109,9 @@ public class GameManager : MonoBehaviour
         PathTool.Activate(CreateGadgetAlongPath);
         this.currentGameMode = GameMode.Draw;
         GameModeDisplay.text = "Mode: Draw Path";
+
+        // Player Enable Look PC_ONLY
+        SetPlayerLook(true);
     }
 
     public void EnableBuildMode()
@@ -117,6 +120,9 @@ public class GameManager : MonoBehaviour
         Manipulator.Activate();
         this.currentGameMode = GameMode.Build;
         GameModeDisplay.text = "Mode: Build";
+
+        // Player Enable Look PC_ONLY
+        SetPlayerLook(true);
     }
 
     public void EnableSelectMode()
@@ -125,6 +131,9 @@ public class GameManager : MonoBehaviour
         GadgetSelectorMenu.Activate();
         this.currentGameMode = GameMode.Select;
         GameModeDisplay.text = "Mode: Select";
+
+        // Player Enable Look PC_ONLY
+        SetPlayerLook(false);
     }
 
     /************************** Private Functions **************************/
@@ -139,4 +148,11 @@ public class GameManager : MonoBehaviour
                 }
 
             }         }     }
+
+    private void SetPlayerLook(bool enabled)
+    {
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        FirstPersonMove playerMoveScript = player.GetComponent<FirstPersonMove>();
+        playerMoveScript.EnableLook = enabled;
+    }
 }

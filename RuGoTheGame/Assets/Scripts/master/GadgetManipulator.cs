@@ -38,13 +38,13 @@ public class GadgetManipulator : MonoBehaviour
                 //mSelectedGadget.transform.Translate(Vector3.up * mSelectedGadget.transform.localScale.y / 2.0f);
             }
 
-            if (Input.GetKey(KeyCode.Q))
+            if (Input.GetKey(KeyCode.Z))
             {
 
                 mSelectedGadget.transform.Rotate(Vector3.up, turnSpeed * Time.deltaTime);
 
             }
-            if (Input.GetKey(KeyCode.W))
+            if (Input.GetKey(KeyCode.C))
             {
 
                 mSelectedGadget.transform.Rotate(Vector3.up, -turnSpeed * Time.deltaTime);
