@@ -42,6 +42,11 @@ public class GameManager : MonoBehaviour
             }
         }
 
+        if(RuGoInteraction.Instance.IsMenuActionPressed)
+        {
+            CreateGadget(GadgetInventory.Box.ToString());
+        }
+
         if (Input.GetKeyDown(KeyCode.M))
         {
             if (GadgetSelectorMenu.isActiveAndEnabled)
