@@ -1,9 +1,14 @@
-﻿
-private var windStrength : float = 10;
-public var radius : float = 1;
+﻿/*
+WindRigidbody v.1.0 by youtube.com/vulgerstal
+How to use
+1) Place 'Wind.Rigidbody' prefab in 0,0,0
+2) Extract and Use 'Wind.Remote.Control'
+*/
+private var windStrength : float = 4;
+private var radius : float = 1234567;
 private var i : int;
-var windStrengthMin : float = 5;
-var windStrengthMax : float = 25;
+var windStrengthMin : float = 0;
+var windStrengthMax : float = 5;
 var windTransformPosition : Transform;
 var windTransformRotation : Transform;
 function Update()
@@ -24,9 +29,9 @@ function Update()
 						{
 							if(hit.transform.GetComponent.<Rigidbody>())
 							{
-
+								//AddExplosionForce(512, transform.position, radius, 3.0); //More garbage from old tests . . . 
 								hitColliders[i].GetComponent.<Rigidbody>().AddForce(windTransformPosition.transform.forward * windStrength,ForceMode.Acceleration);
-
+								//there was '32' instead of windStrength //just a note for myself.
 							}
 						}	
 					}

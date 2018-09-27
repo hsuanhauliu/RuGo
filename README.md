@@ -107,8 +107,8 @@ Left-Click - select a gadget in world (in Build mode only)
 
 ##### GadgetManipulator.cs
 D - Removes the gadget from the world  
-C - keeps on rotatating gadget clock-wise around y-axis untill released  
-Z - keeps on rotatating gadget Anitclock-wise around y-axis untill released  
+Q - keeps on rotatating gadget clock-wise around y-axis untill released  
+W - keeps on rotatating gadget Anitclock-wise around y-axis untill released  
 Enter - place a gadget down  
 Mouse - moving gadget templates
 

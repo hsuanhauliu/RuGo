@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Valve.VR;
 
 public class RuGoInteraction : MonoBehaviour {
     /*
@@ -174,141 +173,11 @@ public class RuGoInteraction : MonoBehaviour {
         {
             if (IsSelectorControllerActive())
             {
-                if(IsUserRightHanded)
-                {
-                    return RightController.GetHairTriggerDown() && !(LeftController.GetHairTrigger());
-                }
-                else
-                {
-                    return LeftController.GetHairTriggerDown() && !(RightController.GetHairTrigger());
-                }
+                return ((IsUserRightHanded && RightController.GetHairTriggerDown()) || (!IsUserRightHanded && LeftController.GetHairTriggerDown()));
             }
             else
             {
                 return Input.GetMouseButtonDown(0);
-            }
-        }
-    }
-
-    public bool IsConfirmHeld
-    {
-        get
-        {
-            if (IsSelectorControllerActive())
-            {
-                if (IsUserRightHanded)
-                {
-                    return RightController.GetHairTrigger() && !(LeftController.GetHairTrigger());
-                }
-                else
-                {
-                    return LeftController.GetHairTrigger() && !(RightController.GetHairTrigger());
-                }
-            }
-            else
-            {
-                return Input.GetMouseButton(0);
-            }
-        }
-    }
-
-    public bool IsConfirmReleased
-    {
-        get
-        {
-            if (IsSelectorControllerActive())
-            {
-                if (IsUserRightHanded)
-                {
-                    return RightController.GetHairTriggerUp() && !(LeftController.GetHairTrigger());
-                }
-                else
-                {
-                    return LeftController.GetHairTriggerUp() && !(RightController.GetHairTrigger());
-                }
-            }
-            else
-            {
-                return Input.GetMouseButtonUp(0);
-            }
-        }
-    }
-
-    public bool IsDoubleTriggerDown
-    {
-        get
-        {
-            if(IsSelectorControllerActive())
-            {
-                return RightController.GetHairTrigger() && LeftController.GetHairTrigger();
-            }
-            else
-            {
-                // If PC always return False
-                return false;
-            }
-        }
-    }
-
-     
-    public Vector3 ControllerToControllerDirection
-    {
-        get
-        {
-            Vector3 direction = ControllerManager.right.transform.position - ControllerManager.left.transform.position;
-            if(direction.sqrMagnitude > 0)
-            {
-                direction.Normalize();
-            }
-
-            return direction;
-        }
-    }
-
-    public bool IsMenuActionPressed
-    {
-        get
-        {
-            if(IsSelectorControllerActive())
-            {
-                if(IsUserRightHanded)
-                {
-                    return RightController.GetPressDown(EVRButtonId.k_EButton_SteamVR_Touchpad);
-                }
-                else
-                {
-                    return LeftController.GetPressDown(EVRButtonId.k_EButton_SteamVR_Touchpad);
-                }
-            }
-            else
-            {
-                // FOR PC We want to return false for now until controllers are unified
-                //return Input.GetKeyDown(KeyCode.Return);
-                return false;
-            }
-        }
-    }
-
-    public bool IsMenuConfirmPressed
-    {
-        get
-        {
-            if (IsSelectorControllerActive())
-            {
-                if (IsUserRightHanded)
-                {
-                    return RightController.GetPressDown(EVRButtonId.k_EButton_Grip);
-                }
-                else
-                {
-                    return LeftController.GetPressDown(EVRButtonId.k_EButton_Grip);
-                }
-            }
-            else
-            {
-                // FOR PC We want to return false for now until controllers are unified
-                //return Input.GetKeyDown(KeyCode.Return);
-                return false;
             }
         }
     }
