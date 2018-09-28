@@ -36,4 +36,9 @@ public class CannonGadget : Gadget
 
     }
 
+    public override GadgetInventory GetGadgetType()
+    {
+        return GadgetInventory.SmallCannon;
+    }
+
 }

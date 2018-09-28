@@ -136,6 +136,16 @@ public class GadgetManipulator : MonoBehaviour
         this.gameObject.SetActive(false);
     }
 
+    public void Save() 
+    {
+        World.Save();
+    }
+
+    public void Load()
+    {
+        World.Load();
+    }
+
     // Function: Reset
     // Input: none
     // Output: none

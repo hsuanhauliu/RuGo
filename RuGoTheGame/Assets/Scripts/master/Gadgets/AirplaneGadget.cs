@@ -27,4 +27,9 @@ public class AirplaneGadget : Gadget
         this.transform.Translate(Vector3.left * 10f);
 
     }
+
+    public override GadgetInventory GetGadgetType()
+    {
+        return GadgetInventory.Airplane;
+    }
 }

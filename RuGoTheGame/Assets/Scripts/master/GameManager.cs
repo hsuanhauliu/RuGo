@@ -43,6 +43,12 @@ public class GameManager : MonoBehaviour
             {
                 this.ResetGadgetsInWorld();
             }
+            if (Input.GetKeyDown(KeyCode.O)) {
+                Manipulator.Save();
+            }
+            if (Input.GetKeyDown(KeyCode.P)) {
+                Manipulator.Load();
+            }
         }
 
         // #TODO: Unify the control systems for menu.

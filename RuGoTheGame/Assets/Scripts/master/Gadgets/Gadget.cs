@@ -1,9 +1,45 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 public enum GadgetInventory
 {
-    PathTool, RailRamp, Ball, Box, SmallCannon, Spinner, Fan, Airplane, NUM
+    PathTool, RailRamp, Ball, Box, SmallCannon, Spinner, Fan, Airplane, Domino, NUM
+};
+
+[Serializable]
+public struct GadgetSaveData
+{
+    public string name;
+    public float px;
+    public float py;
+    public float pz;
+
+    public float ox;
+    public float oy;
+    public float oz;
+    public float ow;
+
+    public GadgetSaveData(GadgetInventory name, Vector3 position, Quaternion orientation) {
+        this.name = name.ToString();
+        px = position.x;
+        py = position.y;
+        pz = position.z;
+
+        ox = orientation.x;
+        oy = orientation.y;
+        oz = orientation.z;
+        ow = orientation.w;
+    }
+
+    public Vector3 GetPosition() {
+        return new Vector3(px, py, pz);
+    }
+
+    public Quaternion GetQuaternion() {
+        return new Quaternion(ox, oy, oz, ow);
+    }
 };
 
 public abstract class Gadget : MonoBehaviour
@@ -31,6 +67,18 @@ public abstract class Gadget : MonoBehaviour
         mRenderers = GetRenderers();
         SetPhysicsMode(false);
     }
+
+    public GadgetSaveData GetSaveData() {
+        return new GadgetSaveData(this.GetGadgetType(), this.transform.position, this.transform.rotation);
+    }
+
+    public void RestoreStateFromSaveData(GadgetSaveData data) {
+        this.transform.position = data.GetPosition();
+        this.transform.rotation = data.GetQuaternion();
+        this.MakeSolid();
+    }
+
+    public abstract GadgetInventory GetGadgetType();
 
     /// <summary>
     /// Enables and Disables rigid body physics and collision detection

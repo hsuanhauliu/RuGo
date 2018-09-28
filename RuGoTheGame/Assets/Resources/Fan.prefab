@@ -274,7 +274,7 @@ GameObject:
   - component: {fileID: 4608223052380182}
   - component: {fileID: 114078593575708794}
   m_Layer: 0
-  m_Name: FanHD
+  m_Name: Fan
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
