@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public enum GadgetInventory
 {
-    Box, Ball, RailRamp, PathTool, SmallCannon, Spinner, Fan, FanHD, Airplane, Pendulum
+    PathTool, RailRamp, Ball, Box, SmallCannon, Spinner, Fan, FanHD, Airplane, NUM
 };
 
 public abstract class Gadget : MonoBehaviour
@@ -12,6 +12,7 @@ public abstract class Gadget : MonoBehaviour
     private Quaternion mLastSavedOrientation;
     private Vector3 mBodyLastSavedPosition;
     private Quaternion mBodyLastSavedOrientation;
+    private bool isPhysicsMode;
 
     private List<Renderer> mRenderers;
 
@@ -50,6 +51,7 @@ public abstract class Gadget : MonoBehaviour
         {
             EnableColliders(enable);
         }
+        isPhysicsMode = enable;
     }
 
     protected virtual void EnableColliders(bool enable)
@@ -151,5 +153,10 @@ public abstract class Gadget : MonoBehaviour
             albedo.a = 0.5f;
             GadgetRenderer.material.color = albedo;
         }
+    }
+
+    public virtual bool GetPhysicsMode()
+    {
+        return isPhysicsMode;
     }
 }

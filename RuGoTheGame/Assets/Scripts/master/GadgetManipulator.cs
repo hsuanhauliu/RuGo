@@ -45,21 +45,22 @@ public class GadgetManipulator : MonoBehaviour
                 lookDirection.y = 0.0f;
                 mSelectedGadget.transform.rotation = Quaternion.LookRotation(lookDirection, Vector3.up);
             }
-
-            if (Input.GetKey(KeyCode.Z))
+            else
             {
+                // This code should only work with PC.
+                if (Input.GetKey(KeyCode.Z))
+                {
+                    mSelectedGadget.transform.Rotate(Vector3.up, turnSpeed * Time.deltaTime);
 
-                mSelectedGadget.transform.Rotate(Vector3.up, turnSpeed * Time.deltaTime);
-
+                }
+                if (Input.GetKey(KeyCode.C))
+                {
+                    mSelectedGadget.transform.Rotate(Vector3.up, -turnSpeed * Time.deltaTime);
+                }
             }
-            if (Input.GetKey(KeyCode.C))
-            {
-
-                mSelectedGadget.transform.Rotate(Vector3.up, -turnSpeed * Time.deltaTime);
-
-            }
-
-            if (Input.GetKeyDown(KeyCode.Return))
+            
+            // #TODO: Unify the controller systems
+            if (Input.GetKeyDown(KeyCode.Return) || RuGoInteraction.Instance.IsMenuConfirmPressed)
             {
                 if (ModifyModeEnabled())
                 {
