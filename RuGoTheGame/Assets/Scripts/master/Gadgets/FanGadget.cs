@@ -19,8 +19,10 @@ public class FanGadget : Gadget {
 
     void Update()
     {
-
-        blades.Rotate(new Vector3(0, 0, 45));
+        if (Input.GetKey(KeyCode.L))
+        {
+            blades.Rotate(new Vector3(0, 0, 45));
+        }
     }
 
     public override GadgetInventory GetGadgetType()
