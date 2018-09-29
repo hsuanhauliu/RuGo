@@ -115,6 +115,9 @@ Mouse - moving gadget templates
 ##### CannonGadget.cs
 F - fire cannon
 
+##### FanGadget.cs
+L - rotate fan blades
+
 # Current Issues
 
 - Add physics materials to the gadgets.
