@@ -161,7 +161,10 @@ public class RuGoInteraction : MonoBehaviour {
             }
             else
             {
-                selectorRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+                if(Camera.main != null)
+                {
+                    selectorRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+                }
             }
 
             return selectorRay;
