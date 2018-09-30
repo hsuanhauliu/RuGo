@@ -2,35 +2,64 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FanGadget : Gadget {
+public class FanGadget : Gadget
+{
 
-    protected override List<Renderer> GetRenderers()
-    {
-        List<Renderer> renderers = new List<Renderer>(this.gameObject.GetComponentsInChildren<Renderer>());
-        return renderers;
-    }
 
+    // This mask is used to control objects the wind interacts with, it is set in the editor.
+    public LayerMask mLayerMask;     public float windStrengthMin = 5;     public float windStrengthMax = 25;
+    private float mWindStrength;
     private Transform blades;
-    private Transform wind;     private float windStrength = 10;     public float radius = 1;     private int i;     public float windStrengthMin = 5;     public float windStrengthMax = 25;     public Transform windTransformPosition;     public Transform windTransformRotation;
+    private float mWindzoneForwardOffset = 0.25f;
+    private Vector3 mWindzoneHalfExtents;
 
+    private bool mIsFanOn = false; 
     void Start()
     {
         blades = this.transform.Find("Blades");
+        mWindzoneHalfExtents = new Vector3(0.10f, 0.5f, mWindzoneForwardOffset);
+
     }
 
     void Update()
     {
-        int layerMask = 1 << 8;
-        layerMask = ~layerMask;
-        if (Input.GetKey(KeyCode.L))
+        if (mIsFanOn)
         {
             blades.Rotate(new Vector3(0, 0, 45));
-            if (windTransformPosition != null && windTransformRotation != null)             {                 RaycastHit hit;                 windStrength = Random.Range(windStrengthMin, windStrengthMax);                 windTransformRotation.rotation = transform.rotation;                  var hitColliders = Physics.OverlapSphere(windTransformPosition.transform.position, radius);                 for (i = 0; i < hitColliders.Length; i++)                 {                     if (hitColliders[i].GetComponent<Rigidbody>() != null)                     {                          var rayDirection = hitColliders[i].GetComponent<Rigidbody>().gameObject.transform.position - windTransformPosition.transform.position;                         if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, Mathf.Infinity, layerMask))                          {                             if (hit.transform.GetComponent<Rigidbody>())                             {                                  hitColliders[i].GetComponent<Rigidbody>().AddForce(windTransformPosition.transform.forward * windStrength, ForceMode.Acceleration);                              }                         }                     }                 }             } 
+            Vector3 windZonePosition = gameObject.transform.position;
+            Vector3 fanForward = gameObject.transform.forward * mWindzoneForwardOffset;
+            windZonePosition += fanForward;
+
+            mWindStrength = Random.Range(windStrengthMin, windStrengthMax);
+
+            //TODO Tweak the Wind Zone Overlap Box
+            Collider[] hitColliders = Physics.OverlapBox(windZonePosition, mWindzoneHalfExtents, this.transform.rotation, mLayerMask);
+
+            foreach (Collider colliderInWindZone in hitColliders)
+            {
+                if (colliderInWindZone.GetComponent<Rigidbody>() != null)
+                {
+                    Debug.DrawRay(colliderInWindZone.GetComponent<Rigidbody>().transform.position, blades.transform.forward * mWindStrength, Color.red);
+
+                    colliderInWindZone.GetComponent<Rigidbody>().AddForce(blades.transform.forward * mWindStrength, ForceMode.Acceleration);
+                }
+            }
         }
+    }
+
+    public override void PerformSwitchAction()
+    {
+        mIsFanOn = !mIsFanOn;
     }
 
     public override GadgetInventory GetGadgetType()
     {
         return GadgetInventory.Fan;
+    }
+
+    protected override List<Renderer> GetRenderers()
+    {
+        List<Renderer> renderers = new List<Renderer>(this.gameObject.GetComponentsInChildren<Renderer>());
+        return renderers;
     }
 }
