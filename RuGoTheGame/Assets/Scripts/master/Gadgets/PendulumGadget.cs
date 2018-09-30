@@ -12,7 +12,6 @@ public class PendulumGadget : Gadget{
 
     public override GadgetInventory GetGadgetType()
     {
-        return GadgetInventory.Fan;
+        return GadgetInventory.Pendulum;
     }
-
 }
