@@ -4,47 +4,73 @@ using System.Collections.Generic;
 
 public class PathTool : MonoBehaviour
 {
-    public float MinGap = 0.04f;
-    public float LevelTolerance = 0.00001f;
-    public float DominoDistance = 0.04f;
+    // control variables for gap between each point and y-level tolerance
+    private const float levelTolerance = 0.00001f;
+    private const float dominoDistance = 0.04f;
 
     private Action<Vector3[]> mPathCompleteCallBack;
     private bool isActive = false;
     private List<Vector3> singlePath;
+    private GameObject startingPoint;
+
+    private LineRenderer lineRenderer;
 
     void Start()
     {
         singlePath = new List<Vector3>();
+
+        lineRenderer = gameObject.AddComponent<LineRenderer>();
+        lineRenderer.material = new Material(Shader.Find("Unlit/Texture"));
+        lineRenderer.startColor = Color.white;
+        lineRenderer.endColor = Color.white;
+        lineRenderer.startWidth = 0.02f;
+        lineRenderer.endWidth = 0.02f;
+        lineRenderer.enabled = false;
     }
 
     void Update()
     {
         if (isActive)
         {
-
-            if (RuGoInteraction.Instance.IsConfirmPressed)
+            if (singlePath.Count == 1 && lineRenderer.enabled)
             {
-                print("Pressed");
-                StorePosition();
+                Ray ray = RuGoInteraction.Instance.SelectorRay;
+                RaycastHit hit;
+
+                if (Physics.Raycast(ray, out hit))
+                {
+                    lineRenderer.SetPosition(1, hit.point);
+                }
+            }
+
+            if (singlePath.Count == 0 && RuGoInteraction.Instance.IsConfirmPressed)
+            {
+                Debug.Log("Mouse down detected.");
+                storePosition();
+                markStartingPoint();
             }
             else if (singlePath.Count != 0 && RuGoInteraction.Instance.IsConfirmHeld)
             {
-                print("Hold");
-                StorePosition();
+                Debug.Log("Mouse hold detected.");
+                storePosition();
+
+                lineRenderer.positionCount += 1;
+                lineRenderer.SetPosition(lineRenderer.positionCount - 1, singlePath[singlePath.Count - 1]);
             }
-            else if (singlePath.Count != 0 && RuGoInteraction.Instance.IsConfirmReleased)
+            else if (singlePath.Count > 1 && RuGoInteraction.Instance.IsConfirmReleased)
             {
-                print("Released");
-                StorePosition();
-                singlePath = GetEqualDistancePoints(singlePath);
+                Debug.Log("Mouse up detected.");
+                storePosition();
+                singlePath = getEqualDistancePoints(singlePath);
                 mPathCompleteCallBack(singlePath.ToArray());
                 Deactivate();
             }
         }
     }
 
-    // store the mouse position in world coordinates
-    private void StorePosition()
+
+    // Store the mouse position in world coordinates
+    private void storePosition()
     {
         Ray ray = RuGoInteraction.Instance.SelectorRay;
         RaycastHit hit;
@@ -63,8 +89,8 @@ public class PathTool : MonoBehaviour
                 float distance = Vector3.Distance(hit.point, previousMark);
                 print(distance);
 
-                if (Math.Abs(hit.point.y - previousY) < LevelTolerance &&
-                    distance >= MinGap)
+                if (Math.Abs(hit.point.y - previousY) < levelTolerance &&
+                    distance >= dominoDistance)
                 {
                     print("****** Place item ******");
                     singlePath.Add(hit.point);
@@ -82,7 +108,8 @@ public class PathTool : MonoBehaviour
         }
     }
 
-    private List<Vector3> GetEqualDistancePoints(List<Vector3> myPoints)
+
+    private List<Vector3> getEqualDistancePoints(List<Vector3> myPoints)
     {
         List<Vector3> points = new List<Vector3>();
         if (myPoints.Count > 0)
@@ -99,34 +126,34 @@ public class PathTool : MonoBehaviour
 
                 if (leftover == 0)
                 {
-                    int count = (int)(segmentLength / DominoDistance);
+                    int count = (int)(segmentLength / dominoDistance);
                     for (int n = 0; n < count; n++)
                     {
-                        Vector3 newPoint = previousPoint + segmentVector * DominoDistance;
+                        Vector3 newPoint = previousPoint + segmentVector * dominoDistance;
                         points.Add(newPoint);
                         previousPoint = newPoint;
                     }
-                    leftover = segmentLength - count * DominoDistance;
+                    leftover = segmentLength - count * dominoDistance;
                 }
-                else if (Vector3.Distance(previousPoint, myPoints[i]) > DominoDistance)
+                else if (Vector3.Distance(previousPoint, myPoints[i]) > dominoDistance)
                 {
                     float angle_a = getAngle(myPoints[i - 1] - previousPoint, myPoints[i] - myPoints[i - 1]);
                     float side_b = Vector3.Distance(myPoints[i - 1], previousPoint);
-                    float side_c = calculateSide(DominoDistance, side_b, angle_a);
+                    float side_c = calculateSide(dominoDistance, side_b, angle_a);
                     float remaining_segment = segmentLength - side_c;
 
                     Vector3 newPoint = myPoints[i - 1] + side_c * segmentVector;
                     points.Add(newPoint);
                     previousPoint = newPoint;
 
-                    int count = (int)(remaining_segment / DominoDistance);
+                    int count = (int)(remaining_segment / dominoDistance);
                     for (int n = 0; n < count; n++)
                     {
-                        newPoint = previousPoint + segmentVector * DominoDistance;
+                        newPoint = previousPoint + segmentVector * dominoDistance;
                         points.Add(newPoint);
                         previousPoint = newPoint;
                     }
-                    leftover = remaining_segment - count * DominoDistance;
+                    leftover = remaining_segment - count * dominoDistance;
                 }
             }
         }
@@ -135,6 +162,7 @@ public class PathTool : MonoBehaviour
     }
 
 
+    // Calculate the third side of the triangle using SSA
     private float calculateSide(float side_a, float side_b, float angle_a)
     {
         float sin_of_angle_a = Mathf.Sin(angle_a * Mathf.PI / 180);
@@ -144,20 +172,37 @@ public class PathTool : MonoBehaviour
         return Mathf.Sin(angle_c * Mathf.PI / 180) * side_a / sin_of_angle_a;
     }
 
-    // get angle between two vectors
+    // Get angle between two vectors
     private float getAngle(Vector3 from, Vector3 to)
     {
         return 180 - Vector3.Angle(from, to);
     }
 
-    public void Deactivate() {
-        isActive = false;
-        singlePath = new List<Vector3>();
+
+    private void markStartingPoint()
+    {
+        lineRenderer.enabled = true;
+        lineRenderer.positionCount = 2;
+        lineRenderer.SetPosition(0, singlePath[0]);
     }
+
 
     public void Activate(Action<Vector3[]> createGadgetsAlongPath)
     {
         isActive = true;
         mPathCompleteCallBack = createGadgetsAlongPath;
+    }
+
+
+    public void Deactivate()
+    {
+        if (isActive)
+        {
+            Destroy(startingPoint);
+            lineRenderer.enabled = false;
+            lineRenderer.positionCount = 0;
+            isActive = false;
+            singlePath = new List<Vector3>();
+        }
     }
 }

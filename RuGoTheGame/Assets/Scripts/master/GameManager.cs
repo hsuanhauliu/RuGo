@@ -169,6 +169,7 @@ public class GameManager : MonoBehaviour
     public void EnableSelectMode()
     {
         Manipulator.Deactivate();
+        PathTool.Deactivate();
         GadgetSelectorMenu.Activate();
         this.currentGameMode = GameMode.Select;
         GameModeDisplay.text = "Mode: Select";
