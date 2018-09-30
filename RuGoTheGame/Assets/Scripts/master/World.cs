@@ -8,6 +8,9 @@ public class World : MonoBehaviour
 {
     private List<Gadget> gadgetsInWorld;
 
+    public static String DEFAULT_SAVE_FILE = "./world.dat";
+    public static String AUTO_SAVE_FILE = "./autosave.dat";
+
     void Start()
     {
         gadgetsInWorld = new List<Gadget>();
@@ -16,17 +19,18 @@ public class World : MonoBehaviour
 
     public void Reset()
     {
-        gadgetsInWorld.ForEach((Gadget g) => g.Reset());
+        this.Load(AUTO_SAVE_FILE);
     }
 
     public void InsertGadget(Gadget g) {
         gadgetsInWorld.Add(g);
+        Save(AUTO_SAVE_FILE);
     }
 
-    public void Save() {
-        Debug.Log("Saving Data");
+    public void Save(String fileName) {
+        Debug.Log("Saving Data to: " + fileName);
         BinaryFormatter bf = new BinaryFormatter();
-        FileStream file = File.Create("./world.dat");
+        FileStream file = File.Create(fileName);
 
         List<GadgetSaveData> saveData = gadgetsInWorld.ConvertAll<GadgetSaveData>((Gadget input) => input.GetSaveData());
 
@@ -34,12 +38,12 @@ public class World : MonoBehaviour
         file.Close();
     }
 
-    public void Load()
+    public void Load(String fileName)
     {
-        Debug.Log("Loading Data");
-        if (File.Exists("./world.dat")) {
+        Debug.Log("Loading Data from: " + fileName);
+        if (File.Exists(fileName)) {
             BinaryFormatter bf = new BinaryFormatter();
-            FileStream file = File.Open("./world.dat", FileMode.Open);
+            FileStream file = File.Open(fileName, FileMode.Open);
 
             List<GadgetSaveData> savedGadgets = (List<GadgetSaveData>)bf.Deserialize(file);
 
@@ -72,7 +76,7 @@ public class World : MonoBehaviour
         GameObject gadgetObj = Instantiate(gadgetTemplate.gameObject, this.transform);
         Gadget gadget = gadgetObj.GetComponent<Gadget>();
         gadget.MakeSolid();
-        gadgetsInWorld.Add(gadget);
+        InsertGadget(gadget);
     }
 
     public void RemoveGadget(Gadget gadget)

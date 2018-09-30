@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class GadgetManipulator : MonoBehaviour
 {
@@ -136,14 +137,14 @@ public class GadgetManipulator : MonoBehaviour
         this.gameObject.SetActive(false);
     }
 
-    public void Save() 
+    public void Save(String fileName) 
     {
-        World.Save();
+        World.Save(fileName);
     }
 
     public void Load()
     {
-        World.Load();
+        World.Load(World.DEFAULT_SAVE_FILE);
     }
 
     // Function: Reset

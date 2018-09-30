@@ -44,7 +44,7 @@ public class GameManager : MonoBehaviour
                 this.ResetGadgetsInWorld();
             }
             if (Input.GetKeyDown(KeyCode.O)) {
-                Manipulator.Save();
+                Manipulator.Save(World.DEFAULT_SAVE_FILE);
             }
             if (Input.GetKeyDown(KeyCode.P)) {
                 Manipulator.Load();

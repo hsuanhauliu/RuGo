@@ -44,10 +44,6 @@ public struct GadgetSaveData
 
 public abstract class Gadget : MonoBehaviour
 {
-    private Vector3 mLastSavedPosition;
-    private Quaternion mLastSavedOrientation;
-    private Vector3 mBodyLastSavedPosition;
-    private Quaternion mBodyLastSavedOrientation;
     private bool isPhysicsMode;
 
     private List<Renderer> mRenderers;
@@ -130,46 +126,13 @@ public abstract class Gadget : MonoBehaviour
         Debug.Log("Perform Some Action");
     }
 
-    public virtual void Reset()
-    {
-        this.RestoreState();
-    }
-
     public virtual void RemoveFromScene()
     {
         Destroy(this.gameObject);
     }
 
-    public virtual void StoreState() {
-        mLastSavedPosition = this.transform.position;
-        mLastSavedOrientation = this.transform.rotation;
-
-        Rigidbody body = this.GetComponentInChildren<Rigidbody>();
-
-        if (body) {
-            mBodyLastSavedPosition = body.transform.position;
-            mBodyLastSavedOrientation = body.transform.rotation;
-        }
-    }
-
-    public virtual void RestoreState() {
-        this.transform.position = mLastSavedPosition;
-        this.transform.rotation = mLastSavedOrientation;
-
-        Rigidbody body = this.GetComponentInChildren<Rigidbody>();
-        if (body) {
-            body.transform.position = mBodyLastSavedPosition;
-            body.transform.rotation = mBodyLastSavedOrientation;
-            body.velocity = Vector3.zero;
-            body.angularVelocity = Vector3.zero;
-        }
-    }
-
-
     public virtual void MakeSolid()
     {
-        this.StoreState();
-    
         foreach (Renderer GadgetRenderer in mRenderers)
         {
             Color albedo = GadgetRenderer.material.color;
