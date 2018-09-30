@@ -16,26 +16,17 @@ public class CannonGadget : Gadget
 
     public override void PerformSwitchAction()
     {
-        GameObject cannonBall = Instantiate(mCannonBallPrefab, mBarrel);
-        Rigidbody rigidBody = cannonBall.GetComponent<Rigidbody>();
-
-        Vector3 barrelDirection = cannonBall.transform.up;
-        rigidBody.AddForce(barrelDirection * 1.3f, ForceMode.Impulse);
+        FireCannon();
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F))
+        if (Input.GetKeyDown(KeyCode.F) && this.GetPhysicsMode())
         {
-            GameObject cannonBall = Instantiate(mCannonBallPrefab, mBarrel);
-            Rigidbody rigidBody = cannonBall.GetComponent<Rigidbody>();
-
-            Vector3 barrelDirection = cannonBall.transform.up;
-            rigidBody.AddForce(barrelDirection * 1.3f, ForceMode.Impulse);
+            FireCannon(); 
         }
 
     }
-
 
     public override GadgetInventory GetGadgetType()
     {
