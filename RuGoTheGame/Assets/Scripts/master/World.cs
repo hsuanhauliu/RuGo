@@ -83,6 +83,7 @@ public class World : MonoBehaviour
     {
         gadgetsInWorld.Remove(gadget);
         gadget.RemoveFromScene();
+        this.Save(AUTO_SAVE_FILE);
     }
 }
 
