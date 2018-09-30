@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 
 public enum GadgetInventory
 {
-    PathTool, RailRamp, Ball, Box, SmallCannon, Spinner, Fan, Airplane, Domino, NUM
+    PathTool, RailRamp, Ball, Box, SmallCannon, Spinner, Fan, Airplane, Domino, Pendulum, NUM
 };
 
 [Serializable]
@@ -44,7 +44,7 @@ public struct GadgetSaveData
 
 public abstract class Gadget : MonoBehaviour
 {
-    private bool isPhysicsMode;
+    protected bool isPhysicsMode;
 
     private List<Renderer> mRenderers;
 
