@@ -48,7 +48,7 @@ public abstract class Gadget : MonoBehaviour
 
     private List<Renderer> mRenderers;
 
-    void Start()
+    protected void Start()
     {
         gameObject.layer = LayerMask.NameToLayer("Gadget");
     }

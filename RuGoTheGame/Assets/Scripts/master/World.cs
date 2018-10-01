@@ -62,9 +62,10 @@ public class World : MonoBehaviour
         String prefabName = savedGadgetData.name;
         GameObject gadgetPrefab = Resources.Load(prefabName) as GameObject;
         GameObject savedGameObject = Instantiate(gadgetPrefab, this.transform);
-
+        
         Gadget g = savedGameObject.GetComponent<Gadget>();
         g.RestoreStateFromSaveData(savedGadgetData);
+        g.transform.position += this.transform.position;
 
         return g;
     }
@@ -74,6 +75,7 @@ public class World : MonoBehaviour
         Debug.Log("A new gameObject has been created and inserted in the World.");
 
         GameObject gadgetObj = Instantiate(gadgetTemplate.gameObject, this.transform);
+        gadgetObj.transform.position -= this.transform.position;
         Gadget gadget = gadgetObj.GetComponent<Gadget>();
         gadget.MakeSolid();
         InsertGadget(gadget);

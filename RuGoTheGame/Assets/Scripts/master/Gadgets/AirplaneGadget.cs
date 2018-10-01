@@ -10,18 +10,6 @@ public class AirplaneGadget : Gadget
         return renderers;
     }
 
-    private void Update()
-    {
-        if (Input.GetKey(KeyCode.G))
-        {
-
-            Gadget airplane = GetComponentInParent<Gadget>();
-
-            airplane.transform.Translate(Vector3.left * Time.deltaTime);
-
-        }
-
-    }
     private void OnCollisionEnter(Collision collision)
     {
         this.transform.Translate(Vector3.left * 10f);

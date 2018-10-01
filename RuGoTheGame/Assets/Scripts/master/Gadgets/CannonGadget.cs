@@ -8,8 +8,9 @@ public class CannonGadget : Gadget
 
     private Transform mBarrel;
 
-    private void Start()
+    new void Start()
     {
+        base.Start();
         mCannonBallPrefab = Resources.Load("CannonBall") as GameObject;
         mBarrel = this.transform.Find("SmallCannon").Find("Wooden_pillow");
     }

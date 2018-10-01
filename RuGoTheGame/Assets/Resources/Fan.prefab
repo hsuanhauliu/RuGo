@@ -2432,13 +2432,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9162db12b97f4cc8bdea933ddb4bbd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 0.5
+  TestLayerMask:
+    serializedVersion: 2
+    m_Bits: 536870912
   windStrengthMin: 5
   windStrengthMax: 25
-  mLayerMask:
-    serializedVersion: 2
-    m_Bits: 512
-  mIsFanOn: 0
 --- !u!114 &114550838059850102
 MonoBehaviour:
   m_ObjectHideFlags: 1
