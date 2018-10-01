@@ -8,12 +8,11 @@ public class PathTool : MonoBehaviour
     private const float levelTolerance = 0.00001f;
     private const float dominoDistance = 0.04f;
 
-    private Action<Vector3[]> mPathCompleteCallBack;
     private bool isActive = false;
+    private Action<Vector3[]> pathCompleteCallBack;
     private List<Vector3> singlePath;
-    private GameObject startingPoint;
-
     private LineRenderer lineRenderer;
+
 
     void Start()
     {
@@ -27,6 +26,7 @@ public class PathTool : MonoBehaviour
         lineRenderer.endWidth = 0.02f;
         lineRenderer.enabled = false;
     }
+
 
     void Update()
     {
@@ -62,7 +62,7 @@ public class PathTool : MonoBehaviour
                 Debug.Log("Mouse up detected.");
                 storePosition();
                 singlePath = getEqualDistancePoints(singlePath);
-                mPathCompleteCallBack(singlePath.ToArray());
+                pathCompleteCallBack(singlePath.ToArray());
                 Deactivate();
             }
         }
@@ -80,29 +80,28 @@ public class PathTool : MonoBehaviour
             // if nothing is in the path
             if (singlePath.Count != 0)
             {
-                print("****** Prepare to place item ******");
+                Debug.Log("****** Prepare to place item ******");
                 // Grab the previous mark position
                 Vector3 previousMark = singlePath[singlePath.Count - 1];
 
                 // check if the y coordinate is off from the previous point
                 float previousY = previousMark.y;
                 float distance = Vector3.Distance(hit.point, previousMark);
-                print(distance);
 
                 if (Math.Abs(hit.point.y - previousY) < levelTolerance &&
                     distance >= dominoDistance)
                 {
-                    print("****** Place item ******");
+                    Debug.Log("****** Place item ******");
                     singlePath.Add(hit.point);
                 }
                 else
                 {
-                    print("****** FAILED TO PLACE ******");
+                    Debug.Log("****** FAILED TO PLACE ******");
                 }
             }
             else
             {
-                print("****** Place first item ******");
+                Debug.Log("****** Place first item ******");
                 singlePath.Add(hit.point);
             }
         }
@@ -181,16 +180,16 @@ public class PathTool : MonoBehaviour
 
     private void markStartingPoint()
     {
-        lineRenderer.enabled = true;
         lineRenderer.positionCount = 2;
         lineRenderer.SetPosition(0, singlePath[0]);
+        lineRenderer.enabled = true;
     }
 
 
     public void Activate(Action<Vector3[]> createGadgetsAlongPath)
     {
         isActive = true;
-        mPathCompleteCallBack = createGadgetsAlongPath;
+        pathCompleteCallBack = createGadgetsAlongPath;
     }
 
 
@@ -198,7 +197,6 @@ public class PathTool : MonoBehaviour
     {
         if (isActive)
         {
-            Destroy(startingPoint);
             lineRenderer.enabled = false;
             lineRenderer.positionCount = 0;
             isActive = false;
