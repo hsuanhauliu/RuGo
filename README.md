@@ -163,4 +163,6 @@ Devashree:
 - Work on UI features and design.
 
 Darwin:
+- make box gadget look more realistic
+- add trajectory to cannon
 - Optimize overall game system.
