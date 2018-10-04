@@ -29,6 +29,7 @@ public class RuGoInteraction : MonoBehaviour {
     private SteamVR_ControllerManager ControllerManager;
     private SteamVR_TrackedObject LeftTrackedObject;
     private SteamVR_TrackedObject RightTrackedObject;
+    private SteamVR_LaserPointer LaserPointer;
 
     private SteamVR_Controller.Device LeftController
     {
@@ -54,6 +55,8 @@ public class RuGoInteraction : MonoBehaviour {
         {
             LeftTrackedObject = ControllerManager.left.GetComponent<SteamVR_TrackedObject>();
             RightTrackedObject = ControllerManager.right.GetComponent<SteamVR_TrackedObject>();
+
+            LaserPointer = ControllerManager.right.GetComponent<SteamVR_LaserPointer>();
         }
     }
 
@@ -122,27 +125,44 @@ public class RuGoInteraction : MonoBehaviour {
 
 
     // ACTIONS
-    public bool IsUserRightHanded = true;
     public bool DebugInputs = false;
     public Transform DebugCapsule;
     public Transform DebugCylinder;
 
-    private bool IsSelectorControllerActive()
+    private bool IsSelectorControllerActive
     {
-        return ControllerManager != null && ((IsUserRightHanded && ControllerManager.right.activeSelf) || (!IsUserRightHanded && ControllerManager.left.activeSelf));
+        get
+        {
+            return ControllerManager != null && ControllerManager.right.activeSelf;
+        }
     }
 
-    private Transform GetSelectorController()
+    private bool IsManipulatorControllerActive
     {
-        if (!IsSelectorControllerActive())
-            return null;
-
-        if(IsUserRightHanded)
+        get
         {
+            return ControllerManager != null && ControllerManager.left.activeSelf;
+        }
+    }
+
+    private Transform SelectorController
+    {
+        get
+        {
+            if (!IsSelectorControllerActive)
+                return null;
+
             return ControllerManager.right.transform;
         }
-        else
+    }
+
+    private Transform GetManipulatorController
+    {
+        get
         {
+            if (!IsManipulatorControllerActive)
+                return null;
+
             return ControllerManager.left.transform;
         }
     }
@@ -153,11 +173,10 @@ public class RuGoInteraction : MonoBehaviour {
         {
             Ray selectorRay = new Ray();
 
-            if (IsSelectorControllerActive())
+            if (IsSelectorControllerActive)
             {
-                Transform selectorController = GetSelectorController();
-                selectorRay.origin = selectorController.localPosition;
-                selectorRay.direction = selectorController.forward;
+                selectorRay.origin = SelectorController.localPosition;
+                selectorRay.direction = SelectorController.forward;
             }
             else
             {
@@ -175,16 +194,9 @@ public class RuGoInteraction : MonoBehaviour {
     {
         get
         {
-            if (IsSelectorControllerActive())
+            if (IsSelectorControllerActive)
             {
-                if(IsUserRightHanded)
-                {
-                    return RightController.GetHairTriggerDown() && !(LeftController.GetHairTrigger());
-                }
-                else
-                {
-                    return LeftController.GetHairTriggerDown() && !(RightController.GetHairTrigger());
-                }
+                return RightController.GetHairTriggerDown() && (!IsManipulatorControllerActive || !LeftController.GetHairTrigger());
             }
             else
             {
@@ -197,16 +209,9 @@ public class RuGoInteraction : MonoBehaviour {
     {
         get
         {
-            if (IsSelectorControllerActive())
+            if (IsSelectorControllerActive)
             {
-                if (IsUserRightHanded)
-                {
-                    return RightController.GetHairTrigger() && !(LeftController.GetHairTrigger());
-                }
-                else
-                {
-                    return LeftController.GetHairTrigger() && !(RightController.GetHairTrigger());
-                }
+                return RightController.GetHairTrigger() && (!IsManipulatorControllerActive || !LeftController.GetHairTrigger());
             }
             else
             {
@@ -219,16 +224,9 @@ public class RuGoInteraction : MonoBehaviour {
     {
         get
         {
-            if (IsSelectorControllerActive())
+            if (IsSelectorControllerActive)
             {
-                if (IsUserRightHanded)
-                {
-                    return RightController.GetHairTriggerUp() && !(LeftController.GetHairTrigger());
-                }
-                else
-                {
-                    return LeftController.GetHairTriggerUp() && !(RightController.GetHairTrigger());
-                }
+                return RightController.GetHairTriggerUp() && (!IsManipulatorControllerActive || !LeftController.GetHairTrigger());
             }
             else
             {
@@ -241,7 +239,7 @@ public class RuGoInteraction : MonoBehaviour {
     {
         get
         {
-            if(IsSelectorControllerActive())
+            if(IsSelectorControllerActive && IsManipulatorControllerActive)
             {
                 return RightController.GetHairTrigger() && LeftController.GetHairTrigger();
             }
@@ -272,16 +270,9 @@ public class RuGoInteraction : MonoBehaviour {
     {
         get
         {
-            if(IsSelectorControllerActive())
+            if(IsSelectorControllerActive)
             {
-                if(IsUserRightHanded)
-                {
-                    return RightController.GetPressDown(EVRButtonId.k_EButton_SteamVR_Touchpad);
-                }
-                else
-                {
-                    return LeftController.GetPressDown(EVRButtonId.k_EButton_SteamVR_Touchpad);
-                }
+                return RightController.GetPressDown(EVRButtonId.k_EButton_SteamVR_Touchpad);
             }
             else
             {
@@ -296,16 +287,9 @@ public class RuGoInteraction : MonoBehaviour {
     {
         get
         {
-            if (IsSelectorControllerActive())
+            if (IsSelectorControllerActive)
             {
-                if (IsUserRightHanded)
-                {
-                    return RightController.GetPressDown(EVRButtonId.k_EButton_Grip);
-                }
-                else
-                {
-                    return LeftController.GetPressDown(EVRButtonId.k_EButton_Grip);
-                }
+                return RightController.GetPressDown(EVRButtonId.k_EButton_Grip);
             }
             else
             {
