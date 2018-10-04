@@ -182,6 +182,7 @@ public class PathTool : MonoBehaviour
     {
         lineRenderer.positionCount = 2;
         lineRenderer.SetPosition(0, singlePath[0]);
+        lineRenderer.SetPosition(0, singlePath[1]);
         lineRenderer.enabled = true;
     }
 
