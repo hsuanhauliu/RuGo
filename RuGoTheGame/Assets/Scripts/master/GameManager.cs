@@ -51,24 +51,7 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        // #TODO: Unify the control systems for menu.
-        if(RuGoInteraction.Instance.IsMenuActionPressed)
-        {
-            CurrentMenuOption = (CurrentMenuOption + 1) % (int)GadgetInventory.NUM;
-
-            EnableSelectMode();
-
-            if (CurrentMenuOption == (int)GadgetInventory.PathTool)
-            {
-                EnableDrawMode();
-            }
-            else
-            {
-                CreateGadget(((GadgetInventory)CurrentMenuOption).ToString());
-            }
-        }
-
-        if (Input.GetKeyDown(KeyCode.M))
+        if (RuGoInteraction.Instance.IsMenuActionPressed)
         {
             if (GadgetSelectorMenu.isActiveAndEnabled)
             {

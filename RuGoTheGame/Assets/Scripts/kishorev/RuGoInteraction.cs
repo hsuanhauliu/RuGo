@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Valve.VR;
+using UnityEngine.EventSystems;
 
 public class RuGoInteraction : MonoBehaviour {
     /*
@@ -51,12 +52,47 @@ public class RuGoInteraction : MonoBehaviour {
     {
         ControllerManager = GetComponent<SteamVR_ControllerManager>();
 
-        if(ControllerManager != null)
+        if (ControllerManager != null)
         {
             LeftTrackedObject = ControllerManager.left.GetComponent<SteamVR_TrackedObject>();
             RightTrackedObject = ControllerManager.right.GetComponent<SteamVR_TrackedObject>();
 
             LaserPointer = ControllerManager.right.GetComponent<SteamVR_LaserPointer>();
+            LaserPointer.PointerIn -= HandlePointerIn;
+            LaserPointer.PointerIn += HandlePointerIn;
+            LaserPointer.PointerOut -= HandlePointerOut;
+            LaserPointer.PointerOut += HandlePointerOut;
+
+            ControllerManager.right.GetComponent<SteamVR_TrackedController>().TriggerClicked -= HandleTriggerClicked;
+            ControllerManager.right.GetComponent<SteamVR_TrackedController>().TriggerClicked += HandleTriggerClicked;
+        }
+    }
+
+    private void HandleTriggerClicked(object sender, ClickedEventArgs e)
+    {
+        if (EventSystem.current.currentSelectedGameObject != null)
+        {
+            ExecuteEvents.Execute(EventSystem.current.currentSelectedGameObject, new PointerEventData(EventSystem.current), ExecuteEvents.submitHandler);
+        }
+    }
+
+    private void HandlePointerIn(object sender, PointerEventArgs e)
+    {
+        var button = e.target.GetComponent<UnityEngine.UI.Button>();
+        if (button != null)
+        {
+            button.Select();
+        }
+    }
+
+    private void HandlePointerOut(object sender, PointerEventArgs e)
+    {
+
+        var button = e.target.GetComponent<UnityEngine.UI.Button>();
+        if (button != null)
+        {
+            EventSystem.current.SetSelectedGameObject(null);
+            Debug.Log("HandlePointerOut", e.target.gameObject);
         }
     }
 
@@ -65,19 +101,14 @@ public class RuGoInteraction : MonoBehaviour {
         MakeSingleton();
     }
 
-    void Start ()
+    void Start()
     {
         // We do it here because we want all the VR initializations to be done first
         CacheControllers();
-	}
+    }
 
     private void EnableDebugging()
     {
-        if (!DebugCapsule.gameObject.activeSelf)
-        {
-            DebugCapsule.gameObject.SetActive(true);
-        }
-
         if (!DebugCylinder.gameObject.activeSelf)
         {
             DebugCylinder.gameObject.SetActive(true);
@@ -86,27 +117,19 @@ public class RuGoInteraction : MonoBehaviour {
 
     private void DisableDebugging()
     {
-        if (DebugCapsule.gameObject.activeSelf)
-        {
-            DebugCapsule.gameObject.SetActive(false);
-        }
-
         if (DebugCylinder.gameObject.activeSelf)
         {
             DebugCylinder.gameObject.SetActive(false);
         }
     }
-	
-	void Update ()
+
+    void Update()
     {
-        if(DebugInputs)
+        if (DebugInputs)
         {
             EnableDebugging();
 
             Ray selectorRay = SelectorRay;
-            Debug.DrawRay(selectorRay.origin, selectorRay.direction, Color.red, 0.0f, false);
-            DebugCapsule.position = selectorRay.origin;
-            DebugCapsule.rotation = Quaternion.LookRotation(selectorRay.direction, Vector3.up);
 
             if (IsConfirmPressed)
             {
@@ -121,12 +144,11 @@ public class RuGoInteraction : MonoBehaviour {
         {
             DisableDebugging();
         }
-	}
+    }
 
 
     // ACTIONS
     public bool DebugInputs = false;
-    public Transform DebugCapsule;
     public Transform DebugCylinder;
 
     private bool IsSelectorControllerActive
@@ -180,7 +202,7 @@ public class RuGoInteraction : MonoBehaviour {
             }
             else
             {
-                if(Camera.main != null)
+                if (Camera.main != null)
                 {
                     selectorRay = Camera.main.ScreenPointToRay(Input.mousePosition);
                 }
@@ -239,7 +261,7 @@ public class RuGoInteraction : MonoBehaviour {
     {
         get
         {
-            if(IsSelectorControllerActive && IsManipulatorControllerActive)
+            if (IsSelectorControllerActive && IsManipulatorControllerActive)
             {
                 return RightController.GetHairTrigger() && LeftController.GetHairTrigger();
             }
@@ -251,13 +273,13 @@ public class RuGoInteraction : MonoBehaviour {
         }
     }
 
-     
+
     public Vector3 ControllerToControllerDirection
     {
         get
         {
             Vector3 direction = ControllerManager.right.transform.position - ControllerManager.left.transform.position;
-            if(direction.sqrMagnitude > 0)
+            if (direction.sqrMagnitude > 0)
             {
                 direction.Normalize();
             }
@@ -270,15 +292,13 @@ public class RuGoInteraction : MonoBehaviour {
     {
         get
         {
-            if(IsSelectorControllerActive)
+            if (IsSelectorControllerActive)
             {
                 return RightController.GetPressDown(EVRButtonId.k_EButton_SteamVR_Touchpad);
             }
             else
             {
-                // FOR PC We want to return false for now until controllers are unified
-                //return Input.GetKeyDown(KeyCode.Return);
-                return false;
+                return Input.GetKeyDown(KeyCode.M);
             }
         }
     }

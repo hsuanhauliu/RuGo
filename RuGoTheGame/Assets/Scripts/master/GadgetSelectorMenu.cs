@@ -5,6 +5,7 @@ public class GadgetSelectorMenu : MonoBehaviour
     public GameManager gameManager;
 
     public float padding = 20f;
+    public bool IsVrRun = false;
 
     void Start()
     {
@@ -31,6 +32,11 @@ public class GadgetSelectorMenu : MonoBehaviour
         GameObject gadgetButton = (GameObject)Instantiate(buttonPrefab, this.transform);
 
         UnityEngine.UI.Button uiButton = gadgetButton.GetComponent<UnityEngine.UI.Button>();
+        if(IsVrRun)
+        {
+            BoxCollider collider = gadgetButton.AddComponent<BoxCollider>();
+            collider.size = uiButton.GetComponent<RectTransform>().rect.size;
+        }
 
         RectTransform rectTransform = uiButton.GetComponent<RectTransform>();
         rectTransform.anchoredPosition = new Vector2(rectTransform.anchoredPosition.x, verticalOffset + padding);

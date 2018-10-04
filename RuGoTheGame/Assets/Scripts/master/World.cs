@@ -24,7 +24,9 @@ public class World : MonoBehaviour
 
     public void InsertGadget(Gadget g) {
         gadgetsInWorld.Add(g);
-        Save(AUTO_SAVE_FILE);
+
+        // #TODO: This causes issue in VR where it flashes the screen. Probably because it is serializing everything everytime
+        //Save(AUTO_SAVE_FILE);
     }
 
     public void Save(String fileName) {
