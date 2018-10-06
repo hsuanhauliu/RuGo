@@ -97,72 +97,71 @@ But the difference is as follows
 
 ## Keyboard Keys
 
-### Master Scene
+### Keyboard Bindings
 
-##### GameManager.cs
+##### Build mode
 
 M - open/close menu  
-R - reset gadgets (in Build mode only)  
-Left-Click - select a gadget in world (in Build mode only)
+R - reset gadgets  
+O - save current world progress  
+P - load save file  
+X - clear world  
+Left-Click - select a gadget in the world  
+Mouse - moving gadget templates  
 
-##### GadgetManipulator.cs
-D - Removes the gadget from the world  
+
+D - delete the selected gadget from the world  
 C - keeps on rotating gadget clock-wise around y-axis until released  
 Z - keeps on rotating gadget counter clock-wise around y-axis until released   
 Enter - place a gadget down  
-Mouse - moving gadget templates
 
-##### CannonGadget.cs
+
+##### Gadgets
 F - fire cannon
 
-##### FanGadget.cs
-L - rotate fan blades
-
 # Current Issues
-
+- Menu is being constantly shown in PC mode.
+- "M" is triggering gadget manipulator to reset and cause things to freeze.
 - Add physics materials to the gadgets.
-- Disable select mode in Draw mode.
 - Disable gadget functions for the gadget templates until solidified.
 - "F" (fire) will trigger multiple cannon gadgets in the world.
-- Transformation changed immediately after selecting gadget.
 - Change transparency of some gadget templates (airplane, cannon, etc.).
 
+
 ## Needed Features
-- Snapping capability for ramps and tracks.
 - Snapping feature of all gadgets (to fix the shaky remote situation).
-- Saving and loading function.
 - Simulation mode.
+- Real world setting for the gadgets in AR.
+- Gadget compatibility.
 
 ## Future Gadget Ideas
 - Tracks
 - Conveyor belt
 - Support beams
 - Bridge (sort of like a track)
+- Trap door
 
 ## Assigned Tasks (9/27)
 Kishore:
 - VIVE and ZED M bug fix.
 
 Mike:
-- Work on save and load game function.
-- Create 2-D blueprint of a game level.
+- Game system optimization and bug testing & fixing.
 
 Howard:
-- Update documentation and clean up Unity folder.
 - VIVE and ZED M bug fix.
+- Investigate path tool compatibility with other platform gadgets (i.e. box).
 
 Abhi:
-- Fix airplane transparency issue.
-- Design UI features.
+- Improve UI and user experience in the AR world.
 
 Sarah:
-- Work on UI features and design.
+- Improve UI and user experience in the AR world.
 
 Devashree:
-- Finish fan gadget.
-- Work on UI features and design.
+- Improve UI and user experience in the AR world.
 
 Darwin:
-- make box gadget look more realistic
-- add trajectory to cannon
-- Optimize overall game system.
+- Look into how we can record user's view in AR.
+- Work on cannon barrel rotation feature.
+- Add collision detection for the cannon trajectory path visualization.
