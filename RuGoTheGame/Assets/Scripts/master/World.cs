@@ -22,6 +22,16 @@ public class World : MonoBehaviour
         this.Load(AUTO_SAVE_FILE);
     }
 
+    public void Clear()
+    {
+        foreach (Gadget g in gadgetsInWorld)
+        {
+            g.RemoveFromScene();
+        }
+        gadgetsInWorld = new List<Gadget>();
+    }
+
+
     public void InsertGadget(Gadget g) {
         gadgetsInWorld.Add(g);
 
@@ -30,7 +40,7 @@ public class World : MonoBehaviour
     }
 
     public void Save(String fileName) {
-        Debug.Log("Saving Data to: " + fileName);
+        Debug.Log("<GadgetManipulator> Saving Data to: " + fileName);
         BinaryFormatter bf = new BinaryFormatter();
         FileStream file = File.Create(fileName);
 
@@ -42,20 +52,22 @@ public class World : MonoBehaviour
 
     public void Load(String fileName)
     {
-        Debug.Log("Loading Data from: " + fileName);
+        Debug.Log("<GadgetManipulator> Loading Data from: " + fileName);
         if (File.Exists(fileName)) {
             BinaryFormatter bf = new BinaryFormatter();
             FileStream file = File.Open(fileName, FileMode.Open);
 
             List<GadgetSaveData> savedGadgets = (List<GadgetSaveData>)bf.Deserialize(file);
 
-            foreach (Gadget g in gadgetsInWorld) {
-                g.RemoveFromScene();
-            }
+            Clear();
 
             gadgetsInWorld = savedGadgets.ConvertAll<Gadget>(ConvertSavedDataToGadget);
 
             file.Close();
+        }
+        else
+        {
+            Debug.Log("<GadgetManipulator> Loading Data failed. File " + fileName + "doesn't exist");
         }
     }
 
@@ -74,7 +86,7 @@ public class World : MonoBehaviour
 
     public void CreateGadgetFromTemplate(Gadget gadgetTemplate)
     {
-        Debug.Log("A new gameObject has been created and inserted in the World.");
+        Debug.Log("<GadgetManipulator> A new gameObject has been created and inserted in the World");
 
         GameObject gadgetObj = Instantiate(gadgetTemplate.gameObject, this.transform);
         gadgetObj.transform.position -= this.transform.position;

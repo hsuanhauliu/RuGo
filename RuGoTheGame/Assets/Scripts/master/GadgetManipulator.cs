@@ -75,12 +75,18 @@ public class GadgetManipulator : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.D))
             {
-                if(ModifyModeEnabled())
+                if (ModifyModeEnabled())
                 {
                     RemoveGadget();
                 }
             }
-
+        }
+        else
+        {
+            if (Input.GetKeyDown(KeyCode.X))
+            {
+                World.Clear();
+            }
         }
     }
 
