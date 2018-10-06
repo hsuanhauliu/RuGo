@@ -17,11 +17,18 @@ public class GadgetSelectorMenu : MonoBehaviour
 
     }
 
+    public void ReparentSelectorMenu()
+    {
+        // Parent the gadget selector menu underneath the main camera
+        GameObject menuParent = GameObject.FindGameObjectWithTag("MainCamera");
+        transform.SetParent(menuParent.transform);
+    }
+
     public void BuildButtonPanel() {
         GameObject gadgetPrefab = Resources.Load("BasicButton") as GameObject;
 
         //TODO Refactor this
-        for (int i = 0; i < System.Enum.GetValues(typeof(GadgetInventory)).Length; i++) {
+        for (int i = 0; i < (int)GadgetInventory.NUM; i++) {
             GadgetInventory gadgetItem = (GadgetInventory)i;
             BuildButton(gadgetPrefab, gadgetItem, ((1+i) * -150));
         }

@@ -24,6 +24,8 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         Debug.Log("Game Manager Started");
+        // Reparent the menu before we do anything else in the game
+        GadgetSelectorMenu.ReparentSelectorMenu();
         EnableBuildMode();
     }
 
