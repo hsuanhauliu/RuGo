@@ -195,5 +195,10 @@ public class GadgetManipulator : MonoBehaviour
         World.Reset();
     }
 
+    public void ClearWorld()
+    {
+        World.Clear();
+    }
+
  
 }
