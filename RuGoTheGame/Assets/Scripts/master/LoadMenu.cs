@@ -71,6 +71,7 @@ public class LoadMenu : MonoBehaviour {
         {
             BoxCollider collider = gadgetButton.AddComponent<BoxCollider>();
             collider.size = uiButton.GetComponent<RectTransform>().rect.size;
+            collider.center = new Vector3(0, -collider.size.y / 2, 0);
         }
         string buttonIdentifier = buttonName.Replace("SavedGames/", "");
         uiButton.GetComponentInChildren<UnityEngine.UI.Text>().text = buttonIdentifier;
