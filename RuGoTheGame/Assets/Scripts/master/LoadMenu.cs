@@ -96,7 +96,14 @@ public class LoadMenu : MonoBehaviour {
         // Parent the gadget selector menu underneath the main camera
         GameObject menuParent = GameObject.FindGameObjectWithTag("MainCamera");
         transform.SetParent(menuParent.transform);
-        transform.localPosition = new Vector3(0, 0, 1);
+        if (IsVrRun)
+        {
+            transform.localPosition = new Vector3(0, 0, 1);
+        }
+        else
+        {
+            transform.localPosition = new Vector3(0.2f, 0.02f, 0.7f);
+        }
         transform.localRotation = Quaternion.identity;
     }
 
