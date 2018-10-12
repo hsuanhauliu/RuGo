@@ -38,7 +38,7 @@ public class GameManager : MonoBehaviour
     {
         if (BuildModeEnabled)
         {
-            if (RuGoInteraction.Instance.IsConfirmPressed &&
+            if (RuGoInteraction.Instance.IsConfirmReleased &&
                 Manipulator.ModifyModeEnabled() &&
                 !Manipulator.GadgetSelected()
                )
