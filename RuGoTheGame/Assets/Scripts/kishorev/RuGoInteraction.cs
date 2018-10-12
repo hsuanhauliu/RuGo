@@ -324,7 +324,15 @@ public class RuGoInteraction : MonoBehaviour {
         }
     }
 
-    public float getRotationDelta()
+    public bool IsTouchpadTouched
+    {
+        get
+        {
+            return IsSelectorControllerActive && RightController.GetTouch(EVRButtonId.k_EButton_SteamVR_Touchpad);
+        }
+    }
+
+    public float GetRotationDelta()
     {
         Debug.Log("Touchpad being touched.");
         if (IsSelectorControllerActive)

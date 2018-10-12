@@ -63,11 +63,11 @@ public class GadgetManipulator : MonoBehaviour
                 }
             }*/
 
-            if (RuGoInteraction.Instance.getRotationDelta() != 0)
+            if (RuGoInteraction.Instance.IsTouchpadTouched)
             {
 
-                print(RuGoInteraction.Instance.getRotationDelta());
-                mSelectedGadget.transform.Rotate(Vector3.up, RuGoInteraction.Instance.getRotationDelta());
+                print(RuGoInteraction.Instance.GetRotationDelta());
+                mSelectedGadget.transform.Rotate(Vector3.up, RuGoInteraction.Instance.GetRotationDelta());
             }
             
             // #TODO: Unify the controller systems
