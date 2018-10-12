@@ -31,6 +31,8 @@ public class RuGoInteraction : MonoBehaviour {
     private SteamVR_TrackedObject LeftTrackedObject;
     private SteamVR_TrackedObject RightTrackedObject;
     private SteamVR_LaserPointer LaserPointer;
+    private Vector2 prev_pos;
+    private Vector2 curr_pos;
 
     private SteamVR_Controller.Device LeftController
     {
@@ -144,6 +146,8 @@ public class RuGoInteraction : MonoBehaviour {
         {
             DisableDebugging();
         }
+
+        prev_pos = curr_pos;
     }
 
 
@@ -318,5 +322,20 @@ public class RuGoInteraction : MonoBehaviour {
                 return false;
             }
         }
+    }
+
+    public float getRotationDelta()
+    {
+        Debug.Log("Touchpad being touched.");
+        if (IsSelectorControllerActive)
+        {
+           
+            curr_pos = RightController.GetAxis(EVRButtonId.k_EButton_SteamVR_Touchpad);
+
+            
+            return -Vector2.SignedAngle(prev_pos, curr_pos);
+        }
+
+        return 0;
     }
 }

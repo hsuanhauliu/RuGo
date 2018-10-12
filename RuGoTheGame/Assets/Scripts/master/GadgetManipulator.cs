@@ -39,6 +39,9 @@ public class GadgetManipulator : MonoBehaviour
                 //mSelectedGadget.transform.Translate(Vector3.up * mSelectedGadget.transform.localScale.y / 2.0f);
             }
 
+
+
+/*
             // #TODO: Unify the controller systems
             if(RuGoInteraction.Instance.IsDoubleTriggerDown)
             {
@@ -58,6 +61,13 @@ public class GadgetManipulator : MonoBehaviour
                 {
                     mSelectedGadget.transform.Rotate(Vector3.up, -turnSpeed * Time.deltaTime);
                 }
+            }*/
+
+            if (RuGoInteraction.Instance.getRotationDelta() != 0)
+            {
+
+                print(RuGoInteraction.Instance.getRotationDelta());
+                mSelectedGadget.transform.Rotate(Vector3.up, RuGoInteraction.Instance.getRotationDelta());
             }
             
             // #TODO: Unify the controller systems
