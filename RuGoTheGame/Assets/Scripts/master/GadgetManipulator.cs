@@ -61,7 +61,7 @@ public class GadgetManipulator : MonoBehaviour
             }
             
             // #TODO: Unify the controller systems
-            if (Input.GetKeyDown(KeyCode.Return) || RuGoInteraction.Instance.IsMenuConfirmPressed)
+            if (Input.GetKeyDown(KeyCode.Return) || RuGoInteraction.Instance.IsConfirmPressed)
             {
                 if (ModifyModeEnabled())
                 {
