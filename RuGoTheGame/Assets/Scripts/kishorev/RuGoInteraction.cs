@@ -70,6 +70,9 @@ public class RuGoInteraction : MonoBehaviour {
 
     private void HandleTriggerClicked(object sender, ClickedEventArgs e)
     {
+        if (EventSystem.current == null)
+            return;
+
         if (EventSystem.current.currentSelectedGameObject != null)
         {
             ExecuteEvents.Execute(EventSystem.current.currentSelectedGameObject, new PointerEventData(EventSystem.current), ExecuteEvents.submitHandler);
@@ -87,6 +90,8 @@ public class RuGoInteraction : MonoBehaviour {
 
     private void HandlePointerOut(object sender, PointerEventArgs e)
     {
+        if (EventSystem.current == null)
+            return;
 
         var button = e.target.GetComponent<UnityEngine.UI.Button>();
         if (button != null)
@@ -189,6 +194,7 @@ public class RuGoInteraction : MonoBehaviour {
         }
     }
 
+    public Camera RayCastCamera;
     public Ray SelectorRay
     {
         get
@@ -205,6 +211,11 @@ public class RuGoInteraction : MonoBehaviour {
                 if (Camera.main != null)
                 {
                     selectorRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+                }
+
+                if(RayCastCamera != null)
+                {
+                    selectorRay = RayCastCamera.ScreenPointToRay(Input.mousePosition);
                 }
             }
 
