@@ -9,12 +9,13 @@ public class LoadMenu : Menu
     public GameManager gameManager;
     public MainMenu mainMenu;
     public World world;
+
     public float padding = 20f;
 
 	// Use this for initialization
 	void Start ()
     {
-        ReparentSelectorMenu();
+        ReparentMenu();
         BuildToolBar();
         this.Deactivate();
 	}
@@ -24,7 +25,25 @@ public class LoadMenu : Menu
     {
 	}
 
-    public void BuildToolBar()
+    /************************** Public Functions **************************/
+
+    public void Activate()
+    {
+        BuildToolBar();
+        this.gameObject.SetActive(true);
+    }
+
+    public void GoToMainMenu()
+    {
+        this.Deactivate();
+        mainMenu.Activate();
+        //MainMenu.Activate();
+        //gameManager.EnableSelectMode();
+    }
+
+    /************************** Private Functions **************************/
+
+    private void BuildToolBar()
     {
         float verticalOffset = 300f;
         float horizontalOffset = 0f;
@@ -41,7 +60,7 @@ public class LoadMenu : Menu
         }
     }
 
-    public void AddButtonToToolBar(string buttonName, float horizontalOffset, float verticalOffset)
+    private void AddButtonToToolBar(string buttonName, float horizontalOffset, float verticalOffset)
     {
         GameObject SmallButton = Resources.Load("smallButton") as GameObject;
 
@@ -80,35 +99,5 @@ public class LoadMenu : Menu
         {
             uiButton.onClick.AddListener(() => world.Load(buttonName)); //this.Deactivate());
         }
-    }
-
-    public void ReparentSelectorMenu()
-    {
-        // Parent the gadget selector menu underneath the main camera
-        GameObject menuParent = GameObject.FindGameObjectWithTag("MainCamera");
-        transform.SetParent(menuParent.transform);
-        if (IsVrRun)
-        {
-            transform.localPosition = new Vector3(0, 0, 1);
-        }
-        else
-        {
-            transform.localPosition = new Vector3(0.2f, 0.02f, 0.7f);
-        }
-        transform.localRotation = Quaternion.identity;
-    }
-
-    public void Activate()
-    {
-        BuildToolBar();
-        this.gameObject.SetActive(true);
-    }
-
-    public void GoToMainMenu()
-    {
-        this.Deactivate();
-        mainMenu.Activate();
-        //MainMenu.Activate();
-        //gameManager.EnableSelectMode();
     }
 }

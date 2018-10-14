@@ -5,10 +5,12 @@ public class GadgetSelectorMenu : Menu
     public GameManager gameManager;
     public MainMenu mainMenu;
     public LoadMenu loadMenu;
+
     public float padding = 20f;
 
     void Start()
     {
+        ReparentMenu();
         BuildButtonPanel();
         BuildToolBar();
     }
@@ -18,7 +20,36 @@ public class GadgetSelectorMenu : Menu
 
     }
 
-    public void BuildButtonPanel()
+    /************************** Public Functions **************************/
+
+    public void SelectDrawTool()
+    {
+        gameManager.EnableDrawMode();
+    }
+
+    public void SelectGadget(string selectedGagdget)
+    {
+        gameManager.CreateGadget(selectedGagdget);
+    }
+
+    public void Activate()
+    {
+        mainMenu.Deactivate();
+        loadMenu.Deactivate();
+        this.gameObject.SetActive(true);
+    }
+
+    public void GoToMainMenu()
+    {
+        this.Deactivate();
+        mainMenu.Activate();
+        //MainMenu.Activate();
+        //gameManager.EnableSelectMode();
+    }
+
+    /************************** Private Functions **************************/
+
+    private void BuildButtonPanel()
     {
         GameObject gadgetPrefab = Resources.Load("BasicButton") as GameObject;
 
@@ -30,7 +61,7 @@ public class GadgetSelectorMenu : Menu
         }
     }
 
-    public void BuildToolBar()
+    private void BuildToolBar()
     {
         float verticalOffset = 750f;
         float horizontalOffset = 0f ;
@@ -41,7 +72,7 @@ public class GadgetSelectorMenu : Menu
         AddButtonToToolBar("Back", horizontalOffset - 330f, verticalOffset );
     }
 
-    public void AddButtonToToolBar(string buttonName, float horizontalOffset, float verticalOffset)
+    private void AddButtonToToolBar(string buttonName, float horizontalOffset, float verticalOffset)
     {
         GameObject SmallButton = Resources.Load("smallButton") as GameObject;
         GameObject gadgetButton = (GameObject)Instantiate(SmallButton, this.transform);
@@ -88,7 +119,7 @@ public class GadgetSelectorMenu : Menu
     }
 
 
-    public void BuildButton(GameObject buttonPrefab, GadgetInventory gadgetItem, float verticalOffset)
+    private void BuildButton(GameObject buttonPrefab, GadgetInventory gadgetItem, float verticalOffset)
     {
         //TODO Add Button to Panel transform instead of Entire Menu
         GameObject gadgetButton = (GameObject)Instantiate(buttonPrefab, this.transform);
@@ -115,30 +146,5 @@ public class GadgetSelectorMenu : Menu
         {
             uiButton.onClick.AddListener(() => SelectGadget(buttonIdentifier));
         }
-    }
-
-    public void SelectDrawTool()
-    {
-        gameManager.EnableDrawMode();
-    }
-
-    public void SelectGadget(string selectedGagdget)
-    {
-        gameManager.CreateGadget(selectedGagdget);
-    }
-
-    public void Activate()
-    {
-        mainMenu.Deactivate();
-        loadMenu.Deactivate();
-        this.gameObject.SetActive(true);
-    }
-
-    public void GoToMainMenu()
-    {
-        this.Deactivate();
-        mainMenu.Activate();
-        //MainMenu.Activate();
-        //gameManager.EnableSelectMode();
     }
 }

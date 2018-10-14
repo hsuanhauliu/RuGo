@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class MainMenu : Menu
 {
-    public float padding = 20f;
     public GameManager gameManager;
 
-	// Use this for initialization
-	void Start ()
+    public float padding = 20f;
+
+    // Use this for initialization
+    void Start ()
     {
         ReparentMenu();
         BuildToolBar();
@@ -21,7 +22,23 @@ public class MainMenu : Menu
 
 	}
 
-    public void BuildToolBar()
+    /************************** Public Functions **************************/
+
+    public void GoToSelectorMenu()
+    {
+        this.Deactivate();
+        gameManager.EnableSelectMode();
+    }
+
+    public void GoTOLoadMenu()
+    {
+        this.Deactivate();
+        gameManager.goToLoadMenu();
+    }
+
+    /************************** Private Functions **************************/
+
+    private void BuildToolBar()
     {
         float verticalOffset = 750f;
         float horizontalOffset = 0f;
@@ -34,7 +51,7 @@ public class MainMenu : Menu
         AddButtonToToolBar("Load", buttonType, horizontalOffset, verticalOffset - 800f);
     }
 
-    public void AddButtonToToolBar(string buttonName, string buttonType ,float horizontalOffset, float verticalOffset)
+    private void AddButtonToToolBar(string buttonName, string buttonType ,float horizontalOffset, float verticalOffset)
     {
         GameObject SmallButton = Resources.Load("smallButton") as GameObject;
         GameObject gadgetButton = (GameObject)Instantiate(SmallButton, this.transform);
@@ -73,17 +90,5 @@ public class MainMenu : Menu
         {
             uiButton.onClick.AddListener(() => this.GoTOLoadMenu()); //gameManager.GameManagerLoad());
         }
-    }
-
-    public void GoToSelectorMenu()
-    {
-        this.Deactivate();
-        gameManager.EnableSelectMode();
-    }
-
-    public void GoTOLoadMenu()
-    {
-        this.Deactivate();
-        gameManager.goToLoadMenu();
     }
 }
