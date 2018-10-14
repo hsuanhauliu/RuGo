@@ -197,6 +197,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameManager: {fileID: 498110773}
   mainMenu: {fileID: 1653191531}
+  loadMenu: {fileID: 1731063312}
   padding: 20
   IsVrRun: 0
 --- !u!114 &98567717
