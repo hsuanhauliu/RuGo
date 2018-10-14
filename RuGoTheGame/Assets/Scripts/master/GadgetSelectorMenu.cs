@@ -4,6 +4,7 @@ public class GadgetSelectorMenu : MonoBehaviour
 {
     public GameManager gameManager;
     public MainMenu mainMenu;
+    public LoadMenu loadMenu;
     public float padding = 20f;
     public bool IsVrRun = false;
 
@@ -149,6 +150,8 @@ public class GadgetSelectorMenu : MonoBehaviour
 
     public void Activate()
     {
+        mainMenu.Deactivate();
+        loadMenu.Deactivate();
         this.gameObject.SetActive(true);
     }
 
