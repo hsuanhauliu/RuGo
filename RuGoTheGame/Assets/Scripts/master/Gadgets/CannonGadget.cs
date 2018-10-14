@@ -11,6 +11,8 @@ public class CannonGadget : Gadget
 
     private float mass = 0.5f;
 
+    private AudioSource mAudioData;
+
     new void Start()
     {
         base.Start();
@@ -25,6 +27,8 @@ public class CannonGadget : Gadget
         mTrajectory.startWidth = 0.01f;
         mTrajectory.endWidth = 0.01f;
         //mTrajectory.SetVertexCount(29);
+
+        mAudioData = GetComponent<AudioSource>();
     }
 
     public override void PerformSwitchAction()
@@ -86,6 +90,7 @@ public class CannonGadget : Gadget
 
     private void FireCannon() 
     {
+        mAudioData.Play(0);
         GameObject cannonBall = Instantiate(mCannonBallPrefab, mBarrel);
         Rigidbody rigidBody = cannonBall.GetComponent<Rigidbody>();
 

@@ -7,11 +7,15 @@ public class FanGadget : Gadget
 
 
     // This mask is used to control objects the wind interacts with, it is set in the editor.
-    private LayerMask mLayerMask;     public float windStrengthMin = 5;     public float windStrengthMax = 25;
+    private LayerMask mLayerMask;
+    private AudioSource mAudioData;
+    public float windStrengthMin = 5;     public float windStrengthMax = 25;
     private float mWindStrength;
     private Transform blades;
     private float mWindzoneForwardOffset = 0.25f;
     private Vector3 mWindzoneHalfExtents;
+
+     
 
     private bool mIsFanOn = false; 
     new void Start()
@@ -21,6 +25,8 @@ public class FanGadget : Gadget
         mWindzoneHalfExtents = new Vector3(0.10f, 0.5f, mWindzoneForwardOffset);
 
         mLayerMask = LayerMask.GetMask(LayerMask.LayerToName(this.gameObject.layer));
+
+        mAudioData = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -52,6 +58,7 @@ public class FanGadget : Gadget
     public override void PerformSwitchAction()
     {
         mIsFanOn = !mIsFanOn;
+        mAudioData.Play(0);
     }
 
     public override GadgetInventory GetGadgetType()

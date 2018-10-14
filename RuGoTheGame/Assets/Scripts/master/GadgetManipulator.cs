@@ -39,6 +39,9 @@ public class GadgetManipulator : MonoBehaviour
                 //mSelectedGadget.transform.Translate(Vector3.up * mSelectedGadget.transform.localScale.y / 2.0f);
             }
 
+
+
+/*
             // #TODO: Unify the controller systems
             if(RuGoInteraction.Instance.IsDoubleTriggerDown)
             {
@@ -58,10 +61,17 @@ public class GadgetManipulator : MonoBehaviour
                 {
                     mSelectedGadget.transform.Rotate(Vector3.up, -turnSpeed * Time.deltaTime);
                 }
+            }*/
+
+            if (RuGoInteraction.Instance.IsTouchpadTouched)
+            {
+
+                print(RuGoInteraction.Instance.GetRotationDelta());
+                mSelectedGadget.transform.Rotate(Vector3.up, RuGoInteraction.Instance.GetRotationDelta());
             }
             
             // #TODO: Unify the controller systems
-            if (Input.GetKeyDown(KeyCode.Return) || RuGoInteraction.Instance.IsMenuConfirmPressed)
+            if (Input.GetKeyDown(KeyCode.Return) || RuGoInteraction.Instance.IsConfirmPressed)
             {
                 if (ModifyModeEnabled())
                 {
@@ -193,6 +203,11 @@ public class GadgetManipulator : MonoBehaviour
     public void ResetGadgetsInWorld()
     {
         World.Reset();
+    }
+
+    public void ClearWorld()
+    {
+        World.Clear();
     }
 
  

@@ -1,12 +1,17 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
+
 public class GameManager : MonoBehaviour
 {
     public GadgetManipulator Manipulator;
     public GadgetSelectorMenu GadgetSelectorMenu;
+    public MainMenu MainMenu;
+    public LoadMenu loadMenu;
+
     public PathTool PathTool;
     public Text GameModeDisplay;
+
 
     // Testing the VR Menu
     public int CurrentMenuOption = -1;
@@ -33,7 +38,7 @@ public class GameManager : MonoBehaviour
     {
         if (BuildModeEnabled)
         {
-            if (RuGoInteraction.Instance.IsConfirmPressed &&
+            if (RuGoInteraction.Instance.IsConfirmReleased &&
                 Manipulator.ModifyModeEnabled() &&
                 !Manipulator.GadgetSelected()
                )
@@ -70,6 +75,32 @@ public class GameManager : MonoBehaviour
     public void ResetGadgetsInWorld()
     {
         Manipulator.ResetGadgetsInWorld();
+    }
+    /// <summary>
+    /// used to save the world from menu as a replacement from OnPress P
+    /// </summary>
+    public void GameManagerSaves()
+    {
+       Manipulator.Save(World.DEFAULT_SAVE_FILE);
+       string[] words = System.DateTime.UtcNow.ToString().Replace(":", " ").Replace("/", " ").Split(' ');
+       string fname = "";
+       foreach (string word in words)
+       {
+           fname += word;
+       }
+       var name = System.DateTime.UtcNow.ToString();
+       Manipulator.Save("SavedGames/" + fname + ".dat");
+    }
+
+    public void GameManagerLoad()
+    {
+      Manipulator.Load();
+
+    }
+    public void GameManagerClearWorld()
+    {
+        Manipulator.ClearWorld();
+
     }
 
     public void CreatePath() {
@@ -163,6 +194,20 @@ public class GameManager : MonoBehaviour
         SetPlayerLook(false);
     }
 
+    //TODO change this to something better
+    public void goFromTo()
+    {
+        GadgetSelectorMenu.Deactivate();
+        MainMenu.Activate();
+    }
+
+    public void goToLoadMenu()
+    {
+
+        loadMenu.Activate();
+    }
+
+
     /************************** Private Functions **************************/
 
     private void SelectExistingGadget()     {         Ray ray = RuGoInteraction.Instance.SelectorRay;         RaycastHit hit;          if (Physics.Raycast(ray, out hit))         {             Gadget gadget = hit.transform.GetComponent<Gadget>();              if (gadget)             {                 Manipulator.EnableModifyMode(gadget);             }             else             {                 gadget = hit.transform.GetComponentInParent<Gadget>();                 if (gadget)                 {
@@ -185,4 +230,5 @@ public class GameManager : MonoBehaviour
             playerMoveScript.EnableLook = enabled;
         }        
     }
+
 }
