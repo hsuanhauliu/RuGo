@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Menu : MonoBehaviour
 {
-    public bool IsVrRun = false;
+    protected bool IsVrRun = false;
 
     void Start () {
 		
@@ -40,5 +40,10 @@ public class Menu : MonoBehaviour
     public void Deactivate()
     {
         this.gameObject.SetActive(false);
+    }
+
+    public void SetVRFlag(bool flag)
+    {
+        IsVrRun = flag;
     }
 }
