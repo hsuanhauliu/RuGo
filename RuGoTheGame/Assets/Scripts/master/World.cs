@@ -11,6 +11,8 @@ public class World : MonoBehaviour
     public static String DEFAULT_SAVE_FILE = "./world.dat";
     public static String AUTO_SAVE_FILE = "./autosave.dat";
 
+    private bool mIsWorldStateModified = false;
+
     void Start()
     {
         gadgetsInWorld = new List<Gadget>();
@@ -31,15 +33,17 @@ public class World : MonoBehaviour
         gadgetsInWorld = new List<Gadget>();
     }
 
+    void Update()
+    {
+        if (mIsWorldStateModified) {
+            Save(AUTO_SAVE_FILE);
+            mIsWorldStateModified = false;
+        }
+    }
 
     public void InsertGadget(Gadget g) {
         gadgetsInWorld.Add(g);
-
-        // #TODO: This causes issue in VR where it flashes the screen. Probably because it is serializing everything everytime
-
-        // comment this if performance issue
-        // uncommented to verify click on menu
-       // Save(AUTO_SAVE_FILE);
+        mIsWorldStateModified = true;
     }
 
     public void Save(String fileName) {
@@ -102,7 +106,7 @@ public class World : MonoBehaviour
     {
         gadgetsInWorld.Remove(gadget);
         gadget.RemoveFromScene();
-        this.Save(AUTO_SAVE_FILE);
+        mIsWorldStateModified = true;
     }
 }
 
