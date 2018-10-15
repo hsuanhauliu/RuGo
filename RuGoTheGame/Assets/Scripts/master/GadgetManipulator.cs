@@ -34,35 +34,17 @@ public class GadgetManipulator : MonoBehaviour
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, mRayCastMask))
             {
                 mSelectedGadget.transform.position = hit.point;
-
-                //TODO Come up with something more reasonable value for ramp and other objects that are rotated
-                //mSelectedGadget.transform.Translate(Vector3.up * mSelectedGadget.transform.localScale.y / 2.0f);
             }
 
-
-
-/*
-            // #TODO: Unify the controller systems
-            if(RuGoInteraction.Instance.IsDoubleTriggerDown)
+            if (Input.GetKey(KeyCode.Z))
             {
-                Vector3 lookDirection = RuGoInteraction.Instance.ControllerToControllerDirection;
-                lookDirection.y = 0.0f;
-                mSelectedGadget.transform.rotation = Quaternion.LookRotation(lookDirection, Vector3.up);
+                mSelectedGadget.transform.Rotate(Vector3.up, turnSpeed * Time.deltaTime);
+
             }
-            else
+            if (Input.GetKey(KeyCode.C))
             {
-                // This code should only work with PC.
-                if (Input.GetKey(KeyCode.Z))
-                {
-                    mSelectedGadget.transform.Rotate(Vector3.up, turnSpeed * Time.deltaTime);
-
-                }
-                if (Input.GetKey(KeyCode.C))
-                {
-                    mSelectedGadget.transform.Rotate(Vector3.up, -turnSpeed * Time.deltaTime);
-                }
-            }*/
-
+                mSelectedGadget.transform.Rotate(Vector3.up, -turnSpeed * Time.deltaTime);
+            }
             if (RuGoInteraction.Instance.IsTouchpadTouched)
             {
 
