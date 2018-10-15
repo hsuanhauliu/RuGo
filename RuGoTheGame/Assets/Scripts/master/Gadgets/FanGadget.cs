@@ -17,7 +17,8 @@ public class FanGadget : Gadget
 
      
 
-    private bool mIsFanOn = false; 
+    private bool mIsFanOn = false;
+
     new void Start()
     {
         base.Start();
@@ -25,7 +26,6 @@ public class FanGadget : Gadget
         mWindzoneHalfExtents = new Vector3(0.10f, 0.5f, mWindzoneForwardOffset);
 
         mLayerMask = LayerMask.GetMask(LayerMask.LayerToName(this.gameObject.layer));
-
         mAudioData = GetComponent<AudioSource>();
     }
 
@@ -59,6 +59,15 @@ public class FanGadget : Gadget
     {
         mIsFanOn = !mIsFanOn;
         mAudioData.Play(0);
+    }
+
+    public override void MakeTransparent()
+    {
+        base.MakeTransparent();
+        mIsFanOn = false;
+        if(mAudioData != null) {
+            mAudioData.Stop();
+        }
     }
 
     public override GadgetInventory GetGadgetType()
