@@ -48,6 +48,8 @@ public abstract class Gadget : MonoBehaviour
 
     private List<Renderer> mRenderers;
 
+    private List<Vector3> mChildData;
+
     protected void Start()
     {
         gameObject.layer = LayerMask.NameToLayer("Gadget");
@@ -56,6 +58,12 @@ public abstract class Gadget : MonoBehaviour
     void Awake()
     {
         InitializeGadget();
+
+        mChildData = new List<Vector3>();
+        foreach (Transform child in transform)
+        {
+            mChildData.Add(child.localPosition);
+        }
     }
 
     protected void InitializeGadget()
@@ -153,9 +161,22 @@ public abstract class Gadget : MonoBehaviour
         SetPhysicsMode(false);
 
         //TODO Remove the duplication between highlight and transparent....
-        foreach (Transform child in transform)
+        Vector3 firstPosition = Vector3.zero;
+        int childCount = transform.childCount;
+        for (int childIndex = 0; childIndex < childCount; childIndex++)
         {
+            Transform child = transform.GetChild(childIndex);
+            if (childIndex == 0)
+            {
+                firstPosition = child.position;
+            }
+
             child.gameObject.layer = LayerMask.NameToLayer("SelectedGadget");
+            child.localPosition = mChildData[childIndex];   
+        }
+        if(childCount > 0)
+        {
+            transform.position = firstPosition + mChildData[0];
         }
 
         foreach (Renderer GadgetRenderer in mRenderers)
