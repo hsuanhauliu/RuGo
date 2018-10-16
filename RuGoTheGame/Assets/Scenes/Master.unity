@@ -1606,6 +1606,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 734c7ed0340e84c33a31d828ff4cc74c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SelectorMenu: {fileID: 98567716}
+  LoadMenu: {fileID: 1731063312}
+  MainMenu: {fileID: 1653191531}
   IsVrRun: 0
 --- !u!4 &1648752596
 Transform:
