@@ -38,6 +38,7 @@ public class FanGadget : Gadget
             Vector3 fanForward = gameObject.transform.forward * mWindzoneForwardOffset;
             windZonePosition += fanForward;
 
+            //TODO need to change this
             mWindStrength = Random.Range(windStrengthMin, windStrengthMax);
 
             //TODO Tweak the Wind Zone Overlap Box

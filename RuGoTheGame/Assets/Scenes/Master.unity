@@ -624,7 +624,7 @@ MonoBehaviour:
   PathTool: {fileID: 210995599}
   GameModeDisplay: {fileID: 1529945659}
   CurrentMenuOption: -1
-  isVrRun: 1
+  isVrRun: 0
 --- !u!4 &498110774
 Transform:
   m_ObjectHideFlags: 0
