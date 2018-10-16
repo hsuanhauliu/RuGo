@@ -52,11 +52,11 @@ public abstract class Gadget : MonoBehaviour
 
     protected void Start()
     {
-        gameObject.layer = LayerMask.NameToLayer("Gadget");
     }
 
     protected void Awake()
     {
+        gameObject.layer = LayerMask.NameToLayer("Gadget");
         InitializeGadget();
 
         mChildData = new List<Vector3>();
@@ -148,17 +148,27 @@ public abstract class Gadget : MonoBehaviour
             GadgetRenderer.material.color = albedo;
         }
 
-        foreach (Transform t in transform)
-        {
-            t.gameObject.layer = LayerMask.NameToLayer("Gadget");
-        }
+        SetLayer(transform, "Gadget");
 
         SetPhysicsMode(true);
+    }
+
+    protected void SetLayer(Transform t, string layerName)
+    {
+        print(t.gameObject.name + " " + layerName);
+
+        t.gameObject.layer = LayerMask.NameToLayer(layerName);
+
+        foreach (Transform child in t)
+        {
+            SetLayer(child, layerName);
+        }
     }
 
     public virtual void MakeTransparent()
     {
         SetPhysicsMode(false);
+        SetLayer(transform, "SelectedGadget");
 
         //TODO Remove the duplication between highlight and transparent....
         Vector3 firstPosition = Vector3.zero;
@@ -171,7 +181,6 @@ public abstract class Gadget : MonoBehaviour
                 firstPosition = child.position;
             }
 
-            child.gameObject.layer = LayerMask.NameToLayer("SelectedGadget");
             child.localPosition = mChildData[childIndex];   
         }
         if(childCount > 0)
