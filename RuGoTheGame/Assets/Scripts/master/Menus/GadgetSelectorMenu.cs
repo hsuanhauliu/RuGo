@@ -10,7 +10,6 @@ public class GadgetSelectorMenu : Menu
 
     void Start()
     {
-        ReparentMenu();
         BuildButtonPanel();
         BuildToolBar();
     }

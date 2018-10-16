@@ -2,21 +2,21 @@
 
 public class MenuManager : MonoBehaviour
 {
-    GadgetSelectorMenu SelectorMenu;
-    LoadMenu LoadMenu;
-    MainMenu MainMenu;
+    public GadgetSelectorMenu SelectorMenu;
+    public LoadMenu LoadMenu;
+    public MainMenu MainMenu;
 
     public bool IsVrRun = false;
 
     // Use this for initialization
     void Start ()
     {
-        if (IsVrRun)
-        {
-            SelectorMenu.SetVRFlag(true);
-            LoadMenu.SetVRFlag(true);
-            MainMenu.SetVRFlag(true);
-        }
+        SelectorMenu.SetVRFlag(IsVrRun);
+        SelectorMenu.ReparentMenu();
+        LoadMenu.SetVRFlag(IsVrRun);
+        LoadMenu.ReparentMenu();
+        MainMenu.SetVRFlag(IsVrRun);
+        MainMenu.ReparentMenu();
 	}
 	
 	// Update is called once per frame

@@ -11,7 +11,6 @@ public class MainMenu : Menu
     // Use this for initialization
     void Start ()
     {
-        ReparentMenu();
         BuildToolBar();
         this.gameObject.SetActive(true);
 	}

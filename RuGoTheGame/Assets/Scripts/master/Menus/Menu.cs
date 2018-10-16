@@ -14,7 +14,7 @@ public class Menu : MonoBehaviour
 		
 	}
 
-    protected void ReparentMenu()
+    public void ReparentMenu()
     {
         // Parent the gadget selector menu underneath the main camera
         GameObject menuParent = GameObject.FindGameObjectWithTag("MainCamera");

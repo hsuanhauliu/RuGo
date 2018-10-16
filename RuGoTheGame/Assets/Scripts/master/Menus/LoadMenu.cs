@@ -15,7 +15,6 @@ public class LoadMenu : Menu
 	// Use this for initialization
 	void Start ()
     {
-        ReparentMenu();
         BuildToolBar();
         this.Deactivate();
 	}
