@@ -55,7 +55,7 @@ public abstract class Gadget : MonoBehaviour
         gameObject.layer = LayerMask.NameToLayer("Gadget");
     }
 
-    void Awake()
+    protected void Awake()
     {
         InitializeGadget();
 

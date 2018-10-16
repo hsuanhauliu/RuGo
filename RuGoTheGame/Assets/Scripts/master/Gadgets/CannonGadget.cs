@@ -13,9 +13,9 @@ public class CannonGadget : Gadget
 
     private AudioSource mAudioData;
 
-    new void Start()
+    new void Awake()
     {
-        base.Start();
+        base.Awake();
         mCannonBallPrefab = Resources.Load("CannonBall") as GameObject;
         mBarrel = this.transform.Find("SmallCannon").Find("Wooden_pillow");
 
@@ -26,8 +26,7 @@ public class CannonGadget : Gadget
         }
         mTrajectory.startWidth = 0.01f;
         mTrajectory.endWidth = 0.01f;
-        //mTrajectory.SetVertexCount(29);
-
+       
         mAudioData = GetComponent<AudioSource>();
     }
 
@@ -86,6 +85,18 @@ public class CannonGadget : Gadget
                 mTrajectory.SetPosition(j, trajectory_points[j]);
             }
         }
+    }
+
+    public override void MakeSolid()
+    {
+        base.MakeSolid();
+        mTrajectory.enabled = false;
+    }
+
+    public override void MakeTransparent()
+    {
+        base.MakeTransparent();
+        mTrajectory.enabled = true;
     }
 
     private void FireCannon() 
