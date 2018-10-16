@@ -6,7 +6,6 @@ using System.IO;
 
 public class LoadMenu : Menu
 {
-    public GameManager gameManager;
     public MainMenu mainMenu;
     public World world;
 
@@ -15,6 +14,7 @@ public class LoadMenu : Menu
 	// Use this for initialization
 	void Start ()
     {
+        ReparentMenu();
         BuildToolBar();
         this.Deactivate();
 	}

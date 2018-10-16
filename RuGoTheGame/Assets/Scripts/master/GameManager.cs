@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
 
     // Testing the VR Menu
     public int CurrentMenuOption = -1;
+    public bool isVrRun = false;
 
     private enum GameMode { Build, Select, Draw };
     private GameMode currentGameMode;

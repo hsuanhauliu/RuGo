@@ -2,7 +2,6 @@
 
 public class GadgetSelectorMenu : Menu
 {
-    public GameManager gameManager;
     public MainMenu mainMenu;
     public LoadMenu loadMenu;
 
@@ -10,6 +9,7 @@ public class GadgetSelectorMenu : Menu
 
     void Start()
     {
+        ReparentMenu();
         BuildButtonPanel();
         BuildToolBar();
     }

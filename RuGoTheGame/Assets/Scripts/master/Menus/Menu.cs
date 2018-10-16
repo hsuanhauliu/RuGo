@@ -4,7 +4,13 @@ using UnityEngine;
 
 public class Menu : MonoBehaviour
 {
+    public GameManager gameManager;
     protected bool IsVrRun = false;
+
+    void Awake()
+    {
+        IsVrRun = gameManager.isVrRun;
+    }
 
     void Start () {
 		

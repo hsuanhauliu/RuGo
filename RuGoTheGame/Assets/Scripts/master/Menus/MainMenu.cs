@@ -4,13 +4,12 @@ using UnityEngine;
 
 public class MainMenu : Menu
 {
-    public GameManager gameManager;
-
     public float padding = 20f;
 
     // Use this for initialization
     void Start ()
     {
+        ReparentMenu();
         BuildToolBar();
         this.gameObject.SetActive(true);
 	}
