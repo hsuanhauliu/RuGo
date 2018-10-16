@@ -86,6 +86,7 @@ public class GadgetManipulator : MonoBehaviour
     {
         mSelectedGadget.Deselect();
         mSelectedGadget = null;
+        World.MarkWorldModified();
     }
 
     private void RemoveGadget()

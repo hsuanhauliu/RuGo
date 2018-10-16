@@ -330,7 +330,7 @@ public class RuGoInteraction : MonoBehaviour {
             {
                 // FOR PC We want to return false for now until controllers are unified
                 //return Input.GetKeyDown(KeyCode.Return);
-                return false;
+                return Input.GetMouseButtonUp(0);
             }
         }
     }

@@ -35,18 +35,21 @@ public class World : MonoBehaviour
 
     void Update()
     {
-        if (mIsWorldStateModified) {
+        if (mIsWorldStateModified)
+        {
             Save(AUTO_SAVE_FILE);
             mIsWorldStateModified = false;
         }
     }
 
-    public void InsertGadget(Gadget g) {
+    public void InsertGadget(Gadget g)
+    {
         gadgetsInWorld.Add(g);
-        mIsWorldStateModified = true;
+        MarkWorldModified();
     }
 
-    public void Save(String fileName) {
+    public void Save(String fileName)
+    {
         Debug.Log("<GadgetManipulator> Saving Data to: " + fileName);
         BinaryFormatter bf = new BinaryFormatter();
         FileStream file = File.Create(fileName);
@@ -106,7 +109,11 @@ public class World : MonoBehaviour
     {
         gadgetsInWorld.Remove(gadget);
         gadget.RemoveFromScene();
+        MarkWorldModified();
+    }
+
+    public void MarkWorldModified()
+    {
         mIsWorldStateModified = true;
     }
 }
-

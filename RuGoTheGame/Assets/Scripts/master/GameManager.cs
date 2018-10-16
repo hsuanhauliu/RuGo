@@ -38,7 +38,7 @@ public class GameManager : MonoBehaviour
     {
         if (BuildModeEnabled)
         {
-            if (RuGoInteraction.Instance.IsConfirmReleased &&
+            if (RuGoInteraction.Instance.IsMenuConfirmPressed &&
                 Manipulator.ModifyModeEnabled() &&
                 !Manipulator.GadgetSelected()
                )
@@ -211,12 +211,12 @@ public class GameManager : MonoBehaviour
     /************************** Private Functions **************************/
 
     private void SelectExistingGadget()     {         Ray ray = RuGoInteraction.Instance.SelectorRay;         RaycastHit hit;          if (Physics.Raycast(ray, out hit))         {             Gadget gadget = hit.transform.GetComponent<Gadget>();              if (gadget)             {                 Manipulator.EnableModifyMode(gadget);             }             else             {                 gadget = hit.transform.GetComponentInParent<Gadget>();                 if (gadget)                 {
-                     Manipulator.EnableModifyMode(gadget);                 }
+                    Manipulator.EnableModifyMode(gadget);
+
+                }
                 else
                 {
-
                     Debug.Log(hit.transform.root);
-
                 }
 
             }         }     }
