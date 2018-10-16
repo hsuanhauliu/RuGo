@@ -24,6 +24,10 @@ public class CannonGadget : Gadget
         {
             mTrajectory = mBarrel.gameObject.AddComponent<LineRenderer>();
         }
+
+        mTrajectory.material = new Material(Shader.Find("Unlit/Texture"));
+        mTrajectory.startColor = Color.white;
+        mTrajectory.endColor = Color.white;
         mTrajectory.startWidth = 0.01f;
         mTrajectory.endWidth = 0.01f;
        
