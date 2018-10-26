@@ -22,6 +22,9 @@ public class ARSpaceManager : MonoBehaviour {
     /// </summary>
     private GameObject holder;
 
+    private List<ZEDPlaneGameObject> zedPlanes;
+
+    
     // Use this for initialization
     void Start () {
 
@@ -31,6 +34,8 @@ public class ARSpaceManager : MonoBehaviour {
         //initialize Vertices/Triangles with enough length
         planeMeshVertices = new Vector3[65000];
         planeMeshTriangles = new int[65000];
+
+        zedPlanes = new List<ZEDPlaneGameObject>();
 
         //Create a holder for all the planes
         holder = new GameObject();
@@ -43,7 +48,7 @@ public class ARSpaceManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(RuGoInteraction.Instance.IsConfirmPressed)
+        if(RuGoInteraction.Instance.IsLeftConfirmPressed)
         {
             FetchPlane();
         }
@@ -121,10 +126,12 @@ public class ARSpaceManager : MonoBehaviour {
 
                         ZEDPlaneGameObject hitPlane = newhitGO.AddComponent<ZEDPlaneGameObject>();
 
-                        hitPlane.Create(plane, worldPlaneVertices, worldPlaneTriangles, 1);
+                        hitPlane.Create(plane, worldPlaneVertices, worldPlaneTriangles, zedPlanes.Count + 1);
 
-                        hitPlane.SetPhysics(false);
+                        hitPlane.SetPhysics(true);
                         hitPlane.SetVisible(true);
+
+                        zedPlanes.Add(hitPlane);
                     }
 
                     collisionPoint = LeftCameraEyes.transform.rotation * plane.PlaneTransformPosition + LeftCameraEyes.transform.position;
@@ -144,11 +151,6 @@ public class ARSpaceManager : MonoBehaviour {
     {
         if (!mIsZedReady)
             return;
-
-        foreach (Transform child in holder.transform)
-        {
-            Destroy(child.gameObject);
-        }
 
         Vector3 collisionPoint;
         bool isCollision = HitTestAlongRay(RuGoInteraction.Instance.SelectorRay, out collisionPoint); // Perform test using a max distance of 3m and 1cm increments.

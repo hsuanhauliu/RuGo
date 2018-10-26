@@ -242,6 +242,21 @@ public class RuGoInteraction : MonoBehaviour {
         }
     }
 
+    public bool IsLeftConfirmPressed
+    {
+        get
+        {
+            if (IsManipulatorControllerActive)
+            {
+                return LeftController.GetHairTriggerDown() && (!IsSelectorControllerActive || !RightController.GetHairTrigger());
+            }
+            else
+            {
+                return Input.GetMouseButtonDown(0);
+            }
+        }
+    }
+
     public bool IsConfirmHeld
     {
         get
