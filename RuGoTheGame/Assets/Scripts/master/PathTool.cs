@@ -5,27 +5,20 @@ using System.Collections.Generic;
 public class PathTool : MonoBehaviour
 {
     // control variables for gap between each point and y-level tolerance
-    private const float levelTolerance = 0.00001f;
+    private const float levelTolerance = 0.001f;
     private const float dominoDistance = 0.04f;
 
-    private bool isActive = false;
+    private bool isActive;
     private Action<Vector3[]> pathCompleteCallBack;
-    private List<Vector3> singlePath;
+    private List<Vector3> drawingPath;
     private LineRenderer lineRenderer;
 
 
     void Start()
     {
-        singlePath = new List<Vector3>();
-
-        /* Line renderer settings */
-        lineRenderer = gameObject.AddComponent<LineRenderer>();
-        lineRenderer.material = new Material(Shader.Find("Unlit/Texture"));
-        lineRenderer.startColor = Color.white;
-        lineRenderer.endColor = Color.white;
-        lineRenderer.startWidth = 0.02f;
-        lineRenderer.endWidth = 0.02f;
-        lineRenderer.enabled = false;
+        isActive = false;
+        drawingPath = new List<Vector3>();
+        SetUpLineRenderer();
     }
 
 
@@ -33,7 +26,7 @@ public class PathTool : MonoBehaviour
     {
         if (isActive)
         {
-            if (singlePath.Count == 1 && lineRenderer.enabled)
+            if (drawingPath.Count == 1 && lineRenderer.enabled)
             {
                 Ray ray = RuGoInteraction.Instance.SelectorRay;
                 RaycastHit hit;
@@ -44,26 +37,28 @@ public class PathTool : MonoBehaviour
                 }
             }
 
-            if (singlePath.Count == 0 && RuGoInteraction.Instance.IsConfirmPressed)
+            if (drawingPath.Count == 0 && RuGoInteraction.Instance.IsConfirmPressed)
             {
                 Debug.Log("Mouse down detected.");
-                StorePosition();
-                MarkStartingPoint();
+
+                StorePointPosition();
+                VisualizeStartingPoint();
             }
-            else if (singlePath.Count != 0 && RuGoInteraction.Instance.IsConfirmHeld)
+            else if (drawingPath.Count != 0 && RuGoInteraction.Instance.IsConfirmHeld)
             {
                 Debug.Log("Mouse hold detected.");
-                StorePosition();
 
+                StorePointPosition();
                 lineRenderer.positionCount += 1;
-                lineRenderer.SetPosition(lineRenderer.positionCount - 1, singlePath[singlePath.Count - 1]);
+                lineRenderer.SetPosition(lineRenderer.positionCount - 1, drawingPath[drawingPath.Count - 1]);
             }
-            else if (singlePath.Count > 1 && RuGoInteraction.Instance.IsConfirmReleased)
+            else if (drawingPath.Count > 1 && RuGoInteraction.Instance.IsConfirmReleased)
             {
                 Debug.Log("Mouse up detected.");
-                StorePosition();
-                singlePath = GetEqualDistancePoints(singlePath);
-                pathCompleteCallBack(singlePath.ToArray());
+
+                StorePointPosition();
+                drawingPath = EqualizePointDistances(drawingPath);
+                pathCompleteCallBack(drawingPath.ToArray());
                 Deactivate();
             }
         }
@@ -72,83 +67,71 @@ public class PathTool : MonoBehaviour
     /************************** Public Functions **************************/
 
     /// <summary>
-    /// Activate the Path Tool.
+    /// Activates the Path Tool.
     /// </summary>
     /// <param name="createGadgetsAlongPath">The function to call back upon finishing drawing.</param>
     public void Activate(Action<Vector3[]> createGadgetsAlongPath)
     {
-        isActive = true;
         pathCompleteCallBack = createGadgetsAlongPath;
+        isActive = true;
     }
 
     /// <summary>
-    /// Deactivate the Path Tool.
+    /// Deactivates the Path Tool.
     /// </summary>
     public void Deactivate()
     {
         if (isActive)
         {
+            isActive = false;
             lineRenderer.enabled = false;
             lineRenderer.positionCount = 0;
-            isActive = false;
-            singlePath = new List<Vector3>();
+            drawingPath = new List<Vector3>();
         }
     }
 
     /************************** Private Functions **************************/
 
     /// <summary>
-    /// Store mouse click positions in singlePath vector.
+    /// Stores mouse click positions in drawingPath vector.
     /// </summary>
-    private void StorePosition()
+    private void StorePointPosition()
     {
         Ray ray = RuGoInteraction.Instance.SelectorRay;
         RaycastHit hit;
 
         if (Physics.Raycast(ray, out hit))
         {
-            // if nothing is in the path
-            if (singlePath.Count != 0)
+            if (drawingPath.Count != 0)
             {
-                Debug.Log("****** Prepare to gadget item ******");
-                // Grab the previous mark position
-                Vector3 previousMark = singlePath[singlePath.Count - 1];
-
-                // check if the y coordinate is off from the previous point
-                float previousY = previousMark.y;
-                float distance = Vector3.Distance(hit.point, previousMark);
+                Vector3 previousPoint = drawingPath[drawingPath.Count - 1];
+                float previousY = previousPoint.y;
+                float gap = Vector3.Distance(hit.point, previousPoint);
 
                 if (Math.Abs(hit.point.y - previousY) < levelTolerance &&
-                    distance >= dominoDistance)
+                    gap >= dominoDistance)
                 {
-                    Debug.Log("****** Place gadget ******");
-                    singlePath.Add(hit.point);
-                }
-                else
-                {
-                    Debug.Log("****** FAILED TO PLACE ******");
+                    drawingPath.Add(hit.point);
                 }
             }
             else
             {
-                Debug.Log("****** Place first gadget ******");
-                singlePath.Add(hit.point);
+                drawingPath.Add(hit.point);
             }
         }
     }
 
     /// <summary>
-    /// Take a list of points and return a list of equally spaced points.
+    /// Takes a list of points and return a list of equally spaced points.
     /// </summary>
     /// <returns>The equal distance points.</returns>
     /// <param name="inputPoints">A list of points of a path.</param>
-    private List<Vector3> GetEqualDistancePoints(List<Vector3> inputPoints)
+    private List<Vector3> EqualizePointDistances(List<Vector3> inputPoints)
     {
         List<Vector3> newPoints = new List<Vector3>();
 
         if (inputPoints.Count > 0)
         {
-            // Add the first point
             newPoints.Add(inputPoints[0]);
             float leftover = 0f;
 
@@ -171,7 +154,7 @@ public class PathTool : MonoBehaviour
                 }
                 else if (Vector3.Distance(previousPoint, inputPoints[i]) > dominoDistance)
                 {
-                    float angle_a = getAngle(inputPoints[i - 1] - previousPoint, inputPoints[i] - inputPoints[i - 1]);
+                    float angle_a = CalculateAngle(inputPoints[i - 1] - previousPoint, inputPoints[i] - inputPoints[i - 1]);
                     float side_b = Vector3.Distance(inputPoints[i - 1], previousPoint);
                     float side_c = CalculateSide(dominoDistance, side_b, angle_a);
                     float remaining_segment = segmentLength - side_c;
@@ -195,7 +178,7 @@ public class PathTool : MonoBehaviour
     }
 
     /// <summary>
-    /// Calculate the third side of the triangle using SSA method.
+    /// Calculates the third side of the triangle using SSA method.
     /// </summary>
     /// <returns>The side.</returns>
     /// <param name="side_a">Side A of the triangle.</param>
@@ -211,12 +194,12 @@ public class PathTool : MonoBehaviour
     }
 
     /// <summary>
-    /// Get the angle between two vectors.
+    /// Calculates the angle between two vectors.
     /// </summary>
     /// <returns>The angle between two vectors.</returns>
     /// <param name="from">Vector 1.</param>
-    /// <param name="to">>Vector 2.</param>
-    private float getAngle(Vector3 from, Vector3 to)
+    /// <param name="to">Vector 2.</param>
+    private float CalculateAngle(Vector3 from, Vector3 to)
     {
         return 180 - Vector3.Angle(from, to);
     }
@@ -224,11 +207,25 @@ public class PathTool : MonoBehaviour
     /// <summary>
     /// Marks the starting point of the Line Renderer.
     /// </summary>
-    private void MarkStartingPoint()
+    private void VisualizeStartingPoint()
     {
         lineRenderer.positionCount = 2;
-        lineRenderer.SetPosition(0, singlePath[0]);
-        lineRenderer.SetPosition(1, singlePath[0]);
+        lineRenderer.SetPosition(0, drawingPath[0]);
+        lineRenderer.SetPosition(1, drawingPath[0]);
         lineRenderer.enabled = true;
+    }
+
+    /// <summary>
+    /// Sets up line renderer for path visualization.
+    /// </summary>
+    private void SetUpLineRenderer()
+    {
+        lineRenderer = gameObject.AddComponent<LineRenderer>();
+        lineRenderer.material = new Material(Shader.Find("Unlit/Texture"));
+        lineRenderer.startColor = Color.white;
+        lineRenderer.endColor = Color.white;
+        lineRenderer.startWidth = 0.02f;
+        lineRenderer.endWidth = 0.02f;
+        lineRenderer.enabled = false;
     }
 }
