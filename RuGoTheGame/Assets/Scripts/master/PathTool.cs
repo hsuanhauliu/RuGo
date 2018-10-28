@@ -2,67 +2,55 @@
 using UnityEngine;
 using System.Collections.Generic;
 
+
 public class PathTool : MonoBehaviour
 {
     // control variables for gap between each point and y-level tolerance
     private const float levelTolerance = 0.001f;
     private const float dominoDistance = 0.04f;
 
-    private bool isActive;
     private Action<Vector3[]> pathCompleteCallBack;
     private List<Vector3> drawingPath;
-    private LineRenderer lineRenderer;
+    private LineRenderer pathVisualizer;
 
 
     void Start()
     {
-        isActive = false;
         drawingPath = new List<Vector3>();
         SetUpLineRenderer();
+        this.enabled = false;
     }
 
 
     void Update()
     {
-        if (isActive)
+        if (drawingPath.Count == 1 && pathVisualizer.enabled)
         {
-            if (drawingPath.Count == 1 && lineRenderer.enabled)
-            {
-                Ray ray = RuGoInteraction.Instance.SelectorRay;
-                RaycastHit hit;
+            VisualizeStraightLine();
+        }
 
-                if (Physics.Raycast(ray, out hit))
-                {
-                    lineRenderer.SetPosition(1, hit.point);
-                }
-            }
-
-            if (drawingPath.Count == 0 && RuGoInteraction.Instance.IsConfirmPressed)
-            {
-                Debug.Log("Mouse down detected.");
-
-                StorePointPosition();
-                VisualizeStartingPoint();
-            }
-            else if (drawingPath.Count != 0 && RuGoInteraction.Instance.IsConfirmHeld)
-            {
-                Debug.Log("Mouse hold detected.");
-
-                StorePointPosition();
-                lineRenderer.positionCount += 1;
-                lineRenderer.SetPosition(lineRenderer.positionCount - 1, drawingPath[drawingPath.Count - 1]);
-            }
-            else if (drawingPath.Count > 1 && RuGoInteraction.Instance.IsConfirmReleased)
-            {
-                Debug.Log("Mouse up detected.");
-
-                StorePointPosition();
-                drawingPath = EqualizePointDistances(drawingPath);
-                pathCompleteCallBack(drawingPath.ToArray());
-                Deactivate();
-            }
+        if (drawingPath.Count == 0 && RuGoInteraction.Instance.IsConfirmPressed)
+        {
+            // Mouse down
+            StorePointPosition();
+            VisualizeStartingPoint();
+        }
+        else if (drawingPath.Count != 0 && RuGoInteraction.Instance.IsConfirmHeld)
+        {
+            // Mouse hold
+            StorePointPosition();
+            VisualizeNewPoint();
+        }
+        else if (drawingPath.Count > 1 && RuGoInteraction.Instance.IsConfirmReleased)
+        {
+            // Mouse up
+            StorePointPosition();
+            EqualizePointDistances();
+            pathCompleteCallBack(drawingPath.ToArray());
+            Deactivate();
         }
     }
+
 
     /************************** Public Functions **************************/
 
@@ -73,7 +61,7 @@ public class PathTool : MonoBehaviour
     public void Activate(Action<Vector3[]> createGadgetsAlongPath)
     {
         pathCompleteCallBack = createGadgetsAlongPath;
-        isActive = true;
+        this.enabled = true;
     }
 
     /// <summary>
@@ -81,14 +69,15 @@ public class PathTool : MonoBehaviour
     /// </summary>
     public void Deactivate()
     {
-        if (isActive)
+        if (this.enabled)
         {
-            isActive = false;
-            lineRenderer.enabled = false;
-            lineRenderer.positionCount = 0;
+            this.enabled = false;
+            pathVisualizer.enabled = false;
+            pathVisualizer.positionCount = 0;
             drawingPath = new List<Vector3>();
         }
     }
+
 
     /************************** Private Functions **************************/
 
@@ -122,24 +111,22 @@ public class PathTool : MonoBehaviour
     }
 
     /// <summary>
-    /// Takes a list of points and return a list of equally spaced points.
+    /// Equalizes the distance between each point in the drawing path.
     /// </summary>
-    /// <returns>The equal distance points.</returns>
-    /// <param name="inputPoints">A list of points of a path.</param>
-    private List<Vector3> EqualizePointDistances(List<Vector3> inputPoints)
+    private void EqualizePointDistances()
     {
         List<Vector3> newPoints = new List<Vector3>();
 
-        if (inputPoints.Count > 0)
+        if (drawingPath.Count > 0)
         {
-            newPoints.Add(inputPoints[0]);
+            newPoints.Add(drawingPath[0]);
             float leftover = 0f;
 
-            Vector3 previousPoint = inputPoints[0];
-            for (int i = 1; i < inputPoints.Count; i++)
+            Vector3 previousPoint = drawingPath[0];
+            for (int i = 1; i < drawingPath.Count; i++)
             {
-                float segmentLength = Vector3.Distance(inputPoints[i], inputPoints[i - 1]);
-                Vector3 segmentVector = (inputPoints[i] - inputPoints[i - 1]) / segmentLength;
+                float segmentLength = Vector3.Distance(drawingPath[i], drawingPath[i - 1]);
+                Vector3 segmentVector = (drawingPath[i] - drawingPath[i - 1]) / segmentLength;
 
                 if (leftover == 0)
                 {
@@ -152,14 +139,14 @@ public class PathTool : MonoBehaviour
                     }
                     leftover = segmentLength - count * dominoDistance;
                 }
-                else if (Vector3.Distance(previousPoint, inputPoints[i]) > dominoDistance)
+                else if (Vector3.Distance(previousPoint, drawingPath[i]) > dominoDistance)
                 {
-                    float angle_a = CalculateAngle(inputPoints[i - 1] - previousPoint, inputPoints[i] - inputPoints[i - 1]);
-                    float side_b = Vector3.Distance(inputPoints[i - 1], previousPoint);
+                    float angle_a = CalculateAngle(drawingPath[i - 1] - previousPoint, drawingPath[i] - drawingPath[i - 1]);
+                    float side_b = Vector3.Distance(drawingPath[i - 1], previousPoint);
                     float side_c = CalculateSide(dominoDistance, side_b, angle_a);
                     float remaining_segment = segmentLength - side_c;
 
-                    Vector3 newPoint = inputPoints[i - 1] + side_c * segmentVector;
+                    Vector3 newPoint = drawingPath[i - 1] + side_c * segmentVector;
                     newPoints.Add(newPoint);
                     previousPoint = newPoint;
 
@@ -174,7 +161,7 @@ public class PathTool : MonoBehaviour
                 }
             }
         }
-        return newPoints;
+        drawingPath = newPoints;
     }
 
     /// <summary>
@@ -205,27 +192,50 @@ public class PathTool : MonoBehaviour
     }
 
     /// <summary>
-    /// Marks the starting point of the Line Renderer.
-    /// </summary>
-    private void VisualizeStartingPoint()
-    {
-        lineRenderer.positionCount = 2;
-        lineRenderer.SetPosition(0, drawingPath[0]);
-        lineRenderer.SetPosition(1, drawingPath[0]);
-        lineRenderer.enabled = true;
-    }
-
-    /// <summary>
     /// Sets up line renderer for path visualization.
     /// </summary>
     private void SetUpLineRenderer()
     {
-        lineRenderer = gameObject.AddComponent<LineRenderer>();
-        lineRenderer.material = new Material(Shader.Find("Unlit/Texture"));
-        lineRenderer.startColor = Color.white;
-        lineRenderer.endColor = Color.white;
-        lineRenderer.startWidth = 0.02f;
-        lineRenderer.endWidth = 0.02f;
-        lineRenderer.enabled = false;
+        pathVisualizer = gameObject.AddComponent<LineRenderer>();
+        pathVisualizer.material = new Material(Shader.Find("Unlit/Texture"));
+        pathVisualizer.startColor = Color.white;
+        pathVisualizer.endColor = Color.white;
+        pathVisualizer.startWidth = 0.02f;
+        pathVisualizer.endWidth = 0.02f;
+        pathVisualizer.enabled = false;
+    }
+
+    /// <summary>
+    /// Marks the starting point of the Line Renderer.
+    /// </summary>
+    private void VisualizeStartingPoint()
+    {
+        pathVisualizer.positionCount = 2;
+        pathVisualizer.SetPosition(0, drawingPath[0]);
+        pathVisualizer.SetPosition(1, drawingPath[0]);
+        pathVisualizer.enabled = true;
+    }
+
+    /// <summary>
+    /// Visualizes the straight line from starting point to the mouse cursor.
+    /// </summary>
+    private void VisualizeStraightLine()
+    {
+        Ray ray = RuGoInteraction.Instance.SelectorRay;
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit))
+        {
+            pathVisualizer.SetPosition(1, hit.point);
+        }
+    }
+
+    /// <summary>
+    /// Visualizes a newly added point on the drawing path.
+    /// </summary>
+    private void VisualizeNewPoint()
+    {
+        pathVisualizer.positionCount += 1;
+        pathVisualizer.SetPosition(pathVisualizer.positionCount - 1, drawingPath[drawingPath.Count - 1]);
     }
 }
