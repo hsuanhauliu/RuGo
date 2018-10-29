@@ -5,17 +5,16 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     public GadgetManipulator Manipulator;
+    public PathTool PathTool;
+    public Text GameModeDisplay;
+
     public GadgetSelectorMenu GadgetSelectorMenu;
     public MainMenu MainMenu;
     public LoadMenu loadMenu;
 
-    public PathTool PathTool;
-    public Text GameModeDisplay;
-
-
     // Testing the VR Menu
     public int CurrentMenuOption = -1;
-    public bool isVrRun = false;
+    public bool isVrRun;
 
     private enum GameMode { Build, Select, Draw };
     private GameMode currentGameMode;
@@ -30,8 +29,6 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         Debug.Log("Game Manager Started");
-        // Reparent the menu before we do anything else in the game
-        //GadgetSelectorMenu.ReparentMenu();
         EnableBuildMode();
     }
 
@@ -51,10 +48,12 @@ public class GameManager : MonoBehaviour
             {
                 this.ResetGadgetsInWorld();
             }
-            if (Input.GetKeyDown(KeyCode.O)) {
+            if (Input.GetKeyDown(KeyCode.O))
+            {
                 Manipulator.Save(World.DEFAULT_SAVE_FILE);
             }
-            if (Input.GetKeyDown(KeyCode.P)) {
+            if (Input.GetKeyDown(KeyCode.P))
+            {
                 Manipulator.Load();
             }
         }
@@ -73,13 +72,12 @@ public class GameManager : MonoBehaviour
     }
 
     /************************** Public Functions **************************/
+
     public void ResetGadgetsInWorld()
     {
         Manipulator.ResetGadgetsInWorld();
     }
-    /// <summary>
-    /// used to save the world from menu as a replacement from OnPress P
-    /// </summary>
+
     public void GameManagerSaves()
     {
        Manipulator.Save(World.DEFAULT_SAVE_FILE);
@@ -101,17 +99,13 @@ public class GameManager : MonoBehaviour
     public void GameManagerClearWorld()
     {
         Manipulator.ClearWorld();
-
     }
 
-    public void CreatePath() {
+    public void CreatePath()
+    {
         this.EnableDrawMode();
     }
 
-    /// <summary>
-    /// name of the prefab file.
-    /// </summary>
-    /// <param name="prefabResourceName">The name of the resource to load from Prefab Directory</param>
     public void CreateGadget(string prefabResourceName)
     {
         this.EnableBuildMode();
@@ -123,7 +117,8 @@ public class GameManager : MonoBehaviour
         Manipulator.EnableCreateMode(gadget);
     }
 
-    public void CreateGadgetAlongPath(Vector3[] path) {
+    public void CreateGadgetAlongPath(Vector3[] path)
+    {
         GameObject dominoPreb = Resources.Load("Domino") as GameObject;
         int numOfDominos = path.Length;
 
@@ -158,11 +153,11 @@ public class GameManager : MonoBehaviour
             domino.Deselect();
             Manipulator.InsertGadgetIntoWorld(domino);
         }
-
         EnableBuildMode();
     }
 
-    public void EnableDrawMode() {
+    public void EnableDrawMode()
+    {
         GadgetSelectorMenu.Deactivate();
         PathTool.Activate(CreateGadgetAlongPath);
         this.currentGameMode = GameMode.Draw;
@@ -204,7 +199,6 @@ public class GameManager : MonoBehaviour
 
     public void goToLoadMenu()
     {
-
         loadMenu.Activate();
     }
 
@@ -219,7 +213,6 @@ public class GameManager : MonoBehaviour
                 {
                     Debug.Log(hit.transform.root);
                 }
-
             }         }     }
 
     private void SetPlayerLook(bool enabled)
@@ -231,5 +224,4 @@ public class GameManager : MonoBehaviour
             playerMoveScript.EnableLook = enabled;
         }        
     }
-
 }
