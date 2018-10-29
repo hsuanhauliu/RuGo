@@ -49,11 +49,7 @@ public class GameManager : MonoBehaviour
             }
             if (Input.GetKeyDown(KeyCode.O))
             {
-                Manipulator.Save(World.DEFAULT_SAVE_FILE);
-            }
-            if (Input.GetKeyDown(KeyCode.P))
-            {
-                Manipulator.Load();
+                Manipulator.Save();
             }
         }
 
@@ -111,11 +107,6 @@ public class GameManager : MonoBehaviour
         Manipulator.ResetGadgetsInWorld();
     }
 
-    public void GameManagerLoad()
-    {
-        Manipulator.Load();
-    }
-
     public void GameManagerClearWorld()
     {
         Manipulator.ClearWorld();
@@ -123,15 +114,7 @@ public class GameManager : MonoBehaviour
 
     public void GameManagerSaves()
     {
-        Manipulator.Save(World.DEFAULT_SAVE_FILE);
-        string[] words = System.DateTime.UtcNow.ToString().Replace(":", " ").Replace("/", " ").Split(' ');
-        string fname = "";
-        foreach (string word in words)
-        {
-            fname += word;
-        }
-        var name = System.DateTime.UtcNow.ToString();
-        Manipulator.Save("SavedGames/" + fname + ".dat");
+        Manipulator.Save();
     }
 
     public void CreateGadget(string prefabResourceName)

@@ -136,14 +136,9 @@ public class GadgetManipulator : MonoBehaviour
         this.gameObject.SetActive(false);
     }
 
-    public void Save(String fileName) 
+    public void Save() 
     {
-        World.Save(fileName);
-    }
-
-    public void Load()
-    {
-        World.Load(World.DEFAULT_SAVE_FILE);
+        World.Save();
     }
 
     // Function: Reset

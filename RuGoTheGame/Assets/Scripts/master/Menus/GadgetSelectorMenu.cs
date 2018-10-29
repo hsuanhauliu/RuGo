@@ -65,7 +65,6 @@ public class GadgetSelectorMenu : Menu
         float verticalOffset = 750f;
         float horizontalOffset = 0f ;
         AddButtonToToolBar("Reset",horizontalOffset, verticalOffset);
-        //AddButtonToToolBar("Load", horizontalOffset -330f , verticalOffset);
         AddButtonToToolBar("Save", horizontalOffset + 330f, verticalOffset);
         AddButtonToToolBar("Clear", horizontalOffset + 330f, verticalOffset +250f);
         AddButtonToToolBar("Back", horizontalOffset - 330f, verticalOffset );
@@ -98,11 +97,6 @@ public class GadgetSelectorMenu : Menu
         if (string.Equals("Save", buttonName))
         {
             uiButton.onClick.AddListener(() => gameManager.GameManagerSaves());
-        }
-
-        if (string.Equals("Load", buttonName))
-        {
-            uiButton.onClick.AddListener(() => gameManager.GameManagerLoad());
         }
 
         if (string.Equals("Clear", buttonName))

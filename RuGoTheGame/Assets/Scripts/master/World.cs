@@ -8,96 +8,144 @@ public class World : MonoBehaviour
 {
     private List<Gadget> gadgetsInWorld;
 
-    public static String DEFAULT_SAVE_FILE = "./world.dat";
-    public static String AUTO_SAVE_FILE = "./autosave.dat";
+    private string WorldName;
+    private readonly string AUTO_SAVE_FILE = "autosave.dat";
+    private readonly string SAVED_GAME_DIR = "SavedGames/";
 
     private bool mIsWorldStateModified = false;
 
     void Start()
     {
         gadgetsInWorld = new List<Gadget>();
-    }
-
-
-    public void Reset()
-    {
-        this.Load(AUTO_SAVE_FILE);
-    }
-
-    public void Clear()
-    {
-        foreach (Gadget g in gadgetsInWorld)
-        {
-            g.RemoveFromScene();
-        }
-        gadgetsInWorld = new List<Gadget>();
+        string[] timeStamp = System.DateTime.UtcNow.ToString().Replace(":", " ").Replace("/", " ").Split(' ');
+        WorldName = string.Join(string.Empty, timeStamp);
     }
 
     void Update()
     {
         if (mIsWorldStateModified)
         {
-            Save(AUTO_SAVE_FILE);
+            AutoSave();
             mIsWorldStateModified = false;
         }
     }
 
-    public void InsertGadget(Gadget g)
+    public void Reset()
     {
-        gadgetsInWorld.Add(g);
-        MarkWorldModified();
+        this.LoadAuto();
     }
 
-    public void Save(String fileName)
+    public void Clear()
     {
-        Debug.Log("<GadgetManipulator> Saving Data to: " + fileName);
+        foreach (Gadget gadget in gadgetsInWorld)
+        {
+            gadget.RemoveFromScene();
+        }
+        gadgetsInWorld = new List<Gadget>();
+    }
+
+    public void Save()
+    {
+        Debug.Log("Saving Data to: " + WorldName);
+        System.IO.Directory.CreateDirectory(SAVED_GAME_DIR + WorldName);
+
         BinaryFormatter bf = new BinaryFormatter();
-        FileStream file = File.Create(fileName);
+        FileStream file = File.Create(SAVED_GAME_DIR + WorldName + "/" + WorldName + ".dat");
 
         List<GadgetSaveData> saveData = gadgetsInWorld.ConvertAll<GadgetSaveData>((Gadget input) => input.GetSaveData());
-
         bf.Serialize(file, saveData);
         file.Close();
     }
 
-    public void Load(String fileName)
+    private void AutoSave()
     {
-        Debug.Log("<GadgetManipulator> Loading Data from: " + fileName);
-        if (File.Exists(fileName)) {
+        string fileName = SAVED_GAME_DIR + WorldName + "/" + WorldName + ".dat";
+
+        if (File.Exists(fileName))
+        {
+            System.IO.Directory.CreateDirectory(SAVED_GAME_DIR + WorldName);
+            BinaryFormatter bf = new BinaryFormatter();
+            FileStream file = File.Create(SAVED_GAME_DIR + WorldName + "/" + AUTO_SAVE_FILE);
+
+            List<GadgetSaveData> saveData = gadgetsInWorld.ConvertAll<GadgetSaveData>((Gadget input) => input.GetSaveData());
+            bf.Serialize(file, saveData);
+            file.Close();
+        }
+        else
+        {
+            BinaryFormatter bf = new BinaryFormatter();
+            FileStream file = File.Create(SAVED_GAME_DIR + "/" + AUTO_SAVE_FILE);
+
+            List<GadgetSaveData> saveData = gadgetsInWorld.ConvertAll<GadgetSaveData>((Gadget input) => input.GetSaveData());
+            bf.Serialize(file, saveData);
+            file.Close();
+        }
+    }
+
+    public void LoadWorld(string savedWorldName)
+    {
+        WorldName = savedWorldName;
+        string fileName = SAVED_GAME_DIR + savedWorldName + "/" + savedWorldName + ".dat";
+        Load(fileName);
+        AutoSave();
+    }
+
+    public void LoadAuto()
+    {
+        string fileName = SAVED_GAME_DIR + WorldName + "/" + WorldName + ".dat";
+
+        if (File.Exists(fileName))
+        {
+            string worldAutoSaveFile = SAVED_GAME_DIR + WorldName + "/" + AUTO_SAVE_FILE;
+            Load(worldAutoSaveFile);
+        }
+        else if (mIsWorldStateModified)
+        {
+            string tempAutoSaveFile = SAVED_GAME_DIR + "/" + AUTO_SAVE_FILE;
+            Load(tempAutoSaveFile);
+        }
+    }
+
+    public void Load(string fileName)
+    {
+        if (File.Exists(fileName))
+        {
             BinaryFormatter bf = new BinaryFormatter();
             FileStream file = File.Open(fileName, FileMode.Open);
 
             List<GadgetSaveData> savedGadgets = (List<GadgetSaveData>)bf.Deserialize(file);
-
             Clear();
-
             gadgetsInWorld = savedGadgets.ConvertAll<Gadget>(ConvertSavedDataToGadget);
 
             file.Close();
         }
         else
         {
-            Debug.Log("<GadgetManipulator> Loading Data failed. File " + fileName + "doesn't exist");
+            Debug.Log("Loading Data failed. File " + fileName + "doesn't exist");
         }
     }
 
     private Gadget ConvertSavedDataToGadget(GadgetSaveData savedGadgetData)
     {
-        String prefabName = savedGadgetData.name;
+        string prefabName = savedGadgetData.name;
         GameObject gadgetPrefab = Resources.Load(prefabName) as GameObject;
         GameObject savedGameObject = Instantiate(gadgetPrefab, this.transform);
-        
-        Gadget g = savedGameObject.GetComponent<Gadget>();
-        g.RestoreStateFromSaveData(savedGadgetData);
-        g.transform.position += this.transform.position;
 
-        return g;
+        Gadget gadget = savedGameObject.GetComponent<Gadget>();
+        gadget.RestoreStateFromSaveData(savedGadgetData);
+        gadget.transform.position += this.transform.position;
+
+        return gadget;
+    }
+
+    public void InsertGadget(Gadget gadget)
+    {
+        gadgetsInWorld.Add(gadget);
+        MarkWorldModified();
     }
 
     public void CreateGadgetFromTemplate(Gadget gadgetTemplate)
     {
-        Debug.Log("<GadgetManipulator> A new gameObject has been created and inserted in the World");
-
         GameObject gadgetObj = Instantiate(gadgetTemplate.gameObject, this.transform);
         gadgetObj.transform.position -= this.transform.position;
         Gadget gadget = gadgetObj.GetComponent<Gadget>();

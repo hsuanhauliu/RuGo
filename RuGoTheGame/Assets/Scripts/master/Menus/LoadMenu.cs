@@ -49,12 +49,11 @@ public class LoadMenu : Menu
         
         AddButtonToToolBar("Back", horizontalOffset - 330f, verticalOffset + 450f);
 
-        string[] fileArray = Directory.GetFiles(@"SavedGames");
+        string[] fileArray = Directory.GetDirectories(@"SavedGames");
         string buttonType ="BasicButton";
 
         for (int i = 0; i < fileArray.Length; i++)
         {
-            Debug.Log(fileArray[i]);
             AddButtonToToolBar(fileArray[i] , horizontalOffset, verticalOffset - 500f -(i*300f));
         }
     }
@@ -96,7 +95,7 @@ public class LoadMenu : Menu
         }
         else
         {
-            uiButton.onClick.AddListener(() => world.Load(buttonName)); //this.Deactivate());
+            uiButton.onClick.AddListener(() => world.LoadWorld(buttonIdentifier)); //this.Deactivate());
         }
     }
 }
