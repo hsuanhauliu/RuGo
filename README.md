@@ -141,27 +141,42 @@ F - fire cannon
 - Bridge (sort of like a track)
 - Trap door
 
-## Assigned Tasks (9/27)
-Kishore:
-- VIVE and ZED M bug fix.
+## Assigned Tasks (10/28)
+### Current Assigned Tasks
+- Howard: fix save function, UI
+- Kishore: work on physics of the gadgets, re-scaling
+- Mike: deletion feature
+- Darwin: gadget sound, collaborate with TA to figure out recording user's view
+- Abhi: UI, adding start & end gadgets for the game
+- Devashree: VR space design, gadget sound
+- Sarah: UI
 
-Mike:
-- Game system optimization and bug testing & fixing.
+### More Tasks:
+- Add different camera viewpoints
+- Bring more gadget textures in
+- Snapping feature for placing gadgets
+- Work on cannon barrel rotation feature
+- Add collision detection for the cannon trajectory path visualization
 
-Howard:
-- VIVE and ZED M bug fix.
-- Investigate path tool compatibility with other platform gadgets (i.e. box).
+### Schedule
+Week 1 (10/25 ~ 10/31):
+- Start working on physics, re-scaling gadgets, UI, sound, VR space design
+- Fix current bugs
+- Implement gadget deletion in VR
 
-Abhi:
-- Improve UI and user experience in the AR world.
+Week 2 (11/1 ~ 11/7):
+- Finish up gadget physics, re-scaling gadgets, VR space
+- Gadget compatibility, textures, and models re-design
+- Continue working on UI, sound
 
-Sarah:
-- Improve UI and user experience in the AR world.
+Week 3 (11/8 ~ 11/14):
+- Experiment with VIVE tracker
+- Finish up UI, sound
+- Start implementing start and end gadgets
 
-Devashree:
-- Improve UI and user experience in the AR world.
+Week 4 (11/15 ~ 11/21):
+- Camera viewpoint implementation
+- Gadget refinement, final testing
 
-Darwin:
-- Look into how we can record user's view in AR.
-- Work on cannon barrel rotation feature.
-- Add collision detection for the cannon trajectory path visualization.
+Week 5 (11/22 ~ 11/28):
+- Final testing and make sure everything is ready for final demo
