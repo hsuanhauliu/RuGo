@@ -5,17 +5,16 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     public GadgetManipulator Manipulator;
+    public PathTool PathTool;
+    public Text GameModeDisplay;
+
     public GadgetSelectorMenu GadgetSelectorMenu;
     public MainMenu MainMenu;
     public LoadMenu loadMenu;
 
-    public PathTool PathTool;
-    public Text GameModeDisplay;
-
-
     // Testing the VR Menu
     public int CurrentMenuOption = -1;
-    public bool isVrRun = false;
+    public bool isVrRun;
 
     private enum GameMode { Build, Select, Draw };
     private GameMode currentGameMode;
@@ -29,9 +28,6 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        Debug.Log("Game Manager Started");
-        // Reparent the menu before we do anything else in the game
-        //GadgetSelectorMenu.ReparentMenu();
         EnableBuildMode();
     }
 
@@ -51,10 +47,12 @@ public class GameManager : MonoBehaviour
             {
                 this.ResetGadgetsInWorld();
             }
-            if (Input.GetKeyDown(KeyCode.O)) {
+            if (Input.GetKeyDown(KeyCode.O))
+            {
                 Manipulator.Save(World.DEFAULT_SAVE_FILE);
             }
-            if (Input.GetKeyDown(KeyCode.P)) {
+            if (Input.GetKeyDown(KeyCode.P))
+            {
                 Manipulator.Load();
             }
         }
@@ -73,96 +71,9 @@ public class GameManager : MonoBehaviour
     }
 
     /************************** Public Functions **************************/
-    public void ResetGadgetsInWorld()
+
+    public void EnableDrawMode()
     {
-        Manipulator.ResetGadgetsInWorld();
-    }
-    /// <summary>
-    /// used to save the world from menu as a replacement from OnPress P
-    /// </summary>
-    public void GameManagerSaves()
-    {
-       Manipulator.Save(World.DEFAULT_SAVE_FILE);
-       string[] words = System.DateTime.UtcNow.ToString().Replace(":", " ").Replace("/", " ").Split(' ');
-       string fname = "";
-       foreach (string word in words)
-       {
-           fname += word;
-       }
-       var name = System.DateTime.UtcNow.ToString();
-       Manipulator.Save("SavedGames/" + fname + ".dat");
-    }
-
-    public void GameManagerLoad()
-    {
-      Manipulator.Load();
-
-    }
-    public void GameManagerClearWorld()
-    {
-        Manipulator.ClearWorld();
-
-    }
-
-    public void CreatePath() {
-        this.EnableDrawMode();
-    }
-
-    /// <summary>
-    /// name of the prefab file.
-    /// </summary>
-    /// <param name="prefabResourceName">The name of the resource to load from Prefab Directory</param>
-    public void CreateGadget(string prefabResourceName)
-    {
-        this.EnableBuildMode();
-       
-        GameObject gadgetPrefab = Resources.Load(prefabResourceName) as GameObject;
-        GameObject gadgetGameObject = Instantiate(gadgetPrefab, this.transform);
-        Gadget gadget = gadgetGameObject.GetComponent<Gadget>();
-
-        Manipulator.EnableCreateMode(gadget);
-    }
-
-    public void CreateGadgetAlongPath(Vector3[] path) {
-        GameObject dominoPreb = Resources.Load("Domino") as GameObject;
-        int numOfDominos = path.Length;
-
-        if (numOfDominos > 1)
-        {
-            for (int i = 0; i < numOfDominos - 1; i++)
-            {
-                GameObject gadgetGameObject = Instantiate(dominoPreb, this.transform);
-                Gadget domino = gadgetGameObject.GetComponent<Gadget>();
-
-                Vector3 pathDirection = path[i + 1] - path[i];
-                domino.transform.position = path[i];
-                domino.transform.rotation = Quaternion.LookRotation(pathDirection);
-                domino.Deselect();
-                Manipulator.InsertGadgetIntoWorld(domino);
-            }
-            GameObject lastGadgetGameObject = Instantiate(dominoPreb, this.transform);
-            Gadget lastDomino = lastGadgetGameObject.GetComponent<Gadget>();
-
-            Vector3 lastPathDirection = path[numOfDominos - 1] - path[path.Length - 2];
-            lastDomino.transform.position = path[numOfDominos - 1];
-            lastDomino.transform.rotation = Quaternion.LookRotation(lastPathDirection);
-            lastDomino.Deselect();
-            Manipulator.InsertGadgetIntoWorld(lastDomino);
-        }
-        else if (path.Length == 1)
-        {
-            GameObject gadgetGameObject = Instantiate(dominoPreb, this.transform);
-            Gadget domino = gadgetGameObject.GetComponent<Gadget>();
-
-            domino.transform.position = path[0];
-            domino.Deselect();
-            Manipulator.InsertGadgetIntoWorld(domino);
-        }
-
-        EnableBuildMode();
-    }
-
-    public void EnableDrawMode() {
         GadgetSelectorMenu.Deactivate();
         PathTool.Activate(CreateGadgetAlongPath);
         this.currentGameMode = GameMode.Draw;
@@ -195,6 +106,86 @@ public class GameManager : MonoBehaviour
         SetPlayerLook(false);
     }
 
+    public void ResetGadgetsInWorld()
+    {
+        Manipulator.ResetGadgetsInWorld();
+    }
+
+    public void GameManagerLoad()
+    {
+        Manipulator.Load();
+    }
+
+    public void GameManagerClearWorld()
+    {
+        Manipulator.ClearWorld();
+    }
+
+    public void GameManagerSaves()
+    {
+        Manipulator.Save(World.DEFAULT_SAVE_FILE);
+        string[] words = System.DateTime.UtcNow.ToString().Replace(":", " ").Replace("/", " ").Split(' ');
+        string fname = "";
+        foreach (string word in words)
+        {
+            fname += word;
+        }
+        var name = System.DateTime.UtcNow.ToString();
+        Manipulator.Save("SavedGames/" + fname + ".dat");
+    }
+
+    public void CreateGadget(string prefabResourceName)
+    {
+        this.EnableBuildMode();
+       
+        GameObject gadgetPrefab = Resources.Load(prefabResourceName) as GameObject;
+        GameObject gadgetGameObject = Instantiate(gadgetPrefab, this.transform);
+        Gadget gadget = gadgetGameObject.GetComponent<Gadget>();
+
+        Manipulator.EnableCreateMode(gadget);
+    }
+
+    // TODO make it extendable to use for gadgets other than just the Domino
+    public void CreateGadgetAlongPath(Vector3[] path)
+    {
+        string gadgetName = "Domino";
+        GameObject gadgetPreb = Resources.Load(gadgetName) as GameObject;
+        int numOfPoints = path.Length;
+
+        if (numOfPoints > 1)
+        {
+            for (int p = 0; p < numOfPoints - 1; p++)
+            {
+                GameObject gadgetGameObject = Instantiate(gadgetPreb, this.transform);
+                Gadget gadget = gadgetGameObject.GetComponent<Gadget>();
+
+                Vector3 direction = path[p + 1] - path[p];
+                gadget.transform.position = path[p];
+                gadget.transform.rotation = Quaternion.LookRotation(direction);
+                gadget.Deselect();
+                Manipulator.InsertGadgetIntoWorld(gadget);
+            }
+            GameObject lastGadgetGameObject = Instantiate(gadgetPreb, this.transform);
+            Gadget lastGadget = lastGadgetGameObject.GetComponent<Gadget>();
+
+            Vector3 lastPathDirection = path[numOfPoints - 1] - path[path.Length - 2];
+            lastGadget.transform.position = path[numOfPoints - 1];
+            lastGadget.transform.rotation = Quaternion.LookRotation(lastPathDirection);
+            lastGadget.Deselect();
+            Manipulator.InsertGadgetIntoWorld(lastGadget);
+        }
+        else if (numOfPoints == 1)
+        {
+            GameObject gadgetGameObject = Instantiate(gadgetPreb, this.transform);
+            Gadget gadget = gadgetGameObject.GetComponent<Gadget>();
+
+            gadget.transform.position = path[0];
+            gadget.Deselect();
+            Manipulator.InsertGadgetIntoWorld(gadget);
+        }
+        EnableBuildMode();
+    }
+
     //TODO change this to something better
     public void goFromTo()
     {
@@ -204,32 +195,30 @@ public class GameManager : MonoBehaviour
 
     public void goToLoadMenu()
     {
-
         loadMenu.Activate();
     }
 
 
     /************************** Private Functions **************************/
 
-    private void SelectExistingGadget()     {         Ray ray = RuGoInteraction.Instance.SelectorRay;         RaycastHit hit;          if (Physics.Raycast(ray, out hit))         {             Gadget gadget = hit.transform.GetComponent<Gadget>();              if (gadget)             {                 Manipulator.EnableModifyMode(gadget);             }             else             {                 gadget = hit.transform.GetComponentInParent<Gadget>();                 if (gadget)                 {
+    private void SelectExistingGadget()     {         Ray ray = RuGoInteraction.Instance.SelectorRay;         RaycastHit hit;          if (Physics.Raycast(ray, out hit))         {             Gadget gadget = hit.transform.GetComponent<Gadget>();
+             if (gadget)             {                 Manipulator.EnableModifyMode(gadget);             }             else             {                 gadget = hit.transform.GetComponentInParent<Gadget>();
+                 if (gadget)                 {
                     Manipulator.EnableModifyMode(gadget);
-
                 }
                 else
                 {
                     Debug.Log(hit.transform.root);
                 }
-
             }         }     }
 
-    private void SetPlayerLook(bool enabled)
+    private void SetPlayerLook(bool enabledFlag)
     {
         GameObject player = GameObject.FindGameObjectWithTag("Player");
-        if(player != null)
+        if (player != null)
         {
             FirstPersonMove playerMoveScript = player.GetComponent<FirstPersonMove>();
-            playerMoveScript.EnableLook = enabled;
+            playerMoveScript.EnableLook = enabledFlag;
         }        
     }
-
 }
