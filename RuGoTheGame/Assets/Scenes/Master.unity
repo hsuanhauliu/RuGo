@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028334, g: 0.22571334, b: 0.3069219, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -585,13 +585,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Manipulator: {fileID: 1231634858}
+  PathTool: {fileID: 210995599}
+  GameModeDisplay: {fileID: 1529945659}
   GadgetSelectorMenu: {fileID: 98567716}
   MainMenu: {fileID: 1653191531}
   loadMenu: {fileID: 1731063312}
-  PathTool: {fileID: 210995599}
-  GameModeDisplay: {fileID: 1529945659}
   CurrentMenuOption: -1
-  isVrRun: 1
+  isVrRun: 0
 --- !u!4 &498110774
 Transform:
   m_ObjectHideFlags: 0
