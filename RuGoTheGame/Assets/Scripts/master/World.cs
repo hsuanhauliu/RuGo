@@ -30,11 +30,6 @@ public class World : MonoBehaviour
         }
     }
 
-    public void Reset()
-    {
-        this.LoadAuto();
-    }
-
     public void Clear()
     {
         foreach (Gadget gadget in gadgetsInWorld)
@@ -55,6 +50,8 @@ public class World : MonoBehaviour
         List<GadgetSaveData> saveData = gadgetsInWorld.ConvertAll<GadgetSaveData>((Gadget input) => input.GetSaveData());
         bf.Serialize(file, saveData);
         file.Close();
+
+        AutoSave();
     }
 
     private void AutoSave()
@@ -99,7 +96,7 @@ public class World : MonoBehaviour
             string worldAutoSaveFile = SAVED_GAME_DIR + WorldName + "/" + AUTO_SAVE_FILE;
             Load(worldAutoSaveFile);
         }
-        else if (mIsWorldStateModified)
+        else if (gadgetsInWorld.Count != 0)
         {
             string tempAutoSaveFile = SAVED_GAME_DIR + "/" + AUTO_SAVE_FILE;
             Load(tempAutoSaveFile);

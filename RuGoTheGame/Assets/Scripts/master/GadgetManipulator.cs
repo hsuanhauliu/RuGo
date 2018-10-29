@@ -180,7 +180,7 @@ public class GadgetManipulator : MonoBehaviour
 
     public void ResetGadgetsInWorld()
     {
-        World.Reset();
+        World.LoadAuto();
     }
 
     public void ClearWorld()
