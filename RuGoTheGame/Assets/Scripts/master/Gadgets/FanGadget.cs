@@ -59,7 +59,12 @@ public class FanGadget : Gadget
     public override void PerformSwitchAction()
     {
         mIsFanOn = !mIsFanOn;
-        mAudioData.Play(0);
+        if (!mIsFanOn) {
+            mAudioData.Stop();
+        }
+        else {
+            mAudioData.Play();
+        }
     }
 
     public override void MakeTransparent()

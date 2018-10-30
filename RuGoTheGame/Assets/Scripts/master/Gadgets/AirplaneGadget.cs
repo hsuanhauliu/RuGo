@@ -13,7 +13,6 @@ public class AirplaneGadget : Gadget
     private void OnCollisionEnter(Collision collision)
     {
         this.transform.Translate(Vector3.left * 10f);
-
     }
 
     public override GadgetInventory GetGadgetType()
