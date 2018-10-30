@@ -8,6 +8,7 @@
 [Bb]uilds/
 Assets/AssetStoreTools*
 [Dd]ebug/
+RuGoTheGame/SavedGames
 
 # Visual Studio cache directory
 .vs/
