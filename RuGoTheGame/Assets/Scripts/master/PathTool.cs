@@ -5,9 +5,8 @@ using System.Collections.Generic;
 
 public class PathTool : MonoBehaviour
 {
-    // control variables for gap between each point and y-level tolerance
-    private const float levelTolerance = 0.001f;
-    private const float dominoDistance = 0.04f;
+    private const float yLevelTolerance = 0.001f;
+    private const float gadgetDistance = 0.04f;
 
     private Action<Vector3[]> pathCompleteCallBack;
     private List<Vector3> drawingPath;
@@ -16,8 +15,8 @@ public class PathTool : MonoBehaviour
 
     void Start()
     {
-        drawingPath = new List<Vector3>();
-        SetUpLineRenderer();
+        EmptyPath();
+        SetUpVisualizer();
         this.enabled = false;
     }
 
@@ -31,19 +30,16 @@ public class PathTool : MonoBehaviour
 
         if (drawingPath.Count == 0 && RuGoInteraction.Instance.IsConfirmPressed)
         {
-            // Mouse down
             StorePointPosition();
             VisualizeStartingPoint();
         }
         else if (drawingPath.Count != 0 && RuGoInteraction.Instance.IsConfirmHeld)
         {
-            // Mouse hold
             StorePointPosition();
             VisualizeNewPoint();
         }
         else if (drawingPath.Count > 1 && RuGoInteraction.Instance.IsConfirmReleased)
         {
-            // Mouse up
             StorePointPosition();
             EqualizePointDistances();
             pathCompleteCallBack(drawingPath.ToArray());
@@ -51,35 +47,6 @@ public class PathTool : MonoBehaviour
         }
     }
 
-
-    /************************** Public Functions **************************/
-
-    /// <summary>
-    /// Activates the Path Tool.
-    /// </summary>
-    /// <param name="createGadgetsAlongPath">The function to call back upon finishing drawing.</param>
-    public void Activate(Action<Vector3[]> createGadgetsAlongPath)
-    {
-        pathCompleteCallBack = createGadgetsAlongPath;
-        this.enabled = true;
-    }
-
-    /// <summary>
-    /// Deactivates the Path Tool.
-    /// </summary>
-    public void Deactivate()
-    {
-        if (this.enabled)
-        {
-            this.enabled = false;
-            pathVisualizer.enabled = false;
-            pathVisualizer.positionCount = 0;
-            drawingPath = new List<Vector3>();
-        }
-    }
-
-
-    /************************** Private Functions **************************/
 
     /// <summary>
     /// Stores mouse click positions in drawingPath vector.
@@ -97,8 +64,8 @@ public class PathTool : MonoBehaviour
                 float previousY = previousPoint.y;
                 float gap = Vector3.Distance(hit.point, previousPoint);
 
-                if (Math.Abs(hit.point.y - previousY) < levelTolerance &&
-                    gap >= dominoDistance)
+                if (Math.Abs(hit.point.y - previousY) < yLevelTolerance &&
+                    gap >= gadgetDistance)
                 {
                     drawingPath.Add(hit.point);
                 }
@@ -109,6 +76,7 @@ public class PathTool : MonoBehaviour
             }
         }
     }
+
 
     /// <summary>
     /// Equalizes the distance between each point in the drawing path.
@@ -130,39 +98,40 @@ public class PathTool : MonoBehaviour
 
                 if (leftover == 0)
                 {
-                    int count = (int)(segmentLength / dominoDistance);
+                    int count = (int)(segmentLength / gadgetDistance);
                     for (int n = 0; n < count; n++)
                     {
-                        Vector3 newPoint = previousPoint + segmentVector * dominoDistance;
+                        Vector3 newPoint = previousPoint + segmentVector * gadgetDistance;
                         newPoints.Add(newPoint);
                         previousPoint = newPoint;
                     }
-                    leftover = segmentLength - count * dominoDistance;
+                    leftover = segmentLength - count * gadgetDistance;
                 }
-                else if (Vector3.Distance(previousPoint, drawingPath[i]) > dominoDistance)
+                else if (Vector3.Distance(previousPoint, drawingPath[i]) > gadgetDistance)
                 {
                     float angle_a = CalculateAngle(drawingPath[i - 1] - previousPoint, drawingPath[i] - drawingPath[i - 1]);
                     float side_b = Vector3.Distance(drawingPath[i - 1], previousPoint);
-                    float side_c = CalculateSide(dominoDistance, side_b, angle_a);
+                    float side_c = CalculateSide(gadgetDistance, side_b, angle_a);
                     float remaining_segment = segmentLength - side_c;
 
                     Vector3 newPoint = drawingPath[i - 1] + side_c * segmentVector;
                     newPoints.Add(newPoint);
                     previousPoint = newPoint;
 
-                    int count = (int)(remaining_segment / dominoDistance);
+                    int count = (int)(remaining_segment / gadgetDistance);
                     for (int n = 0; n < count; n++)
                     {
-                        newPoint = previousPoint + segmentVector * dominoDistance;
+                        newPoint = previousPoint + segmentVector * gadgetDistance;
                         newPoints.Add(newPoint);
                         previousPoint = newPoint;
                     }
-                    leftover = remaining_segment - count * dominoDistance;
+                    leftover = remaining_segment - count * gadgetDistance;
                 }
             }
         }
         drawingPath = newPoints;
     }
+
 
     /// <summary>
     /// Calculates the third side of the triangle using SSA method.
@@ -180,6 +149,7 @@ public class PathTool : MonoBehaviour
         return Mathf.Sin(angle_c * Mathf.PI / 180) * side_a / sin_of_angle_a;
     }
 
+
     /// <summary>
     /// Calculates the angle between two vectors.
     /// </summary>
@@ -191,10 +161,11 @@ public class PathTool : MonoBehaviour
         return 180 - Vector3.Angle(from, to);
     }
 
+
     /// <summary>
     /// Sets up line renderer for path visualization.
     /// </summary>
-    private void SetUpLineRenderer()
+    private void SetUpVisualizer()
     {
         pathVisualizer = gameObject.AddComponent<LineRenderer>();
         pathVisualizer.material = new Material(Shader.Find("Unlit/Texture"));
@@ -204,6 +175,7 @@ public class PathTool : MonoBehaviour
         pathVisualizer.endWidth = 0.02f;
         pathVisualizer.enabled = false;
     }
+
 
     /// <summary>
     /// Marks the starting point of the Line Renderer.
@@ -215,6 +187,7 @@ public class PathTool : MonoBehaviour
         pathVisualizer.SetPosition(1, drawingPath[0]);
         pathVisualizer.enabled = true;
     }
+
 
     /// <summary>
     /// Visualizes the straight line from starting point to the mouse cursor.
@@ -230,6 +203,7 @@ public class PathTool : MonoBehaviour
         }
     }
 
+
     /// <summary>
     /// Visualizes a newly added point on the drawing path.
     /// </summary>
@@ -237,5 +211,49 @@ public class PathTool : MonoBehaviour
     {
         pathVisualizer.positionCount += 1;
         pathVisualizer.SetPosition(pathVisualizer.positionCount - 1, drawingPath[drawingPath.Count - 1]);
+    }
+
+
+    /// <summary>
+    /// Activates the Path Tool.
+    /// </summary>
+    /// <param name="createGadgetsAlongPath">The function to call back upon finishing drawing.</param>
+    public void Activate(Action<Vector3[]> createGadgetsAlongPath)
+    {
+        pathCompleteCallBack = createGadgetsAlongPath;
+        this.enabled = true;
+    }
+
+
+    /// <summary>
+    /// Deactivates the Path Tool.
+    /// </summary>
+    public void Deactivate()
+    {
+        if (this.enabled)
+        {
+            this.enabled = false;
+            ResetVisualizer();
+            EmptyPath();
+        }
+    }
+
+
+    /// <summary>
+    /// Resets the visualizer.
+    /// </summary>
+    private void ResetVisualizer()
+    {
+        pathVisualizer.enabled = false;
+        pathVisualizer.positionCount = 0;
+    }
+
+
+    /// <summary>
+    /// Empties the drawing path buffer.
+    /// </summary>
+    private void EmptyPath()
+    {
+        drawingPath = new List<Vector3>();
     }
 }
