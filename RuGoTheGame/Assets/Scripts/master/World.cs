@@ -17,6 +17,7 @@ public class World : MonoBehaviour
     void Start()
     {
         gadgetsInWorld = new List<Gadget>();
+        System.IO.Directory.CreateDirectory(SAVED_GAME_DIR);
         InitializeNewWorld();
     }
 
