@@ -17,8 +17,7 @@ public class World : MonoBehaviour
     void Start()
     {
         gadgetsInWorld = new List<Gadget>();
-        string[] timeStamp = System.DateTime.UtcNow.ToString().Replace(":", " ").Replace("/", " ").Split(' ');
-        WorldName = string.Join(string.Empty, timeStamp);
+        InitializeNewWorld();
     }
 
     void Update()
@@ -37,6 +36,19 @@ public class World : MonoBehaviour
             gadget.RemoveFromScene();
         }
         gadgetsInWorld = new List<Gadget>();
+    }
+
+    public void CreateNewWorld()
+    {
+        Clear();
+        InitializeNewWorld();
+        Save();
+    }
+
+    public void InitializeNewWorld()
+    {
+        string[] timeStamp = System.DateTime.UtcNow.ToString().Replace(":", " ").Replace("/", " ").Split(' ');
+        WorldName = string.Join(string.Empty, timeStamp);
     }
 
     public void Save()

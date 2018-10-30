@@ -51,6 +51,10 @@ public class GameManager : MonoBehaviour
             {
                 Manipulator.Save();
             }
+            if (Input.GetKeyDown(KeyCode.N))
+            {
+                Manipulator.CreateNewWorld();
+            }
         }
 
         if (RuGoInteraction.Instance.IsMenuActionPressed)

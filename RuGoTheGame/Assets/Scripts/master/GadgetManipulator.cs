@@ -136,6 +136,11 @@ public class GadgetManipulator : MonoBehaviour
         this.gameObject.SetActive(false);
     }
 
+    public void CreateNewWorld()
+    {
+        World.CreateNewWorld();
+    }
+
     public void Save() 
     {
         World.Save();
