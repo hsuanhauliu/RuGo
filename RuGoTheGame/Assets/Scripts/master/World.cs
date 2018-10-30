@@ -7,36 +7,26 @@ using UnityEngine;
 public class World : MonoBehaviour
 {
     private List<Gadget> gadgetsInWorld;
-
+    private bool isWorldStateModified = false;
     private string WorldName;
     private readonly string AUTO_SAVE_FILE = "autosave.dat";
     private readonly string SAVED_GAME_DIR = "SavedGames/";
 
-    private bool mIsWorldStateModified = false;
 
     void Start()
     {
         gadgetsInWorld = new List<Gadget>();
-        System.IO.Directory.CreateDirectory(SAVED_GAME_DIR);
+        CreateDirectory(SAVED_GAME_DIR);
         InitializeNewWorld();
     }
 
     void Update()
     {
-        if (mIsWorldStateModified)
+        if (isWorldStateModified)
         {
             AutoSave();
-            mIsWorldStateModified = false;
+            isWorldStateModified = false;
         }
-    }
-
-    public void Clear()
-    {
-        foreach (Gadget gadget in gadgetsInWorld)
-        {
-            gadget.RemoveFromScene();
-        }
-        gadgetsInWorld = new List<Gadget>();
     }
 
     public void CreateNewWorld()
@@ -54,8 +44,7 @@ public class World : MonoBehaviour
 
     public void Save()
     {
-        Debug.Log("Saving Data to: " + WorldName);
-        System.IO.Directory.CreateDirectory(SAVED_GAME_DIR + WorldName);
+        CreateDirectory(SAVED_GAME_DIR + WorldName);
 
         BinaryFormatter bf = new BinaryFormatter();
         FileStream file = File.Create(SAVED_GAME_DIR + WorldName + "/" + WorldName + ".dat");
@@ -73,7 +62,7 @@ public class World : MonoBehaviour
 
         if (File.Exists(fileName))
         {
-            System.IO.Directory.CreateDirectory(SAVED_GAME_DIR + WorldName);
+            CreateDirectory(SAVED_GAME_DIR + WorldName);
             BinaryFormatter bf = new BinaryFormatter();
             FileStream file = File.Create(SAVED_GAME_DIR + WorldName + "/" + AUTO_SAVE_FILE);
 
@@ -148,6 +137,15 @@ public class World : MonoBehaviour
         return gadget;
     }
 
+    public void Clear()
+    {
+        foreach (Gadget gadget in gadgetsInWorld)
+        {
+            gadget.RemoveFromScene();
+        }
+        gadgetsInWorld = new List<Gadget>();
+    }
+
     public void InsertGadget(Gadget gadget)
     {
         gadgetsInWorld.Add(gadget);
@@ -172,6 +170,11 @@ public class World : MonoBehaviour
 
     public void MarkWorldModified()
     {
-        mIsWorldStateModified = true;
+        isWorldStateModified = true;
+    }
+
+    private void CreateDirectory(string directoryName)
+    {
+        System.IO.Directory.CreateDirectory(directoryName);
     }
 }
