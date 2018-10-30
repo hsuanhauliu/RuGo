@@ -26,18 +26,16 @@ public class LoadMenu : Menu
 
     /************************** Public Functions **************************/
 
-    public void Activate()
+    public override void Activate()
     {
         BuildToolBar();
-        this.gameObject.SetActive(true);
+        base.Activate();
     }
 
     public void GoToMainMenu()
     {
         this.Deactivate();
         mainMenu.Activate();
-        //MainMenu.Activate();
-        //gameManager.EnableSelectMode();
     }
 
     /************************** Private Functions **************************/
@@ -50,11 +48,16 @@ public class LoadMenu : Menu
         AddButtonToToolBar("Back", horizontalOffset - 330f, verticalOffset + 450f);
 
         string[] fileArray = Directory.GetDirectories(@"SavedGames");
-        string buttonType ="BasicButton";
-
+        
         for (int i = 0; i < fileArray.Length; i++)
         {
-            AddButtonToToolBar(fileArray[i] , horizontalOffset, verticalOffset - 500f -(i*300f));
+            string fileName = fileArray[i];
+#if UNITY_STANDALONE_WIN
+            fileName = fileName.Replace("SavedGames\\", "");
+#elif UNITY_STANDALONE_OSX
+            fileName = fileName.Replace("SavedGames/", "");
+#endif
+            AddButtonToToolBar(fileName, horizontalOffset, verticalOffset - 500f -(i*300f));
         }
     }
 
@@ -84,18 +87,15 @@ public class LoadMenu : Menu
             collider.size = uiButton.GetComponent<RectTransform>().rect.size;
             collider.center = new Vector3(0, -collider.size.y / 2, 0);
         }
-        string buttonIdentifier = buttonName.Replace("SavedGames/", "");
-        uiButton.GetComponentInChildren<UnityEngine.UI.Text>().text = buttonIdentifier;
+        uiButton.GetComponentInChildren<UnityEngine.UI.Text>().text = buttonName;
 
         if (string.Equals("Back", buttonName))
         {
-            //this.Deactivate();
-
-            uiButton.onClick.AddListener(() => this.GoToMainMenu()); //this.Deactivate());
+            uiButton.onClick.AddListener(() => this.GoToMainMenu());
         }
         else
         {
-            uiButton.onClick.AddListener(() => world.LoadWorld(buttonIdentifier)); //this.Deactivate());
+            uiButton.onClick.AddListener(() => world.LoadWorld(buttonName));
         }
     }
 }
