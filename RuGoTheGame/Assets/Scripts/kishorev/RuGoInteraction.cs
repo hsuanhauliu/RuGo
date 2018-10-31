@@ -116,7 +116,7 @@ public class RuGoInteraction : MonoBehaviour {
 
     private void EnableDebugging()
     {
-        if (!DebugCylinder.gameObject.activeSelf)
+        if (DebugCylinder != null && !DebugCylinder.gameObject.activeSelf)
         {
             DebugCylinder.gameObject.SetActive(true);
         }
@@ -124,7 +124,7 @@ public class RuGoInteraction : MonoBehaviour {
 
     private void DisableDebugging()
     {
-        if (DebugCylinder.gameObject.activeSelf)
+        if (DebugCylinder != null && DebugCylinder.gameObject.activeSelf)
         {
             DebugCylinder.gameObject.SetActive(false);
         }
