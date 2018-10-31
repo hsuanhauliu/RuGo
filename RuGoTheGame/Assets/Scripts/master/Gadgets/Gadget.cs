@@ -64,6 +64,11 @@ public abstract class Gadget : MonoBehaviour
         {
             mChildData.Add(child.localPosition);
         }
+
+        VRTK.VRTK_InteractableObject interactableObject = gameObject.AddComponent<VRTK.VRTK_InteractableObject>();
+        VRTK.GrabAttachMechanics.VRTK_ChildOfControllerGrabAttach childOfController = gameObject.AddComponent<VRTK.GrabAttachMechanics.VRTK_ChildOfControllerGrabAttach>();
+        interactableObject.grabAttachMechanicScript = childOfController;
+        interactableObject.isGrabbable = true;
     }
 
     protected void InitializeGadget()
