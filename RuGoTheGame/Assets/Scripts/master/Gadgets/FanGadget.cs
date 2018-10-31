@@ -9,69 +9,106 @@ public class FanGadget : Gadget
     // This mask is used to control objects the wind interacts with, it is set in the editor.
     private LayerMask mLayerMask;
     private AudioSource mAudioData;
-    public float windStrengthMin = 5;     public float windStrengthMax = 25;
-    private float mWindStrength;
-    private Transform blades;
-    private float mWindzoneForwardOffset = 0.25f;
-    private Vector3 mWindzoneHalfExtents;
+    public float WindZoneRadius = 1.0f;
+    public float WindZoneConeHalfAngle = 30.0f;
+    public float WindZoneOffset = -0.5f;
+    public float WindStrengthMin = 5.0f;     public float WindStrengthMax = 25.0f;
+    public float FanSpeed = 5.0f; 
 
-     
-
+    // Swivel and Blades
+    public Transform Blades;
+    public Transform Swivel;
+    public GameObject AffectVisual;
+    
     private bool mIsFanOn = false;
+    private float mCurFanSpeed = 0.0f;
+    private float mTargetFanSpeed = 0.0f;
+    private Vector3 mOffset = Vector3.zero;
+    private float mThreshold = 0.0f;
 
     new void Start()
     {
         base.Start();
-        blades = this.transform.Find("Blades");
-        mWindzoneHalfExtents = new Vector3(0.10f, 0.5f, mWindzoneForwardOffset);
-
+        
         mLayerMask = LayerMask.GetMask(LayerMask.LayerToName(this.gameObject.layer));
         mAudioData = GetComponent<AudioSource>();
+
+        mCurFanSpeed = 0.0f;
+        mTargetFanSpeed = 0.0f;
+        mOffset.x = WindZoneOffset;
+
+        mThreshold = Mathf.Cos(WindZoneConeHalfAngle * Mathf.Deg2Rad);
+
+        ConeHelper coneHelper = AffectVisual.GetComponent<ConeHelper>();
+        coneHelper.Length = WindZoneRadius;
+        coneHelper.ConeHalfAngle = WindZoneConeHalfAngle;
+        AffectVisual.transform.localPosition = mOffset;
+        AffectVisual.SetActive(!isPhysicsMode);
     }
 
     void Update()
     {
+        Vector3 fanForward = Blades.transform.right;
+        mCurFanSpeed = Mathf.Lerp(mCurFanSpeed, mTargetFanSpeed, Time.deltaTime);
+        Blades.Rotate(Vector3.right, mCurFanSpeed);
+
         if (mIsFanOn)
         {
-            blades.Rotate(new Vector3(0, 0, 45));
-            Vector3 windZonePosition = gameObject.transform.position;
-            Vector3 fanForward = gameObject.transform.forward * mWindzoneForwardOffset;
-            windZonePosition += fanForward;
-
-            //TODO need to change this
-            mWindStrength = Random.Range(windStrengthMin, windStrengthMax);
-
-            //TODO Tweak the Wind Zone Overlap Box
-            Collider[] hitColliders = Physics.OverlapBox(windZonePosition, mWindzoneHalfExtents, this.transform.rotation, mLayerMask);
+            Vector3 windZonePosition = Blades.transform.position + mOffset;
+            
+            Collider[] hitColliders = Physics.OverlapSphere(windZonePosition, WindZoneRadius, mLayerMask);
 
             foreach (Collider colliderInWindZone in hitColliders)
             {
                 if (colliderInWindZone.GetComponent<Rigidbody>() != null)
                 {
-                    Debug.DrawRay(colliderInWindZone.GetComponent<Rigidbody>().transform.position, blades.transform.forward * mWindStrength, Color.red);
+                    if(colliderInWindZone.GetComponentInParent<Gadget>().transform != this.transform)
+                    {
+                        Vector3 directionToCollider = colliderInWindZone.transform.position - windZonePosition;
+                        float affect = directionToCollider.magnitude;
+                        directionToCollider.Normalize();
 
-                    colliderInWindZone.GetComponent<Rigidbody>().AddForce(blades.transform.forward * mWindStrength, ForceMode.Acceleration);
+                        float dotToCollider = Vector3.Dot(fanForward, directionToCollider);
+
+                        if (dotToCollider > mThreshold)
+                        {
+                            affect = affect / WindZoneRadius;
+                            affect = affect * dotToCollider;
+                            float windStrength = Mathf.Lerp(WindStrengthMin, WindStrengthMax, affect);
+                            colliderInWindZone.GetComponent<Rigidbody>().AddForce(fanForward * windStrength, ForceMode.Acceleration);
+                        }
+                    }
                 }
             }
         }
     }
-
+    
     public override void PerformSwitchAction()
     {
         mIsFanOn = !mIsFanOn;
         if (!mIsFanOn) {
+            mTargetFanSpeed = 0.0f;
             mAudioData.Stop();
         }
         else {
+            mTargetFanSpeed = FanSpeed;
             mAudioData.Play();
         }
+    }
+
+    public override void MakeSolid()
+    {
+        base.MakeSolid();
+        AffectVisual.SetActive(false);
     }
 
     public override void MakeTransparent()
     {
         base.MakeTransparent();
         mIsFanOn = false;
-        if(mAudioData != null) {
+        AffectVisual.SetActive(true);
+        
+        if (mAudioData != null) {
             mAudioData.Stop();
         }
     }
@@ -84,6 +121,7 @@ public class FanGadget : Gadget
     protected override List<Renderer> GetRenderers()
     {
         List<Renderer> renderers = new List<Renderer>(this.gameObject.GetComponentsInChildren<Renderer>());
+
         return renderers;
     }
 }
