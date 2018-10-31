@@ -12,6 +12,9 @@ public class GameManager : MonoBehaviour
     public MainMenu MainMenu;
     public LoadMenu loadMenu;
 
+    // #TEMP HACK: How to do this for VRTK or does this go away?
+    public GameObject MainCamera;
+
     // Testing the VR Menu
     public int CurrentMenuOption = -1;
     public bool isVrRun;
@@ -25,7 +28,7 @@ public class GameManager : MonoBehaviour
             return currentGameMode == GameMode.Build;
         }
     }
-
+    
     void Start()
     {
         EnableBuildMode();
@@ -192,10 +195,6 @@ public class GameManager : MonoBehaviour
              if (gadget)             {                 Manipulator.EnableModifyMode(gadget);             }             else             {                 gadget = hit.transform.GetComponentInParent<Gadget>();
                  if (gadget)                 {
                     Manipulator.EnableModifyMode(gadget);
-                }
-                else
-                {
-                    Debug.Log(hit.transform.root);
                 }
             }         }     }
 

@@ -24,6 +24,13 @@ public class Menu : MonoBehaviour
     {
         // Parent the gadget selector menu underneath the main camera
         GameObject menuParent = GameObject.FindGameObjectWithTag("MainCamera");
+
+        // #TEMP HACK: We need to figure out how to do this for VRTK or does this go away?
+        if (menuParent == null)
+        {
+            menuParent = gameManager.MainCamera;
+        }
+
         transform.SetParent(menuParent.transform);
         if (IsVrRun)
         {
