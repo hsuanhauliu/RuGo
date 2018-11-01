@@ -44,6 +44,8 @@ public struct GadgetSaveData
 
 public abstract class Gadget : MonoBehaviour
 {
+    public bool MakeGadgetSolid = false;
+
     protected bool isPhysicsMode;
 
     private List<Renderer> mRenderers;
@@ -66,6 +68,15 @@ public abstract class Gadget : MonoBehaviour
         }
 
         MakeGadgetInteractable();
+    }
+
+    private void Update()
+    {
+        if(MakeGadgetSolid)
+        {
+            MakeGadgetSolid = false;
+            MakeSolid();
+        }
     }
 
     protected void InitializeGadget()
