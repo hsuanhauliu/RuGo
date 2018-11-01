@@ -69,6 +69,21 @@ public abstract class Gadget : MonoBehaviour
         VRTK.GrabAttachMechanics.VRTK_ChildOfControllerGrabAttach childOfController = gameObject.AddComponent<VRTK.GrabAttachMechanics.VRTK_ChildOfControllerGrabAttach>();
         interactableObject.grabAttachMechanicScript = childOfController;
         interactableObject.isGrabbable = true;
+
+        interactableObject.InteractableObjectGrabbed += OnGadgetGrabbed;
+        interactableObject.InteractableObjectUngrabbed += OnGadgetUnGrabbed;
+    }
+
+    protected void OnGadgetUnGrabbed(object sender, VRTK.InteractableObjectEventArgs e)
+    {
+        // Do operations here when we have ungrabbed an object
+        SetPhysicsMode(true);
+    }
+
+    protected void OnGadgetGrabbed(object sender, VRTK.InteractableObjectEventArgs e)
+    {
+        SetPhysicsMode(false);
+        Debug.Log("Gadget " + this.name + " grabbed");
     }
 
     protected void InitializeGadget()
