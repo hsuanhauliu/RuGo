@@ -95,7 +95,13 @@ public abstract class Gadget : MonoBehaviour
         {
             foreach (Rigidbody body in rigidBodies)
             {
-                body.isKinematic = !enable;
+                bool shouldBeKinematic = !enable;
+                if(body.gameObject.GetComponent<Collider>() is MeshCollider)
+                {
+                    shouldBeKinematic = true;
+                }
+                
+                body.isKinematic = shouldBeKinematic;
                 body.detectCollisions = enable;
             }
         }
