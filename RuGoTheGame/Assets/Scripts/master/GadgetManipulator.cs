@@ -25,16 +25,19 @@ public class GadgetManipulator : MonoBehaviour
         // Receive inputs only when a gadget is selected
         if (GadgetSelected())
         {
+            // TODO: this is causing issue now that we have VRTK.
+            // Two functions are trying to perform grabbing the same item.
+            /*
             Ray ray = RuGoInteraction.Instance.SelectorRay;
             RaycastHit hit;
-            /*
+
                 https://docs.unity3d.com/Manual/Layers.html
                 We want to ignore the selected gadget otherwise the raycast will keep intersecting repeatedly with itself translating the object in undesirable ways
-            */
+
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, mRayCastMask))
             {
                 mSelectedGadget.transform.position = hit.point;
-            }
+            }*/
 
             if (Input.GetKey(KeyCode.Z))
             {
@@ -45,14 +48,17 @@ public class GadgetManipulator : MonoBehaviour
             {
                 mSelectedGadget.transform.Rotate(Vector3.up, -turnSpeed * Time.deltaTime);
             }
+
             if (RuGoInteraction.Instance.IsTouchpadTouched)
             {
 
                 print(RuGoInteraction.Instance.GetRotationDelta());
                 mSelectedGadget.transform.Rotate(Vector3.up, RuGoInteraction.Instance.GetRotationDelta());
             }
-            
-            // #TODO: Unify the controller systems
+
+            // TODO: this is causing issue now that we have VRTK.
+            // Two functions are trying to perform grabbing the same item.
+            /*
             if (Input.GetKeyDown(KeyCode.Return) || RuGoInteraction.Instance.IsConfirmPressed)
             {
                 if (ModifyModeEnabled())
@@ -64,6 +70,7 @@ public class GadgetManipulator : MonoBehaviour
                     World.CreateGadgetFromTemplate(mSelectedGadget);
                 }
             }
+            */
 
             if (Input.GetKeyDown(KeyCode.D))
             {
@@ -71,13 +78,6 @@ public class GadgetManipulator : MonoBehaviour
                 {
                     RemoveGadget();
                 }
-            }
-        }
-        else
-        {
-            if (Input.GetKeyDown(KeyCode.X))
-            {
-                World.Clear();
             }
         }
     }
@@ -110,14 +110,14 @@ public class GadgetManipulator : MonoBehaviour
     {
         mSelectedGadget = gadget;
         mCurrentMode = Mode.Modify;
-        mSelectedGadget.MakeTransparent();
+        //mSelectedGadget.MakeTransparent();
     }
 
     public void EnableCreateMode(Gadget gadget)
     {
         mSelectedGadget = gadget;
         mCurrentMode = Mode.Create;
-        mSelectedGadget.MakeTransparent();
+        //mSelectedGadget.MakeTransparent();
     }
 
     public bool GadgetSelected()

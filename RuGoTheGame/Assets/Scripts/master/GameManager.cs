@@ -38,13 +38,14 @@ public class GameManager : MonoBehaviour
     {
         if (BuildModeEnabled)
         {
+            /*
             if (RuGoInteraction.Instance.IsMenuConfirmPressed &&
                 Manipulator.ModifyModeEnabled() &&
                 !Manipulator.GadgetSelected()
                )
             {
                 SelectExistingGadget();
-            }
+            }*/
 
             if (Input.GetKeyDown(KeyCode.R))
             {

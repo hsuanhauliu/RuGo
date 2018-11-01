@@ -16,6 +16,7 @@ public class World : MonoBehaviour
     void Start()
     {
         gadgetsInWorld = new List<Gadget>();
+        InsertInitialGadgets();
         CreateDirectory(SAVED_GAME_DIR);
         InitializeNewWorld();
     }
@@ -144,6 +145,34 @@ public class World : MonoBehaviour
             gadget.RemoveFromScene();
         }
         gadgetsInWorld = new List<Gadget>();
+    }
+
+    private void InsertInitialGadgets()
+    {
+        string table = "MetalTable";
+
+        GameObject gadgetResource = Resources.Load(table) as GameObject;
+        GameObject tableObj = Instantiate(gadgetResource, this.transform);
+        tableObj.transform.position = Vector3.zero;
+        Gadget gadget = tableObj.GetComponent<Gadget>();
+        InsertGadget(gadget);
+
+        int counter = 0;
+        foreach (Transform child in tableObj.transform.GetChild(0))
+        {
+            GadgetInventory nextGadget = (GadgetInventory)counter;
+            string gadgetName = nextGadget.ToString();
+            if (gadgetName != "PathTool")
+            {
+                gadgetResource = Resources.Load(gadgetName) as GameObject;
+                GameObject gadgetObj = Instantiate(gadgetResource, child.transform);
+                gadget.transform.localPosition = Vector3.zero;
+                gadget = gadgetObj.GetComponent<Gadget>();
+                gadget.MakeSolid();
+                InsertGadget(gadget);
+            }
+            counter++;
+        }
     }
 
     public void InsertGadget(Gadget gadget)
