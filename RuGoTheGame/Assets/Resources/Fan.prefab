@@ -313,7 +313,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4608223052380182}
   - component: {fileID: 114078593575708794}
-  - component: {fileID: 82420664348252076}
+  - component: {fileID: 82338193458024856}
   m_Layer: 0
   m_Name: Fan
   m_TagString: Untagged
@@ -2422,7 +2422,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 0.5, z: 1}
   m_Center: {x: 0, y: -0.25, z: 0}
---- !u!82 &82420664348252076
+--- !u!82 &82338193458024856
 AudioSource:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2431,15 +2431,15 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: f208cd1098cff4950964ddb3f2310d78, type: 3}
+  m_audioClip: {fileID: 8300000, guid: b298081bfe2fa45eb93822f06447e42b, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.669
-  m_Pitch: 1
-  Loop: 0
+  m_Volume: 0.19
+  m_Pitch: 0.86
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 128
+  Priority: 195
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 500
@@ -2477,7 +2477,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
