@@ -65,25 +65,7 @@ public abstract class Gadget : MonoBehaviour
             mChildData.Add(child.localPosition);
         }
 
-        VRTK.VRTK_InteractableObject interactableObject = gameObject.AddComponent<VRTK.VRTK_InteractableObject>();
-        VRTK.GrabAttachMechanics.VRTK_ChildOfControllerGrabAttach childOfController = gameObject.AddComponent<VRTK.GrabAttachMechanics.VRTK_ChildOfControllerGrabAttach>();
-        interactableObject.grabAttachMechanicScript = childOfController;
-        interactableObject.isGrabbable = true;
-
-        interactableObject.InteractableObjectGrabbed += OnGadgetGrabbed;
-        interactableObject.InteractableObjectUngrabbed += OnGadgetUnGrabbed;
-    }
-
-    protected void OnGadgetUnGrabbed(object sender, VRTK.InteractableObjectEventArgs e)
-    {
-        // Do operations here when we have ungrabbed an object
-        SetPhysicsMode(true);
-    }
-
-    protected void OnGadgetGrabbed(object sender, VRTK.InteractableObjectEventArgs e)
-    {
-        SetPhysicsMode(false);
-        Debug.Log("Gadget " + this.name + " grabbed");
+        MakeGadgetInteractable();
     }
 
     protected void InitializeGadget()
@@ -148,6 +130,31 @@ public abstract class Gadget : MonoBehaviour
             this.GetComponentInChildren<Renderer>()
         };
     }
+
+    /************************** Gadget + VRTK *****************************/
+    private void MakeGadgetInteractable()
+    {
+        VRTK.VRTK_InteractableObject interactableObject = gameObject.AddComponent<VRTK.VRTK_InteractableObject>();
+        VRTK.GrabAttachMechanics.VRTK_ChildOfControllerGrabAttach childOfController = gameObject.AddComponent<VRTK.GrabAttachMechanics.VRTK_ChildOfControllerGrabAttach>();
+        interactableObject.grabAttachMechanicScript = childOfController;
+        interactableObject.isGrabbable = true;
+
+        interactableObject.InteractableObjectGrabbed += OnGadgetGrabbed;
+        interactableObject.InteractableObjectUngrabbed += OnGadgetUnGrabbed;
+    }
+
+    protected void OnGadgetUnGrabbed(object sender, VRTK.InteractableObjectEventArgs e)
+    {
+        // Do operations here when we have ungrabbed a gadget
+        SetPhysicsMode(true);
+    }
+
+    protected void OnGadgetGrabbed(object sender, VRTK.InteractableObjectEventArgs e)
+    {
+        // Do operations here when we have grabbed a gadget
+        SetPhysicsMode(false);
+    }
+
 
     /************************** Public Functions **************************/
 
