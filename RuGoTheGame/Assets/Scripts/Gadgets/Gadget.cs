@@ -96,8 +96,11 @@ public abstract class Gadget : MonoBehaviour
             foreach (Rigidbody body in rigidBodies)
             {
                 bool shouldBeKinematic = !enable;
-                if(body.gameObject.GetComponent<Collider>() is MeshCollider)
-                {
+
+                // If we have a non-convex mesh collider set is kinematic to true.
+                MeshCollider attachedCollider = body.gameObject.GetComponent<Collider>() as MeshCollider;
+                if (attachedCollider != null && !attachedCollider.convex)
+                {   
                     shouldBeKinematic = true;
                 }
                 
@@ -161,8 +164,6 @@ public abstract class Gadget : MonoBehaviour
 
     protected void SetLayer(Transform t, string layerName)
     {
-        print(t.gameObject.name + " " + layerName);
-
         t.gameObject.layer = LayerMask.NameToLayer(layerName);
 
         foreach (Transform child in t)
