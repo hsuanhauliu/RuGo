@@ -113,11 +113,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &15317731 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1469220889570388, guid: afec65f27dcd2c74cba31fc61eea61e6,
-    type: 2}
-  m_PrefabInternal: {fileID: 2060681468}
 --- !u!4 &15317734 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4726844815573086, guid: afec65f27dcd2c74cba31fc61eea61e6,
@@ -571,7 +566,6 @@ Transform:
   - {fileID: 1204215891}
   - {fileID: 965849455}
   - {fileID: 1188666761}
-  - {fileID: 1424436049}
   m_Father: {fileID: 982195320}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1693,7 +1687,7 @@ GameObject:
   - component: {fileID: 965849457}
   - component: {fileID: 965849456}
   m_Layer: 0
-  m_Name: Controller (right)
+  m_Name: RightHand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1812,8 +1806,8 @@ MonoBehaviour:
   actualHeadset: {fileID: 1840806462}
   actualLeftController: {fileID: 1204215890}
   actualRightController: {fileID: 965849454}
-  modelAliasLeftController: {fileID: 1853534689}
-  modelAliasRightController: {fileID: 1942838389}
+  modelAliasLeftController: {fileID: 1204215890}
+  modelAliasRightController: {fileID: 965849454}
   cachedSystemSDKInfo:
     baseTypeName: VRTK.SDK_BaseSystem
     fallbackTypeName: VRTK.SDK_FallbackSystem
@@ -1875,8 +1869,28 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1469220889570388, guid: afec65f27dcd2c74cba31fc61eea61e6, type: 2}
       propertyPath: m_Name
-      value: LeftAvatarHand
+      value: Hand
       objectReference: {fileID: 0}
+    - target: {fileID: 114963189862696322, guid: afec65f27dcd2c74cba31fc61eea61e6,
+        type: 2}
+      propertyPath: controllerEvents
+      value: 
+      objectReference: {fileID: 746911767}
+    - target: {fileID: 114963189862696322, guid: afec65f27dcd2c74cba31fc61eea61e6,
+        type: 2}
+      propertyPath: interactTouch
+      value: 
+      objectReference: {fileID: 746911769}
+    - target: {fileID: 114963189862696322, guid: afec65f27dcd2c74cba31fc61eea61e6,
+        type: 2}
+      propertyPath: interactGrab
+      value: 
+      objectReference: {fileID: 746911768}
+    - target: {fileID: 114963189862696322, guid: afec65f27dcd2c74cba31fc61eea61e6,
+        type: 2}
+      propertyPath: handModel
+      value: 
+      objectReference: {fileID: 1853534690}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: afec65f27dcd2c74cba31fc61eea61e6, type: 2}
   m_IsPrefabAsset: 0
@@ -2296,7 +2310,7 @@ GameObject:
   - component: {fileID: 1204215891}
   - component: {fileID: 1204215892}
   m_Layer: 0
-  m_Name: Controller (left)
+  m_Name: LeftHand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2491,7 +2505,7 @@ MonoBehaviour:
   actualHeadset: {fileID: 110940736}
   actualLeftController: {fileID: 1385117873}
   actualRightController: {fileID: 726678763}
-  modelAliasLeftController: {fileID: 15317731}
+  modelAliasLeftController: {fileID: 0}
   modelAliasRightController: {fileID: 59869399}
   cachedSystemSDKInfo:
     baseTypeName: VRTK.SDK_BaseSystem
@@ -2840,97 +2854,6 @@ Transform:
   m_Father: {fileID: 1385117874}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1424436048
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 1624420280099278, guid: e57f0968405337241ab945e58e079fc8,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1424436049}
-  - component: {fileID: 1424436052}
-  - component: {fileID: 1424436051}
-  - component: {fileID: 1424436050}
-  m_Layer: 0
-  m_Name: Cylinder
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1424436049
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 4427464691709552, guid: e57f0968405337241ab945e58e079fc8,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1424436048}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 0.02, z: 1}
-  m_Children: []
-  m_Father: {fileID: 266678483}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!136 &1424436050
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 136078020907595996, guid: e57f0968405337241ab945e58e079fc8,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1424436048}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.5000001
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
---- !u!23 &1424436051
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 23646924089848414, guid: e57f0968405337241ab945e58e079fc8,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1424436048}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RenderingLayerMask: 4294967295
-  m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
---- !u!33 &1424436052
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 33774772846242460, guid: e57f0968405337241ab945e58e079fc8,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1424436048}
-  m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &1463439180
 GameObject:
   m_ObjectHideFlags: 0
@@ -4107,11 +4030,6 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!1 &1853534689 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1469220889570388, guid: afec65f27dcd2c74cba31fc61eea61e6,
-    type: 2}
-  m_PrefabInternal: {fileID: 989274527}
 --- !u!4 &1853534690 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4726844815573086, guid: afec65f27dcd2c74cba31fc61eea61e6,
@@ -4286,11 +4204,6 @@ Prefab:
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 63dfaed7a92fbcd438a0901779af9918, type: 3}
   m_IsPrefabAsset: 0
---- !u!1 &1942838389 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1469220889570388, guid: afec65f27dcd2c74cba31fc61eea61e6,
-    type: 2}
-  m_PrefabInternal: {fileID: 1995905351}
 --- !u!4 &1942838390 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4726844815573086, guid: afec65f27dcd2c74cba31fc61eea61e6,
@@ -4614,8 +4527,28 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1469220889570388, guid: afec65f27dcd2c74cba31fc61eea61e6, type: 2}
       propertyPath: m_Name
-      value: RightAvatarHand
+      value: Hand
       objectReference: {fileID: 0}
+    - target: {fileID: 114963189862696322, guid: afec65f27dcd2c74cba31fc61eea61e6,
+        type: 2}
+      propertyPath: handModel
+      value: 
+      objectReference: {fileID: 1942838390}
+    - target: {fileID: 114963189862696322, guid: afec65f27dcd2c74cba31fc61eea61e6,
+        type: 2}
+      propertyPath: controllerEvents
+      value: 
+      objectReference: {fileID: 745988739}
+    - target: {fileID: 114963189862696322, guid: afec65f27dcd2c74cba31fc61eea61e6,
+        type: 2}
+      propertyPath: interactTouch
+      value: 
+      objectReference: {fileID: 745988741}
+    - target: {fileID: 114963189862696322, guid: afec65f27dcd2c74cba31fc61eea61e6,
+        type: 2}
+      propertyPath: interactGrab
+      value: 
+      objectReference: {fileID: 745988740}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: afec65f27dcd2c74cba31fc61eea61e6, type: 2}
   m_IsPrefabAsset: 0
