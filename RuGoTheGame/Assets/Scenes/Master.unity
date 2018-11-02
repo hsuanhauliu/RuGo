@@ -547,11 +547,6 @@ MonoBehaviour:
   startMenuAlias: 102
   touchModifier: 116
   hairTouchModifier: 104
---- !u!1 &238426632 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1431058186026970, guid: afec65f27dcd2c74cba31fc61eea61e6,
-    type: 2}
-  m_PrefabInternal: {fileID: 2060681468}
 --- !u!4 &266678483
 Transform:
   m_ObjectHideFlags: 0
@@ -1184,11 +1179,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &716176226 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1431058186026970, guid: afec65f27dcd2c74cba31fc61eea61e6,
-    type: 2}
-  m_PrefabInternal: {fileID: 567680006}
 --- !u!1 &726678763
 GameObject:
   m_ObjectHideFlags: 0
@@ -1416,7 +1406,7 @@ MonoBehaviour:
   grabPrecognition: 0
   throwMultiplier: 1
   createRigidBodyWhenNotTouching: 0
-  controllerAttachPoint: {fileID: 1325463778}
+  controllerAttachPoint: {fileID: 1995905352}
   controllerEvents: {fileID: 745988739}
   interactTouch: {fileID: 745988741}
 --- !u!114 &745988741
@@ -1430,7 +1420,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64e104da36bd3b04b90c6ae969ac66dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  customColliderContainer: {fileID: 716176226}
+  customColliderContainer: {fileID: 1995905353}
 --- !u!1 &746911765
 GameObject:
   m_ObjectHideFlags: 0
@@ -1526,7 +1516,7 @@ MonoBehaviour:
   grabPrecognition: 0
   throwMultiplier: 1
   createRigidBodyWhenNotTouching: 0
-  controllerAttachPoint: {fileID: 2105840573}
+  controllerAttachPoint: {fileID: 989274528}
   controllerEvents: {fileID: 746911767}
   interactTouch: {fileID: 746911769}
 --- !u!114 &746911769
@@ -1540,7 +1530,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64e104da36bd3b04b90c6ae969ac66dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  customColliderContainer: {fileID: 238426632}
+  customColliderContainer: {fileID: 989274529}
 --- !u!1 &787240741
 GameObject:
   m_ObjectHideFlags: 0
@@ -1894,6 +1884,16 @@ Prefab:
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: afec65f27dcd2c74cba31fc61eea61e6, type: 2}
   m_IsPrefabAsset: 0
+--- !u!54 &989274528 stripped
+Rigidbody:
+  m_CorrespondingSourceObject: {fileID: 54584660101132624, guid: afec65f27dcd2c74cba31fc61eea61e6,
+    type: 2}
+  m_PrefabInternal: {fileID: 989274527}
+--- !u!1 &989274529 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1431058186026970, guid: afec65f27dcd2c74cba31fc61eea61e6,
+    type: 2}
+  m_PrefabInternal: {fileID: 989274527}
 --- !u!1 &1043903125
 GameObject:
   m_ObjectHideFlags: 0
@@ -2527,11 +2527,6 @@ MonoBehaviour:
     fallbackTypeName: VRTK.SDK_FallbackController
     typeName: VRTK.SDK_SimController
     descriptionIndex: 0
---- !u!54 &1325463778 stripped
-Rigidbody:
-  m_CorrespondingSourceObject: {fileID: 54584660101132624, guid: afec65f27dcd2c74cba31fc61eea61e6,
-    type: 2}
-  m_PrefabInternal: {fileID: 567680006}
 --- !u!1 &1333779731
 GameObject:
   m_ObjectHideFlags: 0
@@ -3590,7 +3585,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1692707818
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4467,8 +4462,8 @@ MonoBehaviour:
   autoManageVRSettings: 1
   autoLoadSetup: 1
   setups:
-  - {fileID: 1298308383}
   - {fileID: 982195321}
+  - {fileID: 1298308383}
   excludeTargetGroups: 1b0000001a000000
   persistOnLoad: 0
 --- !u!4 &1967514524
@@ -4552,6 +4547,16 @@ Prefab:
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: afec65f27dcd2c74cba31fc61eea61e6, type: 2}
   m_IsPrefabAsset: 0
+--- !u!54 &1995905352 stripped
+Rigidbody:
+  m_CorrespondingSourceObject: {fileID: 54584660101132624, guid: afec65f27dcd2c74cba31fc61eea61e6,
+    type: 2}
+  m_PrefabInternal: {fileID: 1995905351}
+--- !u!1 &1995905353 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1431058186026970, guid: afec65f27dcd2c74cba31fc61eea61e6,
+    type: 2}
+  m_PrefabInternal: {fileID: 1995905351}
 --- !u!1001 &2060681468
 Prefab:
   m_ObjectHideFlags: 0
@@ -4798,8 +4803,3 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
---- !u!54 &2105840573 stripped
-Rigidbody:
-  m_CorrespondingSourceObject: {fileID: 54584660101132624, guid: afec65f27dcd2c74cba31fc61eea61e6,
-    type: 2}
-  m_PrefabInternal: {fileID: 2060681468}

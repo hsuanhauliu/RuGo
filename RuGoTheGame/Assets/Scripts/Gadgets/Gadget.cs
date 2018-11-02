@@ -160,23 +160,26 @@ public abstract class Gadget : MonoBehaviour
 
     protected void OnGadgetUnGrabbed(object sender, VRTK.InteractableObjectEventArgs e)
     {
-        // Do operations here when we have ungrabbed a gadget
-        if (currentGadgetState == GadgetState.OnTable)
+        switch(currentGadgetState) 
         {
-            ChangeStateToInWorld();
-            World.Instance.InsertGadget(this);
+            case GadgetState.OnTable:
+                {
+                    ChangeStateToInWorld();
+                    World.Instance.InsertGadget(this);
+                }
+                break;
+            case GadgetState.InWorld:
+                {
+                    World.Instance.MarkWorldModified();
+                }
+                break;
         }
-        else
-        {
-            World.Instance.MarkWorldModified();
-        }
-        SetPhysicsMode(true);
+        MakeSolid();
     }
 
     protected void OnGadgetGrabbed(object sender, VRTK.InteractableObjectEventArgs e)
     {
-        // Do operations here when we have grabbed a gadget
-        SetPhysicsMode(false);
+        MakeTransparent();
     }
 
 
@@ -196,20 +199,6 @@ public abstract class Gadget : MonoBehaviour
         Destroy(this.gameObject);
     }
 
-    public virtual void MakeSolid()
-    {
-        foreach (Renderer GadgetRenderer in mRenderers)
-        {
-            Color albedo = GadgetRenderer.material.color;
-            albedo.a = 1.0f;
-            GadgetRenderer.material.color = albedo;
-        }
-
-        SetLayer(transform, "Gadget");
-
-        SetPhysicsMode(true);
-    }
-
     protected void SetLayer(Transform t, string layerName)
     {
         print(t.gameObject.name + " " + layerName);
@@ -222,14 +211,20 @@ public abstract class Gadget : MonoBehaviour
         }
     }
 
+    public virtual void MakeSolid()
+    {
+        SetLayer(transform, "Gadget");
+
+        SetPhysicsMode(true);
+    }
+
     public virtual void MakeTransparent()
     {
         SetPhysicsMode(false);
         SetLayer(transform, "SelectedGadget");
 
-        //TODO Remove the duplication between highlight and transparent....
         Vector3 firstPosition = Vector3.zero;
-        int childCount = transform.childCount;
+        int childCount = mChildData.Count;
         for (int childIndex = 0; childIndex < childCount; childIndex++)
         {
             Transform child = transform.GetChild(childIndex);
@@ -243,13 +238,6 @@ public abstract class Gadget : MonoBehaviour
         if(childCount > 0)
         {
             transform.position = firstPosition + mChildData[0];
-        }
-
-        foreach (Renderer GadgetRenderer in mRenderers)
-        {
-            Color albedo = GadgetRenderer.material.color;
-            albedo.a = 0.5f;
-            GadgetRenderer.material.color = albedo;
         }
     }
 
