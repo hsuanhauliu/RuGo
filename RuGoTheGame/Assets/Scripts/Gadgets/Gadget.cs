@@ -164,7 +164,7 @@ public abstract class Gadget : MonoBehaviour
         {
             case GadgetState.OnTable:
                 {
-                    ChangeStateToInWorld();
+                    ChangeState(GadgetState.InWorld);
                     World.Instance.InsertGadget(this);
                 }
                 break;
@@ -175,6 +175,7 @@ public abstract class Gadget : MonoBehaviour
                 break;
         }
         MakeSolid();
+
     }
 
     protected void OnGadgetGrabbed(object sender, VRTK.InteractableObjectEventArgs e)
@@ -211,17 +212,20 @@ public abstract class Gadget : MonoBehaviour
         }
     }
 
+    public void SetLayer(string layerName)
+    {
+        SetLayer(this.transform, layerName);
+    }
+
     public virtual void MakeSolid()
     {
-        SetLayer(transform, "Gadget");
-
         SetPhysicsMode(true);
     }
 
     public virtual void MakeTransparent()
     {
         SetPhysicsMode(false);
-        SetLayer(transform, "SelectedGadget");
+        SetLayer(transform, "Gadget");
 
         Vector3 firstPosition = Vector3.zero;
         int childCount = mChildData.Count;
@@ -246,8 +250,8 @@ public abstract class Gadget : MonoBehaviour
         return isPhysicsMode;
     }
 
-    public void ChangeStateToInWorld()
+    private void ChangeState(GadgetState newState)
     {
-        currentGadgetState = GadgetState.InWorld;
+        currentGadgetState = newState;
     }
 }

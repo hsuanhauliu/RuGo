@@ -173,6 +173,7 @@ public class World : MonoBehaviour
 
         GameObject gadgetResource = Resources.Load(table) as GameObject;
         tableObj = Instantiate(gadgetResource, this.transform);
+        tableObj.GetComponent<Gadget>().SetLayer("TableGadget");
         tableObj.transform.position = Vector3.zero;
         SpawnGadgetsOnTable();
     }
@@ -191,6 +192,7 @@ public class World : MonoBehaviour
                 GameObject gadgetObj = Instantiate(gadgetResource, placeHolder.transform);
                 gadgetObj.transform.localPosition = Vector3.zero;
                 Gadget gadget = gadgetObj.GetComponent<Gadget>();
+                gadget.SetLayer("TableGadget");
                 gadget.MakeSolid();
             }
         }
