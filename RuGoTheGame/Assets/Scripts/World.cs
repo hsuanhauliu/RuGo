@@ -32,7 +32,7 @@ public class World : MonoBehaviour
         gadgetsInWorld = new List<Gadget>();
         InsertInitialGadgets();
         CreateDirectory(SAVED_GAME_DIR);
-        InitializeNewWorld();
+        InitializeNewWorld();   //TODO load the first world instead
     }
 
     private void Awake()
@@ -174,26 +174,6 @@ public class World : MonoBehaviour
         GameObject gadgetResource = Resources.Load(table) as GameObject;
         tableObj = Instantiate(gadgetResource, this.transform);
         tableObj.transform.position = Vector3.zero;
-
-        // TODO changed to iterate through gadget inventory instead of placeholders
-        /*
-        int counter = 0;
-        foreach (Transform child in tableObj.transform.GetChild(0))
-        {
-            GadgetInventory nextGadget = (GadgetInventory)counter;
-            string gadgetName = nextGadget.ToString();
-            if (gadgetName != "PathTool")
-            {
-                gadgetResource = Resources.Load(gadgetName) as GameObject;
-                GameObject gadgetObj = Instantiate(gadgetResource, child.transform);
-                gadgetObj.transform.localPosition = Vector3.zero;
-                Gadget gadget = gadgetObj.GetComponent<Gadget>();
-                gadget.MakeSolid();
-            }
-            counter++;
-        }*/
-
-
         SpawnGadgetsOnTable();
     }
 
