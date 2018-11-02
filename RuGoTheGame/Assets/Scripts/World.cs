@@ -11,7 +11,21 @@ public class World : MonoBehaviour
     private string WorldName;
     private readonly string AUTO_SAVE_FILE = "autosave.dat";
     private readonly string SAVED_GAME_DIR = "SavedGames/";
+    private GameObject tableObj;
 
+    public static World Instance = null;
+    private void MakeSingleton()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else if (Instance != this)
+        {
+            Destroy(gameObject);
+        }
+        DontDestroyOnLoad(gameObject);
+    }
 
     void Start()
     {
@@ -21,11 +35,17 @@ public class World : MonoBehaviour
         InitializeNewWorld();
     }
 
+    private void Awake()
+    {
+        MakeSingleton();
+    }
+
     void Update()
     {
         if (isWorldStateModified)
         {
             AutoSave();
+            SpawnGadgetsOnTable();
             isWorldStateModified = false;
         }
     }
@@ -152,11 +172,11 @@ public class World : MonoBehaviour
         string table = "MetalTable";
 
         GameObject gadgetResource = Resources.Load(table) as GameObject;
-        GameObject tableObj = Instantiate(gadgetResource, this.transform);
+        tableObj = Instantiate(gadgetResource, this.transform);
         tableObj.transform.position = Vector3.zero;
-        Gadget gadget = tableObj.GetComponent<Gadget>();
-        InsertGadget(gadget);
 
+        // TODO changed to iterate through gadget inventory instead of placeholders
+        /*
         int counter = 0;
         foreach (Transform child in tableObj.transform.GetChild(0))
         {
@@ -166,18 +186,40 @@ public class World : MonoBehaviour
             {
                 gadgetResource = Resources.Load(gadgetName) as GameObject;
                 GameObject gadgetObj = Instantiate(gadgetResource, child.transform);
-                gadget.transform.localPosition = Vector3.zero;
-                gadget = gadgetObj.GetComponent<Gadget>();
+                gadgetObj.transform.localPosition = Vector3.zero;
+                Gadget gadget = gadgetObj.GetComponent<Gadget>();
                 gadget.MakeSolid();
-                InsertGadget(gadget);
             }
             counter++;
+        }*/
+
+
+        SpawnGadgetsOnTable();
+    }
+
+    private void SpawnGadgetsOnTable()
+    {
+        for (int i = 1; i < (int)GadgetInventory.NUM; i++)
+        {
+            Transform placeHolder = tableObj.transform.GetChild(0).GetChild(i - 1);
+            if (placeHolder.childCount == 0)
+            {
+                GadgetInventory nextGadget = (GadgetInventory)i;
+                string gadgetName = nextGadget.ToString();
+
+                GameObject gadgetResource = Resources.Load(gadgetName) as GameObject;
+                GameObject gadgetObj = Instantiate(gadgetResource, placeHolder.transform);
+                gadgetObj.transform.localPosition = Vector3.zero;
+                Gadget gadget = gadgetObj.GetComponent<Gadget>();
+                gadget.MakeSolid();
+            }
         }
     }
 
     public void InsertGadget(Gadget gadget)
     {
         gadgetsInWorld.Add(gadget);
+        gadget.gameObject.transform.SetParent(transform);
         MarkWorldModified();
     }
 

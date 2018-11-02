@@ -52,8 +52,12 @@ public abstract class Gadget : MonoBehaviour
 
     private List<Vector3> mChildData;
 
+    private enum GadgetState { OnTable, InWorld };
+    private GadgetState currentGadgetState;
+
     protected void Start()
     {
+        currentGadgetState = GadgetState.OnTable;
     }
 
     protected void Awake()
@@ -72,7 +76,7 @@ public abstract class Gadget : MonoBehaviour
 
     private void Update()
     {
-        if(MakeGadgetSolid)
+        if (MakeGadgetSolid)
         {
             MakeGadgetSolid = false;
             MakeSolid();
@@ -157,6 +161,15 @@ public abstract class Gadget : MonoBehaviour
     protected void OnGadgetUnGrabbed(object sender, VRTK.InteractableObjectEventArgs e)
     {
         // Do operations here when we have ungrabbed a gadget
+        if (currentGadgetState == GadgetState.OnTable)
+        {
+            ChangeStateToInWorld();
+            World.Instance.InsertGadget(this);
+        }
+        else
+        {
+            World.Instance.MarkWorldModified();
+        }
         SetPhysicsMode(true);
     }
 
@@ -243,5 +256,10 @@ public abstract class Gadget : MonoBehaviour
     public virtual bool GetPhysicsMode()
     {
         return isPhysicsMode;
+    }
+
+    public void ChangeStateToInWorld()
+    {
+        currentGadgetState = GadgetState.InWorld;
     }
 }

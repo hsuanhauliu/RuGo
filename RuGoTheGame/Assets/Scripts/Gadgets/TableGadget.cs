@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class TableGadget : Gadget
 {
+    private void Update()
+    {
+
+    }
+
     protected new void Awake()
     {
         gameObject.layer = LayerMask.NameToLayer("Gadget");
