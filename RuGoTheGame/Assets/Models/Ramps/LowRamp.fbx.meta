@@ -1,27 +1,16 @@
 fileFormatVersion: 2
-guid: 33d9e2bb9d17cf4408a874ffaad3f95e
+guid: 0276e4d62cb48894f95831428ef00c4d
 ModelImporter:
   serializedVersion: 23
   fileIDToRecycleName:
     100000: //RootNode
-    100002: Fan:_5
-    100004: Fan:_9
     400000: //RootNode
-    400002: Fan:_5
-    400004: Fan:_9
-    2100000: lambert3
-    2100002: lambert2
-    2100004: lambert1
-    2100006: lambert4
+    2100000: wall
+    2100002: grey3
+    2100004: road3
     2300000: //RootNode
-    2300002: Fan:_5
-    2300004: Fan:_9
     3300000: //RootNode
-    3300002: Fan:_5
-    3300004: Fan:_9
-    4300000: Fan:_11
-    4300002: Fan:_9
-    4300004: Fan:_5
+    4300000: roadRampLongCurvedWall
   externalObjects: {}
   materials:
     importMaterials: 1
