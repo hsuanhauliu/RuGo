@@ -13,12 +13,6 @@ public class AirplaneGadget : Gadget
         mBlades = transform.Find("Blades");
     }
 
-    protected override List<Renderer> GetRenderers()
-    {
-        List<Renderer> renderers = new List<Renderer>(this.gameObject.GetComponentsInChildren<Renderer>());
-        return renderers;
-    }
-
     private void OnCollisionEnter(Collision collision)
     {
         // We need to redo this somehow.

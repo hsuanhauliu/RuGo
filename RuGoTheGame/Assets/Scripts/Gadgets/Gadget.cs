@@ -45,13 +45,12 @@ public struct GadgetSaveData
 public abstract class Gadget : MonoBehaviour
 {
     public bool MakeGadgetSolid = false;
+    private VRTK.VRTK_InteractableObject mInteractableObject;
 
     protected bool isPhysicsMode;
-
-    private List<Renderer> mRenderers;
     
-    private enum GadgetState { OnTable, InWorld };
-    private GadgetState currentGadgetState;
+    public enum GadgetState { OnTable, InWorld };
+    public GadgetState currentGadgetState;
 
     protected void Start()
     {
@@ -60,9 +59,6 @@ public abstract class Gadget : MonoBehaviour
 
     protected void Awake()
     {
-        gameObject.layer = LayerMask.NameToLayer("Gadget");
-        InitializeGadget();
-
         MakeGadgetInteractable();
     }
 
@@ -74,13 +70,7 @@ public abstract class Gadget : MonoBehaviour
             MakeSolid();
         }
     }
-
-    protected void InitializeGadget()
-    {
-        mRenderers = GetRenderers();
-        SetPhysicsMode(false);
-    }
-
+    
     public GadgetSaveData GetSaveData() {
         return new GadgetSaveData(this.GetGadgetType(), this.transform.position, this.transform.rotation);
     }
@@ -131,28 +121,20 @@ public abstract class Gadget : MonoBehaviour
         }
     }
 
-    protected virtual List<Renderer> GetRenderers()
-    {
-        return new List<Renderer>
-        {
-            this.GetComponentInChildren<Renderer>()
-        };
-    }
-
     /************************** Gadget + VRTK *****************************/
     private void MakeGadgetInteractable()
     {
-        VRTK.VRTK_InteractableObject interactableObject = gameObject.AddComponent<VRTK.VRTK_InteractableObject>();
+        mInteractableObject = gameObject.AddComponent<VRTK.VRTK_InteractableObject>();
         VRTK.GrabAttachMechanics.VRTK_ChildOfControllerGrabAttach childOfController = gameObject.AddComponent<VRTK.GrabAttachMechanics.VRTK_ChildOfControllerGrabAttach>();
-        interactableObject.grabAttachMechanicScript = childOfController;
-        interactableObject.isGrabbable = true;
-        interactableObject.disableWhenIdle = false;
+        mInteractableObject.grabAttachMechanicScript = childOfController;
+        mInteractableObject.isGrabbable = true;
+        mInteractableObject.disableWhenIdle = false;
         childOfController.precisionGrab = true;
 
-        interactableObject.InteractableObjectGrabbed += OnGadgetGrabbed;
-        interactableObject.InteractableObjectUngrabbed += OnGadgetUnGrabbed;
+        mInteractableObject.InteractableObjectGrabbed += OnGadgetGrabbed;
+        mInteractableObject.InteractableObjectUngrabbed += OnGadgetUnGrabbed;
 
-        interactableObject.enabled = true;
+        mInteractableObject.enabled = true;
     }
 
     protected void OnGadgetUnGrabbed(object sender, VRTK.InteractableObjectEventArgs e)
@@ -179,6 +161,7 @@ public abstract class Gadget : MonoBehaviour
     {
         if(currentGadgetState == GadgetState.OnTable)
         {
+            mInteractableObject.OverridePreviousState(World.Instance.transform, false, true);
             World.Instance.ToggleShelf();
         }
 

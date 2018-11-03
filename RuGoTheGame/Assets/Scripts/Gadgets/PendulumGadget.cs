@@ -2,14 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PendulumGadget : Gadget{
-
-    protected override List<Renderer> GetRenderers()
-    {
-        List<Renderer> renderers = new List<Renderer>(this.gameObject.GetComponentsInChildren<Renderer>());
-        return renderers;
-    }
-
+public class PendulumGadget : Gadget
+{
     public override GadgetInventory GetGadgetType()
     {
         return GadgetInventory.Pendulum;

@@ -6,7 +6,7 @@ public class AudioObject : MonoBehaviour {
 	
     protected AudioSource mAudioData;
 
-    new void Start()
+    void Start()
     {
         mAudioData = this.transform.parent.GetComponent<AudioSource>();
     }

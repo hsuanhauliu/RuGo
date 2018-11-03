@@ -233,6 +233,7 @@ public class World : MonoBehaviour
                 GameObject gadgetResource = Resources.Load(gadgetName) as GameObject;
                 GameObject gadgetObj = Instantiate(gadgetResource, placeHolder.transform);
                 gadgetObj.transform.localPosition = Vector3.zero;
+                gadgetObj.name = "OnShelf (" + gadgetName + ")";
                 Gadget gadget = gadgetObj.GetComponent<Gadget>();
                 gadget.MakeTransparent(true);
                 gadget.SetLayer("TableGadget");
@@ -243,7 +244,6 @@ public class World : MonoBehaviour
     public void InsertGadget(Gadget gadget)
     {
         gadgetsInWorld.Add(gadget);
-        gadget.gameObject.transform.SetParent(transform);
         gadget.SetLayer("Gadget");
         MarkWorldModified();
     }

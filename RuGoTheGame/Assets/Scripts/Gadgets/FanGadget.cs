@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class FanGadget : Gadget
 {
-
-
     // This mask is used to control objects the wind interacts with, it is set in the editor.
     private LayerMask mLayerMask;
     private AudioSource mAudioData;
@@ -116,12 +114,5 @@ public class FanGadget : Gadget
     public override GadgetInventory GetGadgetType()
     {
         return GadgetInventory.Fan;
-    }
-
-    protected override List<Renderer> GetRenderers()
-    {
-        List<Renderer> renderers = new List<Renderer>(this.gameObject.GetComponentsInChildren<Renderer>());
-
-        return renderers;
     }
 }
