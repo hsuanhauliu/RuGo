@@ -20,14 +20,14 @@ public class PathTool : MonoBehaviour
         this.enabled = false;
     }
 
-
     void Update()
     {
         if (drawingPath.Count == 1 && pathVisualizer.enabled)
         {
             VisualizeStraightLine();
         }
-
+        //TODO Subscribe to VRTK Controller Events
+        /* 
         if (drawingPath.Count == 0 && RuGoInteraction.Instance.IsConfirmPressed)
         {
             StorePointPosition();
@@ -45,14 +45,17 @@ public class PathTool : MonoBehaviour
             pathCompleteCallBack(drawingPath.ToArray());
             Deactivate();
         }
+        */
     }
 
+ 
 
     /// <summary>
     /// Stores mouse click positions in drawingPath vector.
     /// </summary>
     private void StorePointPosition()
     {
+        /* TODO: Get Selector Ray From VRTK
         Ray ray = RuGoInteraction.Instance.SelectorRay;
         RaycastHit hit;
 
@@ -75,6 +78,7 @@ public class PathTool : MonoBehaviour
                 drawingPath.Add(hit.point);
             }
         }
+        */
     }
 
 
@@ -194,6 +198,7 @@ public class PathTool : MonoBehaviour
     /// </summary>
     private void VisualizeStraightLine()
     {
+        /* TODO: Get Selector Ray From VRTK
         Ray ray = RuGoInteraction.Instance.SelectorRay;
         RaycastHit hit;
 
@@ -201,6 +206,7 @@ public class PathTool : MonoBehaviour
         {
             pathVisualizer.SetPosition(1, hit.point);
         }
+        */
     }
 
 
@@ -237,7 +243,6 @@ public class PathTool : MonoBehaviour
             EmptyPath();
         }
     }
-
 
     /// <summary>
     /// Resets the visualizer.
