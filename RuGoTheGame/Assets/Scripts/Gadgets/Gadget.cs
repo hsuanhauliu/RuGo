@@ -49,9 +49,7 @@ public abstract class Gadget : MonoBehaviour
     protected bool isPhysicsMode;
 
     private List<Renderer> mRenderers;
-
-    private List<Vector3> mChildData;
-
+    
     private enum GadgetState { OnTable, InWorld };
     private GadgetState currentGadgetState;
 
@@ -64,12 +62,6 @@ public abstract class Gadget : MonoBehaviour
     {
         gameObject.layer = LayerMask.NameToLayer("Gadget");
         InitializeGadget();
-
-        mChildData = new List<Vector3>();
-        foreach (Transform child in transform)
-        {
-            mChildData.Add(child.localPosition);
-        }
 
         MakeGadgetInteractable();
     }
@@ -231,26 +223,6 @@ public abstract class Gadget : MonoBehaviour
     {
         SetPhysicsMode(false, keepCollision);
         SetLayer(transform, "Gadget");
-
-        if(mChildData != null)
-        {
-            Vector3 firstPosition = Vector3.zero;
-            int childCount = mChildData.Count;
-            for (int childIndex = 0; childIndex < childCount; childIndex++)
-            {
-                Transform child = transform.GetChild(childIndex);
-                if (childIndex == 0)
-                {
-                    firstPosition = child.position;
-                }
-
-                child.localPosition = mChildData[childIndex];
-            }
-            if (childCount > 0)
-            {
-                transform.position = firstPosition + mChildData[0];
-            }
-        }
     }
 
     public virtual bool GetPhysicsMode()
