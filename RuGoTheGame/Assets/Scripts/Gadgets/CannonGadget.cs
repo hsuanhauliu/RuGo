@@ -100,7 +100,10 @@ public class CannonGadget : Gadget
     public override void MakeTransparent(bool keepCollision = false)
     {
         base.MakeTransparent(keepCollision);
-        mTrajectory.enabled = true;
+        if(mTrajectory != null)
+        {
+            mTrajectory.enabled = true;
+        }
     }
 
     private void FireCannon() 

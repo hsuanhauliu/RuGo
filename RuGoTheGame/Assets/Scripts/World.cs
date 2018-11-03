@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
@@ -194,16 +195,26 @@ public class World : MonoBehaviour
     {
         bool enable = !tableObj.activeSelf;
 
-        tableObj.SetActive(enable);
+        StartCoroutine("SetTableObjActive", enable);
+        
         if(enable)
         {
             tableObj.transform.SetParent(GameObject.FindWithTag("MainCamera").transform);
             tableObj.transform.localPosition = new Vector3(0, -0.6f, 1.5f);
+            tableObj.transform.rotation = Quaternion.identity;
         }
         else
         {
             tableObj.transform.SetParent(this.transform);
         }
+    }
+
+    private IEnumerator SetTableObjActive(bool enable)
+    {
+        yield return new WaitForSeconds(0.5f);
+        tableObj.SetActive(enable);
+
+        yield return null;
     }
 
 

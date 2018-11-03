@@ -232,21 +232,24 @@ public abstract class Gadget : MonoBehaviour
         SetPhysicsMode(false, keepCollision);
         SetLayer(transform, "Gadget");
 
-        Vector3 firstPosition = Vector3.zero;
-        int childCount = mChildData.Count;
-        for (int childIndex = 0; childIndex < childCount; childIndex++)
+        if(mChildData != null)
         {
-            Transform child = transform.GetChild(childIndex);
-            if (childIndex == 0)
+            Vector3 firstPosition = Vector3.zero;
+            int childCount = mChildData.Count;
+            for (int childIndex = 0; childIndex < childCount; childIndex++)
             {
-                firstPosition = child.position;
-            }
+                Transform child = transform.GetChild(childIndex);
+                if (childIndex == 0)
+                {
+                    firstPosition = child.position;
+                }
 
-            child.localPosition = mChildData[childIndex];   
-        }
-        if(childCount > 0)
-        {
-            transform.position = firstPosition + mChildData[0];
+                child.localPosition = mChildData[childIndex];
+            }
+            if (childCount > 0)
+            {
+                transform.position = firstPosition + mChildData[0];
+            }
         }
     }
 
