@@ -199,13 +199,18 @@ public class World : MonoBehaviour
         
         if(enable)
         {
-            tableObj.transform.SetParent(GameObject.FindWithTag("MainCamera").transform);
-            tableObj.transform.localPosition = new Vector3(0, -0.6f, 1.5f);
-            tableObj.transform.rotation = Quaternion.identity;
-        }
-        else
-        {
-            tableObj.transform.SetParent(this.transform);
+            Transform camera = GameObject.FindWithTag("MainCamera").transform;
+            Vector3 cameraXZPosition = new Vector3(camera.position.x, 0.0f, camera.position.z);
+            tableObj.transform.position = cameraXZPosition + new Vector3(0.0f, 0.0f, 0.75f);
+
+
+            tableObj.transform.LookAt(cameraXZPosition, Vector3.up);
+
+            tableObj.transform.position = cameraXZPosition + new Vector3(0.0f, 0.5f, 0.75f);
+
+            //tableObj.transform.SetParent();
+            //tableObj.transform.localPosition = new Vector3(0, -0.6f, 1.5f);
+            //tableObj.transform.rotation = Quaternion.identity;
         }
     }
 
