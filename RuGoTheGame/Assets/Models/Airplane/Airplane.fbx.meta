@@ -57,6 +57,7 @@ ModelImporter:
     100102: mesh_940096471
     100104: mesh_988057393
     100106: mesh_998227022
+    100108: Blades
     400000: //RootNode
     400002: mesh_1016016496
     400004: mesh_1019279258
@@ -111,6 +112,7 @@ ModelImporter:
     400102: mesh_940096471
     400104: mesh_988057393
     400106: mesh_998227022
+    400108: Blades
     2100000: material_4___2320
     2100002: material_21___2320
     2100004: material_7___2320
@@ -349,7 +351,6 @@ ModelImporter:
     legStretch: 0.05
     feetSpacing: 0
     rootMotionBoneName: 
-    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 1
