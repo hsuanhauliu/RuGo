@@ -102,9 +102,9 @@ public class FanGadget : Gadget
         AffectVisual.SetActive(false);
     }
 
-    public override void MakeTransparent()
+    public override void MakeTransparent(bool keepCollision = false)
     {
-        base.MakeTransparent();
+        base.MakeTransparent(keepCollision);
         mIsFanOn = false;
         AffectVisual.SetActive(true);
         

@@ -105,7 +105,7 @@ public abstract class Gadget : MonoBehaviour
     /// Enables and Disables rigid body physics and collision detection
     /// </summary>
     /// <param name="enable">If set to <c>true</c> enable rigid body physics and collision detection.</param>
-    protected virtual void SetPhysicsMode(bool enable)
+    protected virtual void SetPhysicsMode(bool enable, bool keepCollision=false)
     {
         Rigidbody[] rigidBodies = this.GetComponentsInChildren<Rigidbody>();
         if (rigidBodies.Length > 0)
@@ -119,7 +119,7 @@ public abstract class Gadget : MonoBehaviour
                 }
                 
                 body.isKinematic = shouldBeKinematic;
-                body.detectCollisions = enable;
+                body.detectCollisions = enable || keepCollision;
             }
         }
         else
@@ -180,6 +180,11 @@ public abstract class Gadget : MonoBehaviour
 
     protected void OnGadgetGrabbed(object sender, VRTK.InteractableObjectEventArgs e)
     {
+        if(currentGadgetState == GadgetState.OnTable)
+        {
+            World.Instance.ToggleTable();
+        }
+
         MakeTransparent();
     }
 
@@ -222,9 +227,9 @@ public abstract class Gadget : MonoBehaviour
         SetPhysicsMode(true);
     }
 
-    public virtual void MakeTransparent()
+    public virtual void MakeTransparent(bool keepCollision=false)
     {
-        SetPhysicsMode(false);
+        SetPhysicsMode(false, keepCollision);
         SetLayer(transform, "Gadget");
 
         Vector3 firstPosition = Vector3.zero;

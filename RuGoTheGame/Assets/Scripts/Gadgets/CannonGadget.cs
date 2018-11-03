@@ -97,9 +97,9 @@ public class CannonGadget : Gadget
         mTrajectory.enabled = false;
     }
 
-    public override void MakeTransparent()
+    public override void MakeTransparent(bool keepCollision = false)
     {
-        base.MakeTransparent();
+        base.MakeTransparent(keepCollision);
         mTrajectory.enabled = true;
     }
 

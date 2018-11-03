@@ -13,6 +13,8 @@ public class World : MonoBehaviour
     private readonly string SAVED_GAME_DIR = "SavedGames/";
     private GameObject tableObj;
 
+    public VRTK.VRTK_ControllerEvents RightControllerEvents;
+
     public static World Instance = null;
     private void MakeSingleton()
     {
@@ -33,7 +35,15 @@ public class World : MonoBehaviour
         InsertInitialGadgets();
         CreateDirectory(SAVED_GAME_DIR);
         InitializeNewWorld();   //TODO load the first world instead
+
+        RightControllerEvents.SubscribeToButtonAliasEvent(VRTK.VRTK_ControllerEvents.ButtonAlias.TriggerPress, true, RightControllerEvents_TriggerClicked);
     }
+
+    void RightControllerEvents_TriggerClicked(object sender, VRTK.ControllerInteractionEventArgs e)
+    {
+        ToggleTable();
+    }
+
 
     private void Awake()
     {
@@ -176,7 +186,26 @@ public class World : MonoBehaviour
         tableObj.GetComponent<Gadget>().SetLayer("TableGadget");
         tableObj.transform.position = Vector3.zero;
         SpawnGadgetsOnTable();
+
+        ToggleTable();
     }
+
+    public void ToggleTable()
+    {
+        bool enable = !tableObj.activeSelf;
+
+        tableObj.SetActive(enable);
+        if(enable)
+        {
+            tableObj.transform.SetParent(GameObject.FindWithTag("MainCamera").transform);
+            tableObj.transform.localPosition = new Vector3(0, -0.6f, 1.5f);
+        }
+        else
+        {
+            tableObj.transform.SetParent(this.transform);
+        }
+    }
+
 
     private void SpawnGadgetsOnTable()
     {
@@ -193,7 +222,7 @@ public class World : MonoBehaviour
                 gadgetObj.transform.localPosition = Vector3.zero;
                 Gadget gadget = gadgetObj.GetComponent<Gadget>();
                 gadget.SetLayer("TableGadget");
-                gadget.MakeSolid();
+                gadget.MakeTransparent(true);
             }
         }
     }
