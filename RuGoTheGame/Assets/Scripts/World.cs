@@ -208,10 +208,6 @@ public class World : MonoBehaviour
             tableObj.transform.LookAt(cameraXZPosition, Vector3.up);
 
             tableObj.transform.position = tableObj.transform.position + new Vector3(0.0f, 0.5f, 0.0f);
-
-            //tableObj.transform.SetParent();
-            //tableObj.transform.localPosition = new Vector3(0, -0.6f, 1.5f);
-            //tableObj.transform.rotation = Quaternion.identity;
         }
     }
 
@@ -247,7 +243,7 @@ public class World : MonoBehaviour
     public void InsertGadget(Gadget gadget)
     {
         gadgetsInWorld.Add(gadget);
-        //gadget.gameObject.transform.SetParent(transform);
+        gadget.gameObject.transform.SetParent(transform);
         MarkWorldModified();
     }
 
