@@ -6,7 +6,8 @@ public class CannonGadget : Gadget
 {
     private GameObject mCannonBallPrefab;
     private LineRenderer mTrajectory;
-
+    private Transform mHeading;
+    private Transform mBarrelTip;
     private Transform mBarrel;
 
     private float mass = 0.5f;
@@ -18,6 +19,8 @@ public class CannonGadget : Gadget
         base.Awake();
         mCannonBallPrefab = Resources.Load("CannonBall") as GameObject;
         mBarrel = this.transform.Find("Wooden_pillow");
+        mHeading = mBarrel.Find("Heading");
+        mBarrelTip = mBarrel.Find("BarrelTip");
 
         mTrajectory = mBarrel.gameObject.GetComponent<LineRenderer>();
         if (mTrajectory == null) 
@@ -58,20 +61,17 @@ public class CannonGadget : Gadget
 
     private void PlotTrajectory()
     {
-        Vector3 start = mBarrel.transform.position;
+        Vector3 start = mBarrelTip.position;
 
         if (mTrajectory.positionCount == 0 || mTrajectory.GetPosition(0) != start)
         {
             List<Vector3> trajectory_points = new List<Vector3>();
             
-            GameObject temp_ball = Instantiate(mCannonBallPrefab, mBarrel);
-            Vector3 initialVelocity = temp_ball.transform.up * 1.3f / mass;
-            Destroy(temp_ball);
-
+            Vector3 initialVelocity = mBarrelTip.forward * 1.3f / mass;
+            
             Vector3 prev = start;
             int i;
             for (i = 0; i < 60; i++) {
-                // mTrajectory.SetPosition(i, prev);
                 trajectory_points.Add(prev);
                 float t = 0.01f * i;
 
@@ -83,7 +83,7 @@ public class CannonGadget : Gadget
                 } 
             }
 
-            mTrajectory.SetVertexCount(i);
+            mTrajectory.positionCount = i;
             for (int j = 0; j < i; j++) 
             {
                 mTrajectory.SetPosition(j, trajectory_points[j]);
@@ -110,14 +110,14 @@ public class CannonGadget : Gadget
     {
         mAudioData.Play(0);
         GameObject cannonBall = Instantiate(mCannonBallPrefab, mBarrel);
+        cannonBall.transform.localPosition = mHeading.localPosition;
         Rigidbody rigidBody = cannonBall.GetComponent<Rigidbody>();
 
-        Vector3 barrelDirection = cannonBall.transform.up * 1.3f;
-        //print(barrelDirection);
+        Vector3 barrelDirection = mHeading.forward * 1.3f;
         rigidBody.AddForce(barrelDirection, ForceMode.Impulse);
 
-        //IEnumerator coroutine = CleanCannon(cannonBall);
-        //StartCoroutine(coroutine);
+        IEnumerator coroutine = CleanCannon(cannonBall);
+        StartCoroutine(coroutine);
     }
 
     private IEnumerator CleanCannon(GameObject cannonBall) 
