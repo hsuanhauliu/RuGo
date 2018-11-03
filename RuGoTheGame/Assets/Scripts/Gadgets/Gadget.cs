@@ -100,6 +100,7 @@ public abstract class Gadget : MonoBehaviour
     protected virtual void SetPhysicsMode(bool enable, bool keepCollision=false)
     {
         Rigidbody[] rigidBodies = this.GetComponentsInChildren<Rigidbody>();
+
         if (rigidBodies.Length > 0)
         {
             foreach (Rigidbody body in rigidBodies)
@@ -145,9 +146,13 @@ public abstract class Gadget : MonoBehaviour
         VRTK.GrabAttachMechanics.VRTK_ChildOfControllerGrabAttach childOfController = gameObject.AddComponent<VRTK.GrabAttachMechanics.VRTK_ChildOfControllerGrabAttach>();
         interactableObject.grabAttachMechanicScript = childOfController;
         interactableObject.isGrabbable = true;
+        interactableObject.disableWhenIdle = false;
+        childOfController.precisionGrab = true;
 
         interactableObject.InteractableObjectGrabbed += OnGadgetGrabbed;
         interactableObject.InteractableObjectUngrabbed += OnGadgetUnGrabbed;
+
+        interactableObject.enabled = true;
     }
 
     protected void OnGadgetUnGrabbed(object sender, VRTK.InteractableObjectEventArgs e)
@@ -174,7 +179,7 @@ public abstract class Gadget : MonoBehaviour
     {
         if(currentGadgetState == GadgetState.OnTable)
         {
-            World.Instance.ToggleTable();
+            World.Instance.ToggleShelf();
         }
 
         MakeTransparent();
@@ -222,7 +227,6 @@ public abstract class Gadget : MonoBehaviour
     public virtual void MakeTransparent(bool keepCollision=false)
     {
         SetPhysicsMode(false, keepCollision);
-        SetLayer(transform, "Gadget");
     }
 
     public virtual bool GetPhysicsMode()

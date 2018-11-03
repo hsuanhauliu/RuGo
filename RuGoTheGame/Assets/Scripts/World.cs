@@ -12,7 +12,7 @@ public class World : MonoBehaviour
     private string WorldName;
     private readonly string AUTO_SAVE_FILE = "autosave.dat";
     private readonly string SAVED_GAME_DIR = "SavedGames/";
-    private GameObject tableObj;
+    private GameObject mGadgetShelf;
 
     public VRTK.VRTK_ControllerEvents RightControllerEvents;
 
@@ -42,7 +42,7 @@ public class World : MonoBehaviour
 
     void RightControllerEvents_TriggerClicked(object sender, VRTK.ControllerInteractionEventArgs e)
     {
-        ToggleTable();
+        ToggleShelf();
     }
 
 
@@ -180,41 +180,41 @@ public class World : MonoBehaviour
 
     private void InsertInitialGadgets()
     {
-        string table = "MetalTable";
+        string shelf = "GadgetShelf";
 
-        GameObject gadgetResource = Resources.Load(table) as GameObject;
-        tableObj = Instantiate(gadgetResource, this.transform);
-        tableObj.GetComponent<Gadget>().SetLayer("TableGadget");
-        tableObj.transform.position = Vector3.zero;
+        GameObject gadgetResource = Resources.Load(shelf) as GameObject;
+        mGadgetShelf = Instantiate(gadgetResource, this.transform);
+        mGadgetShelf.GetComponent<Gadget>().SetLayer("TableGadget");
+        mGadgetShelf.transform.position = Vector3.zero;
         SpawnGadgetsOnTable();
 
-        ToggleTable();
+        ToggleShelf();
     }
 
-    public void ToggleTable()
+    public void ToggleShelf()
     {
-        bool enable = !tableObj.activeSelf;
+        bool enable = !mGadgetShelf.activeSelf;
 
-        StartCoroutine("SetTableObjActive", enable);
+        StartCoroutine("SetShelfActive", enable);
         
         if(enable)
         {
             Transform camera = GameObject.FindWithTag("MainCamera").transform;
             Vector3 cameraXZPosition = new Vector3(camera.position.x, 0.0f, camera.position.z);
             Vector3 cameraForward = new Vector3(camera.forward.x, 0.0f, camera.forward.z);
-            tableObj.transform.position = cameraXZPosition + cameraForward;
+            mGadgetShelf.transform.position = cameraXZPosition + cameraForward;
 
 
-            tableObj.transform.LookAt(cameraXZPosition, Vector3.up);
+            mGadgetShelf.transform.LookAt(cameraXZPosition, Vector3.up);
 
-            tableObj.transform.position = tableObj.transform.position + new Vector3(0.0f, 0.5f, 0.0f);
+            mGadgetShelf.transform.position = mGadgetShelf.transform.position + new Vector3(0.0f, 1.0f, 0.0f);
         }
     }
 
-    private IEnumerator SetTableObjActive(bool enable)
+    private IEnumerator SetShelfActive(bool enable)
     {
         yield return new WaitForSeconds(0.5f);
-        tableObj.SetActive(enable);
+        mGadgetShelf.SetActive(enable);
 
         yield return null;
     }
@@ -224,8 +224,8 @@ public class World : MonoBehaviour
     {
         for (int i = 1; i < (int)GadgetInventory.NUM; i++)
         {
-            Transform placeHolder = tableObj.transform.GetChild(0).GetChild(i - 1);
-            if (placeHolder.childCount == 0)
+            Transform placeHolder = mGadgetShelf.transform.GetChild(i - 1);
+            if (placeHolder.childCount < 2) // This is set to 2 because the placeholder has a bubble now
             {
                 GadgetInventory nextGadget = (GadgetInventory)i;
                 string gadgetName = nextGadget.ToString();
@@ -234,8 +234,8 @@ public class World : MonoBehaviour
                 GameObject gadgetObj = Instantiate(gadgetResource, placeHolder.transform);
                 gadgetObj.transform.localPosition = Vector3.zero;
                 Gadget gadget = gadgetObj.GetComponent<Gadget>();
-                gadget.SetLayer("TableGadget");
                 gadget.MakeTransparent(true);
+                gadget.SetLayer("TableGadget");
             }
         }
     }
@@ -244,16 +244,8 @@ public class World : MonoBehaviour
     {
         gadgetsInWorld.Add(gadget);
         gadget.gameObject.transform.SetParent(transform);
+        gadget.SetLayer("Gadget");
         MarkWorldModified();
-    }
-
-    public void CreateGadgetFromTemplate(Gadget gadgetTemplate)
-    {
-        GameObject gadgetObj = Instantiate(gadgetTemplate.gameObject, this.transform);
-        gadgetObj.transform.position -= this.transform.position;
-        Gadget gadget = gadgetObj.GetComponent<Gadget>();
-        gadget.MakeSolid();
-        InsertGadget(gadget);
     }
 
     public void RemoveGadget(Gadget gadget)
