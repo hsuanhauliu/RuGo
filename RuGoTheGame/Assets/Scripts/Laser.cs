@@ -7,7 +7,8 @@ public class Laser : MonoBehaviour {
     public Transform RightPole;
     public int LaserId;
 
-	void Start () {
+	void Awake () {
+        transform.rotation = Quaternion.identity;
         LineRenderer lineRenderer = this.GetComponent<LineRenderer>();
         lineRenderer.positionCount = 2;
         lineRenderer.SetPosition(0, LeftPole.GetChild(LaserId).position - transform.position);
