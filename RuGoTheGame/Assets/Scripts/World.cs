@@ -201,12 +201,13 @@ public class World : MonoBehaviour
         {
             Transform camera = GameObject.FindWithTag("MainCamera").transform;
             Vector3 cameraXZPosition = new Vector3(camera.position.x, 0.0f, camera.position.z);
-            tableObj.transform.position = cameraXZPosition + new Vector3(0.0f, 0.0f, 0.75f);
+            Vector3 cameraForward = new Vector3(camera.forward.x, 0.0f, camera.forward.z);
+            tableObj.transform.position = cameraXZPosition + cameraForward;
 
 
             tableObj.transform.LookAt(cameraXZPosition, Vector3.up);
 
-            tableObj.transform.position = cameraXZPosition + new Vector3(0.0f, 0.5f, 0.75f);
+            tableObj.transform.position = tableObj.transform.position + new Vector3(0.0f, 0.5f, 0.0f);
 
             //tableObj.transform.SetParent();
             //tableObj.transform.localPosition = new Vector3(0, -0.6f, 1.5f);
