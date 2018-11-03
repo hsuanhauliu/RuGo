@@ -60,9 +60,9 @@ GameObject:
   - component: {fileID: 33607847564702686}
   - component: {fileID: 23040777727771702}
   - component: {fileID: 65780908626195750}
-  - component: {fileID: 54722900467587404}
   - component: {fileID: 114078593575708794}
   - component: {fileID: 82420664348252076}
+  - component: {fileID: 54722900467587404}
   m_Layer: 0
   m_Name: Fan
   m_TagString: Untagged
@@ -159,7 +159,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1460933856789318}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.6209024, y: 0.20610844, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4763594955126320}
@@ -171,7 +171,7 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1442764543443160}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
@@ -186,8 +186,8 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1549618054057142}
-  m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: -0.07, y: 0.065, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: 0.7071068, w: 0.7071068}
+  m_LocalPosition: {x: -0.066, y: -0.158, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4919914183503058}
@@ -202,7 +202,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1161515484884096}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.00024947987, y: 0.26896414, z: -0.000000009536743}
+  m_LocalPosition: {x: 0.01134709, y: 0.0573322, z: -0.000000009536743}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4162010513022942}
@@ -526,7 +526,7 @@ Rigidbody:
   m_GameObject: {fileID: 1442764543443160}
   serializedVersion: 2
   m_Mass: 1000
-  m_Drag: 50
+  m_Drag: 10
   m_AngularDrag: 10
   m_UseGravity: 1
   m_IsKinematic: 0
@@ -556,7 +556,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 0.16, y: 0.42, z: 0.3}
-  m_Center: {x: 0.02, y: 0.21, z: 0}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!65 &65846629071174152
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -718,7 +718,7 @@ SpringJoint:
   m_ConnectedBody: {fileID: 54671364574627720}
   m_Anchor: {x: 0, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.000000037252903, y: 0.50000006, z: 0}
+  m_ConnectedAnchor: {x: 0.000000037252903, y: 0.50000024, z: 0}
   serializedVersion: 2
   m_Spring: 2000
   m_Damper: 3
