@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 
 public enum GadgetInventory
 {
-    PathTool, RailRamp, Ball, Box, SmallCannon, Spinner, Fan, Airplane, Domino, Pendulum, NUM
+    PathTool, Ramp, Ball, Box, Cannon, Spinner, Fan, Airplane, Domino, Pendulum, NUM
 };
 
 [Serializable]

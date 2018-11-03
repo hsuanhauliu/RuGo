@@ -17,7 +17,7 @@ public class CannonGadget : Gadget
     {
         base.Awake();
         mCannonBallPrefab = Resources.Load("CannonBall") as GameObject;
-        mBarrel = this.transform.Find("SmallCannon").Find("Wooden_pillow");
+        mBarrel = this.transform.Find("Wooden_pillow");
 
         mTrajectory = mBarrel.gameObject.GetComponent<LineRenderer>();
         if (mTrajectory == null) 
@@ -53,7 +53,7 @@ public class CannonGadget : Gadget
 
     public override GadgetInventory GetGadgetType()
     {
-        return GadgetInventory.SmallCannon;
+        return GadgetInventory.Cannon;
     }
 
     private void PlotTrajectory()

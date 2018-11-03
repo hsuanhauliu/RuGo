@@ -247,7 +247,7 @@ public class World : MonoBehaviour
     public void InsertGadget(Gadget gadget)
     {
         gadgetsInWorld.Add(gadget);
-        gadget.gameObject.transform.SetParent(transform);
+        //gadget.gameObject.transform.SetParent(transform);
         MarkWorldModified();
     }
 

@@ -12,6 +12,6 @@ public class RailRampGadget : Gadget {
 
     public override GadgetInventory GetGadgetType()
     {
-        return GadgetInventory.RailRamp;
+        return GadgetInventory.Ramp;
     }
 }
