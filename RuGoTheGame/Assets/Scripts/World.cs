@@ -184,7 +184,7 @@ public class World : MonoBehaviour
 
         GameObject gadgetResource = Resources.Load(shelf) as GameObject;
         mGadgetShelf = Instantiate(gadgetResource, this.transform);
-        mGadgetShelf.GetComponent<Gadget>().SetLayer("TableGadget");
+        mGadgetShelf.GetComponent<Gadget>().SetLayer(GadgetLayers.SHELF);
         mGadgetShelf.transform.position = Vector3.zero;
         SpawnGadgetsOnTable();
 
@@ -233,10 +233,10 @@ public class World : MonoBehaviour
                 GameObject gadgetResource = Resources.Load(gadgetName) as GameObject;
                 GameObject gadgetObj = Instantiate(gadgetResource, placeHolder.transform);
                 gadgetObj.transform.localPosition = Vector3.zero;
-                gadgetObj.name = "OnShelf (" + gadgetName + ")";
+                gadgetObj.name = gadgetName + " (OnShelf)";
                 Gadget gadget = gadgetObj.GetComponent<Gadget>();
                 gadget.MakeTransparent(true);
-                gadget.SetLayer("TableGadget");
+                gadget.SetLayer(GadgetLayers.SHELF);
             }
         }
     }
@@ -244,7 +244,7 @@ public class World : MonoBehaviour
     public void InsertGadget(Gadget gadget)
     {
         gadgetsInWorld.Add(gadget);
-        gadget.SetLayer("Gadget");
+        gadget.SetLayer(GadgetLayers.INWORLD);
         MarkWorldModified();
     }
 
