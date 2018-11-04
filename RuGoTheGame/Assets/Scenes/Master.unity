@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028334, g: 0.22571334, b: 0.3069219, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -600,7 +600,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 419184991}
-  - component: {fileID: 419184992}
   m_Layer: 0
   m_Name: GadgetShelf
   m_TagString: Untagged
@@ -622,18 +621,6 @@ Transform:
   m_Father: {fileID: 452613147}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &419184992
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 114169298448106432, guid: eb8bdac1a23a44444bc6b7e573add8db,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 419184990}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: badf094b8f786427eb22d2db5e4670b0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &452613145
 GameObject:
   m_ObjectHideFlags: 0
@@ -661,7 +648,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc004bb4a874b4ce48e2db29cea73593, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BubblePrefab: {fileID: 1882471371762414, guid: a9381555804894b07b858804092bdbc6,
+  BubblePrefab: {fileID: 1383514117876776, guid: 8963659779b2745809ca635e105d0dc5,
     type: 2}
 --- !u!4 &452613147
 Transform:
