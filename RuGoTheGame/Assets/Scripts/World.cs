@@ -56,7 +56,7 @@ public class World : MonoBehaviour
         if (isWorldStateModified)
         {
             AutoSave();
-            SpawnGadgetsOnTable();
+            SpawnGadgets();
             isWorldStateModified = false;
         }
     }
@@ -180,13 +180,9 @@ public class World : MonoBehaviour
 
     private void InsertInitialGadgets()
     {
-        string shelf = "GadgetShelf";
-
-        GameObject gadgetResource = Resources.Load(shelf) as GameObject;
-        mGadgetShelf = Instantiate(gadgetResource, this.transform);
-        mGadgetShelf.GetComponent<Gadget>().SetLayer(GadgetLayers.SHELF);
-        mGadgetShelf.transform.position = Vector3.zero;
-        SpawnGadgetsOnTable();
+        SpawnInvisibleShelf();
+        SpawnBubbles();
+        SpawnGadgets();
 
         ToggleShelf();
     }
@@ -197,7 +193,7 @@ public class World : MonoBehaviour
 
         StartCoroutine("SetShelfActive", enable);
         
-        if(enable)
+        if (enable)
         {
             Transform camera = GameObject.FindWithTag("MainCamera").transform;
             Vector3 cameraXZPosition = new Vector3(camera.position.x, 0.0f, camera.position.z);
@@ -219,12 +215,36 @@ public class World : MonoBehaviour
         yield return null;
     }
 
+    private void SpawnInvisibleShelf()
+    {
+        string shelf = "GadgetShelf";
 
-    private void SpawnGadgetsOnTable()
+        GameObject gadgetResource = Resources.Load(shelf) as GameObject;
+        mGadgetShelf = Instantiate(gadgetResource, this.transform);
+        mGadgetShelf.GetComponent<Gadget>().SetLayer(GadgetLayers.SHELF);
+        mGadgetShelf.transform.position = Vector3.zero;
+    }
+
+    private void SpawnBubbles()
+    {
+        string bubbleEffectName = "Bubble";
+
+        for (int i = 1; i < (int)GadgetInventory.NUM; i++)
+        {
+            Transform placeHolder = mGadgetShelf.transform.GetChild(i - 1);
+
+            GameObject gadgetResource = Resources.Load(bubbleEffectName) as GameObject;
+            GameObject gadgetObj = Instantiate(gadgetResource, placeHolder.transform);
+            gadgetObj.transform.localPosition = Vector3.zero;
+        }
+    }
+
+    private void SpawnGadgets()
     {
         for (int i = 1; i < (int)GadgetInventory.NUM; i++)
         {
             Transform placeHolder = mGadgetShelf.transform.GetChild(i - 1);
+
             if (placeHolder.childCount < 2) // This is set to 2 because the placeholder has a bubble now
             {
                 GadgetInventory nextGadget = (GadgetInventory)i;
