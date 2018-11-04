@@ -15,6 +15,8 @@ public class World : MonoBehaviour
 
     private GameObject mGadgetShelf;
 
+    public GameObject BubblePrefab;
+
     public static World Instance = null;
     private void MakeSingleton()
     {
@@ -40,6 +42,8 @@ public class World : MonoBehaviour
     private void Awake()
     {
         MakeSingleton();
+
+        mGadgetShelf = transform.Find("GadgetShelf").gameObject;
     }
 
     void Update()
@@ -213,24 +217,18 @@ public class World : MonoBehaviour
 
     private void SpawnInvisibleShelf()
     {
-        string shelf = "GadgetShelf";
-
-        GameObject gadgetResource = Resources.Load(shelf) as GameObject;
-        mGadgetShelf = Instantiate(gadgetResource, this.transform);
-        mGadgetShelf.GetComponent<Gadget>().SetLayer(GadgetLayers.SHELF);
         mGadgetShelf.transform.position = Vector3.zero;
+        /* Spawn Containers here */
+
     }
 
     private void SpawnBubbles()
     {
-        string bubbleEffectName = "Bubble";
-
         for (int i = 0; i < (int)GadgetInventory.NUM; i++)
         {
             Transform placeHolder = mGadgetShelf.transform.GetChild(i);
 
-            GameObject gadgetResource = Resources.Load(bubbleEffectName) as GameObject;
-            GameObject gadgetObj = Instantiate(gadgetResource, placeHolder.transform);
+            GameObject gadgetObj = Instantiate(BubblePrefab, placeHolder.transform);
             gadgetObj.transform.localPosition = Vector3.zero;
         }
     }
