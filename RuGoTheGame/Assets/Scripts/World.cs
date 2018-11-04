@@ -13,6 +13,7 @@ public class World : MonoBehaviour
     private readonly string AUTO_SAVE_FILE = "autosave.dat";
     private readonly string SAVED_GAME_DIR = "SavedGames/";
     private GameObject mGadgetShelf;
+    private Vector3[] shelfContainersPositions;
 
     public GameObject BubblePrefab;
     public static World Instance = null;
@@ -33,7 +34,8 @@ public class World : MonoBehaviour
     void Start()
     {
         gadgetsInWorld = new List<Gadget>();
-        InsertInitialGadgets();
+        SpawnGadgetShelf();
+        ShowShelf(false);
         CreateDirectory(SAVED_GAME_DIR);
         InitializeNewWorld();   //TODO load the first world instead
     }
@@ -41,7 +43,6 @@ public class World : MonoBehaviour
     private void Awake()
     {
         MakeSingleton();
-
         mGadgetShelf = transform.Find("GadgetShelf").gameObject;
     }
 
@@ -50,7 +51,7 @@ public class World : MonoBehaviour
         if (isWorldStateModified)
         {
             AutoSave();
-            SpawnGadgets();
+            RespawnGadgets();
             isWorldStateModified = false;
         }
     }
@@ -193,8 +194,12 @@ public class World : MonoBehaviour
 
 
             mGadgetShelf.transform.LookAt(cameraXZPosition, Vector3.up);
-
             mGadgetShelf.transform.position = mGadgetShelf.transform.position + new Vector3(0.0f, camera.position.y, 0.0f);
+
+            for (int i = 0; i < shelfContainersPositions.Length; i++)
+            {
+                StartCoroutine(ShiftGadgets(i));
+            }
         }
     }
 
@@ -205,38 +210,42 @@ public class World : MonoBehaviour
         mGadgetShelf.SetActive(false);
     }
 
-    private void InsertInitialGadgets()
+    private IEnumerator ShiftGadgets(int i)
     {
-        SpawnInvisibleShelf();
+        float startTime = Time.time;
+        float fraction = 0;
 
-        ShowShelf(false);
+        while (fraction <= 1)
+        {
+            fraction = Time.time - startTime;
+            mGadgetShelf.transform.GetChild(i).localPosition = Vector3.Lerp(Vector3.zero, shelfContainersPositions[i], fraction);
+            yield return null;
+        }
     }
 
-    private void SpawnInvisibleShelf()
+    private void SpawnGadgetShelf()
     {
         float pos_x = -0.3f;
         float pos_y = -0.3f;
+        shelfContainersPositions = new Vector3[(int)GadgetInventory.NUM];
 
         for (int i = 0; i < (int)GadgetInventory.NUM; i++)
         {
+            // Create container and store their position
             GameObject container = new GameObject("Container " + i.ToString());
             container.transform.SetParent(mGadgetShelf.transform);
-            container.transform.localPosition = new Vector3(pos_x, pos_y, 0);
+            Vector3 container_pos = new Vector3(pos_x, pos_y, 0);
+            container.transform.localPosition = container_pos;
+            shelfContainersPositions[i] = container_pos;
 
+            // Create bubble
             GameObject bubbleObj = Instantiate(BubblePrefab, container.transform);
-            bubbleObj.transform.localPosition = Vector3.zero;
 
-            GadgetInventory nextGadget = (GadgetInventory)i;
-            string gadgetName = nextGadget.ToString();
+            // Create gadget
+            string gadgetName = ((GadgetInventory)i).ToString();
+            SpawnSingleGadget(gadgetName, container.transform);
 
-            GameObject gadgetResource = Resources.Load(gadgetName) as GameObject;
-            GameObject gadgetObj = Instantiate(gadgetResource, container.transform);
-            gadgetObj.transform.localPosition = Vector3.zero;
-            gadgetObj.name = gadgetName + " (OnShelf)";
-            Gadget gadget = gadgetObj.GetComponent<Gadget>();
-            gadget.MakeTransparent(true);
-            gadget.SetLayer(GadgetLayers.SHELF);
-
+            // Update next position
             if (pos_x == 0.3f)
             {
                 pos_y += 0.3f;
@@ -249,26 +258,28 @@ public class World : MonoBehaviour
         }
     }
 
-    private void SpawnGadgets()
+    private void RespawnGadgets()
     {
         for (int i = 0; i < (int)GadgetInventory.NUM; i++)
         {
             Transform placeHolder = mGadgetShelf.transform.GetChild(i);
-
             if (placeHolder.childCount < 2) // This is set to 2 because the placeholder has a bubble now
             {
-                GadgetInventory nextGadget = (GadgetInventory)i;
-                string gadgetName = nextGadget.ToString();
-
-                GameObject gadgetResource = Resources.Load(gadgetName) as GameObject;
-                GameObject gadgetObj = Instantiate(gadgetResource, placeHolder.transform);
-                gadgetObj.transform.localPosition = Vector3.zero;
-                gadgetObj.name = gadgetName + " (OnShelf)";
-                Gadget gadget = gadgetObj.GetComponent<Gadget>();
-                gadget.MakeTransparent(true);
-                gadget.SetLayer(GadgetLayers.SHELF);
+                string gadgetName = ((GadgetInventory)i).ToString();
+                SpawnSingleGadget(gadgetName, placeHolder);
             }
         }
+    }
+
+    private void SpawnSingleGadget(string gadgetName, Transform parentTransform)
+    {
+        GameObject gadgetResource = Resources.Load(gadgetName) as GameObject;
+        GameObject gadgetObj = Instantiate(gadgetResource, parentTransform);
+        gadgetObj.transform.localPosition = Vector3.zero;
+        gadgetObj.name = gadgetName + " (OnShelf)";
+        Gadget gadget = gadgetObj.GetComponent<Gadget>();
+        gadget.MakeTransparent(true);
+        gadget.SetLayer(GadgetLayers.SHELF);
     }
 
     public void InsertGadget(Gadget gadget)
@@ -290,6 +301,8 @@ public class World : MonoBehaviour
     {
         isWorldStateModified = true;
     }
+
+    /***************************************** HELPERS ******************************************/
 
     private void CreateDirectory(string directoryName)
     {
