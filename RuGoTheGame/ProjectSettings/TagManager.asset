@@ -36,9 +36,9 @@ TagManager:
   - 
   - 
   - 
-  - TableGadget
+  - 
+  - Shelf
   - Gadget
-  - SelectedGadget
   - Player
   m_SortingLayers:
   - name: Default

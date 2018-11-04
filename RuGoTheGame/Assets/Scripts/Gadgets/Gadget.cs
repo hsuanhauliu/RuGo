@@ -6,7 +6,13 @@ using System.Runtime.Serialization;
 public enum GadgetInventory
 {
     PathTool, Ramp, Ball, Box, Cannon, Spinner, Fan, Airplane, Domino, Pendulum, NUM
-};
+}
+
+public class GadgetLayers
+{
+    public static readonly string SHELF = "Shelf";
+    public static readonly string INWORLD = "InWorld";
+}
 
 [Serializable]
 public struct GadgetSaveData
