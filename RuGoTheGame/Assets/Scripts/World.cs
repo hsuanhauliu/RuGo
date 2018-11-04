@@ -12,12 +12,11 @@ public class World : MonoBehaviour
     private string WorldName;
     private readonly string AUTO_SAVE_FILE = "autosave.dat";
     private readonly string SAVED_GAME_DIR = "SavedGames/";
-
     private GameObject mGadgetShelf;
 
     public GameObject BubblePrefab;
-
     public static World Instance = null;
+
     private void MakeSingleton()
     {
         if (Instance == null)
@@ -173,18 +172,9 @@ public class World : MonoBehaviour
         gadgetsInWorld = new List<Gadget>();
     }
 
-    private void InsertInitialGadgets()
-    {
-        SpawnInvisibleShelf();
-        SpawnBubbles();
-        SpawnGadgets();
-
-        ShowShelf(false);
-    }
-
     public void ShowShelf(bool show)
     {
-        if(!show)
+        if (!show)
         {
             StartCoroutine("DelayHideShelf");
         }
@@ -192,7 +182,7 @@ public class World : MonoBehaviour
         {
             mGadgetShelf.SetActive(show);
         }
-        
+
 
         if (show)
         {
@@ -215,21 +205,47 @@ public class World : MonoBehaviour
         mGadgetShelf.SetActive(false);
     }
 
-    private void SpawnInvisibleShelf()
+    private void InsertInitialGadgets()
     {
-        mGadgetShelf.transform.position = Vector3.zero;
-        /* Spawn Containers here */
+        SpawnInvisibleShelf();
 
+        ShowShelf(false);
     }
 
-    private void SpawnBubbles()
+    private void SpawnInvisibleShelf()
     {
+        float pos_x = -0.3f;
+        float pos_y = -0.3f;
+
         for (int i = 0; i < (int)GadgetInventory.NUM; i++)
         {
-            Transform placeHolder = mGadgetShelf.transform.GetChild(i);
+            GameObject container = new GameObject("Container " + i.ToString());
+            container.transform.SetParent(mGadgetShelf.transform);
+            container.transform.localPosition = new Vector3(pos_x, pos_y, 0);
 
-            GameObject gadgetObj = Instantiate(BubblePrefab, placeHolder.transform);
+            GameObject bubbleObj = Instantiate(BubblePrefab, container.transform);
+            bubbleObj.transform.localPosition = Vector3.zero;
+
+            GadgetInventory nextGadget = (GadgetInventory)i;
+            string gadgetName = nextGadget.ToString();
+
+            GameObject gadgetResource = Resources.Load(gadgetName) as GameObject;
+            GameObject gadgetObj = Instantiate(gadgetResource, container.transform);
             gadgetObj.transform.localPosition = Vector3.zero;
+            gadgetObj.name = gadgetName + " (OnShelf)";
+            Gadget gadget = gadgetObj.GetComponent<Gadget>();
+            gadget.MakeTransparent(true);
+            gadget.SetLayer(GadgetLayers.SHELF);
+
+            if (pos_x == 0.3f)
+            {
+                pos_y += 0.3f;
+                pos_x = -0.3f;
+            }
+            else
+            {
+                pos_x += 0.3f;
+            }
         }
     }
 
