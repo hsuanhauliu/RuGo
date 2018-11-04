@@ -107,14 +107,16 @@ public class GameManager : MonoBehaviour
 
     void RightControllerEvents_TouchpadDown(object sender, VRTK.ControllerInteractionEventArgs e)
     {
-        if(e.touchpadAxis.y > 0.5f)
+        ChangeGameMode(GameMode.DRAW); // Testing only
+
+        /*if (e.touchpadAxis.y > 0.5f)
         {
             ChangeGameMode(GameMode.DRAW);
         }
         else
         {
             ChangeGameMode(GameMode.DELETE);
-        }
+        }*/
     }
 
     void RightControllerEvents_TouchpadUp(object sender, VRTK.ControllerInteractionEventArgs e)
@@ -135,30 +137,34 @@ public class GameManager : MonoBehaviour
             for (int p = 0; p < numOfPoints - 1; p++)
             {
                 GameObject gadgetGameObject = Instantiate(gadgetPreb, this.transform);
-                Gadget gadget = gadgetGameObject.GetComponent<Gadget>();
+                DominoGadget gadget = gadgetGameObject.GetComponent<DominoGadget>();
 
                 Vector3 direction = path[p + 1] - path[p];
                 gadget.transform.position = path[p];
                 gadget.transform.rotation = Quaternion.LookRotation(direction);
                 gadget.Deselect();
+                gadget.SetDominoInWorld();
                 World.Instance.InsertGadget(gadget);
             }
+
             GameObject lastGadgetGameObject = Instantiate(gadgetPreb, this.transform);
-            Gadget lastGadget = lastGadgetGameObject.GetComponent<Gadget>();
+            DominoGadget lastGadget = lastGadgetGameObject.GetComponent<DominoGadget>();
 
             Vector3 lastPathDirection = path[numOfPoints - 1] - path[path.Length - 2];
             lastGadget.transform.position = path[numOfPoints - 1];
             lastGadget.transform.rotation = Quaternion.LookRotation(lastPathDirection);
             lastGadget.Deselect();
+            lastGadget.SetDominoInWorld();
             World.Instance.InsertGadget(lastGadget);
         }
         else if (numOfPoints == 1)
         {
             GameObject gadgetGameObject = Instantiate(gadgetPreb, this.transform);
-            Gadget gadget = gadgetGameObject.GetComponent<Gadget>();
+            DominoGadget gadget = gadgetGameObject.GetComponent<DominoGadget>();
 
             gadget.transform.position = path[0];
             gadget.Deselect();
+            gadget.SetDominoInWorld();
             World.Instance.InsertGadget(gadget);
         }
     }

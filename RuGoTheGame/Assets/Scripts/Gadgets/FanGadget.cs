@@ -106,7 +106,7 @@ public class FanGadget : Gadget
         base.MakeTransparent(keepCollision);
         mIsFanOn = false;
 
-        if (CurrentGadgetState != GadgetState.InShelf)
+        if (CurrentGadgetState == GadgetState.InWorld)
         {
             AffectVisual.SetActive(true);
         }

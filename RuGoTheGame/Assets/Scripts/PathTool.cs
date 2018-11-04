@@ -12,12 +12,18 @@ public class PathTool : MonoBehaviour
     private List<Vector3> drawingPath;
     private LineRenderer pathVisualizer;
 
+    private VRTK.VRTK_Pointer mPointer;
+    private VRTK.VRTK_StraightPointerRenderer mPointerRenderer;
+
 
     void Start()
     {
         EmptyPath();
         SetUpVisualizer();
         this.enabled = false;
+
+        mPointer = GameManager.Instance.RightControllerEvents.gameObject.GetComponent<VRTK.VRTK_Pointer>();
+        mPointerRenderer = GameManager.Instance.RightControllerEvents.gameObject.GetComponent<VRTK.VRTK_StraightPointerRenderer>();
     }
 
     void Update()
@@ -25,31 +31,21 @@ public class PathTool : MonoBehaviour
         if (GameManager.Instance.CurrentGameMode != GameMode.DRAW)
             return;
 
-        if (drawingPath.Count == 1 && pathVisualizer.enabled)
+        /*if (drawingPath.Count == 1 && pathVisualizer.enabled)
         {
             VisualizeStraightLine();
-        }
+        }*/
 
-        //TODO Subscribe to VRTK Controller Events
-        /* 
-        if (drawingPath.Count == 0 && RuGoInteraction.Instance.IsConfirmPressed)
+        StorePointPosition();
+
+        if (drawingPath.Count == 1)
         {
-            StorePointPosition();
             VisualizeStartingPoint();
         }
-        else if (drawingPath.Count != 0 && RuGoInteraction.Instance.IsConfirmHeld)
+        else
         {
-            StorePointPosition();
             VisualizeNewPoint();
         }
-        else if (drawingPath.Count > 1 && RuGoInteraction.Instance.IsConfirmReleased)
-        {
-            StorePointPosition();
-            EqualizePointDistances();
-            pathCompleteCallBack(drawingPath.ToArray());
-            Deactivate();
-        }
-        */
     }
 
  
@@ -59,11 +55,9 @@ public class PathTool : MonoBehaviour
     /// </summary>
     private void StorePointPosition()
     {
-        /* TODO: Get Selector Ray From VRTK
-        Ray ray = RuGoInteraction.Instance.SelectorRay;
-        RaycastHit hit;
+        RaycastHit hit = mPointerRenderer.GetDestinationHit();
 
-        if (Physics.Raycast(ray, out hit))
+        if (hit.collider != null)
         {
             if (drawingPath.Count != 0)
             {
@@ -81,8 +75,7 @@ public class PathTool : MonoBehaviour
             {
                 drawingPath.Add(hit.point);
             }
-        }
-        */
+        }        
     }
 
 
@@ -230,6 +223,10 @@ public class PathTool : MonoBehaviour
     /// <param name="createGadgetsAlongPath">The function to call back upon finishing drawing.</param>
     public void Activate(Action<Vector3[]> createGadgetsAlongPath)
     {
+        mPointer.Toggle(true);
+        mPointerRenderer.validCollisionColor = Color.green;
+        mPointerRenderer.invalidCollisionColor = Color.white;
+
         pathCompleteCallBack = createGadgetsAlongPath;
         this.enabled = true;
     }
@@ -240,12 +237,14 @@ public class PathTool : MonoBehaviour
     /// </summary>
     public void Deactivate()
     {
-        if (this.enabled)
-        {
-            this.enabled = false;
-            ResetVisualizer();
-            EmptyPath();
-        }
+        mPointer.Toggle(false);
+
+        EqualizePointDistances();
+        pathCompleteCallBack(drawingPath.ToArray());
+
+        this.enabled = false;
+        ResetVisualizer();
+        EmptyPath();
     }
 
     /// <summary>

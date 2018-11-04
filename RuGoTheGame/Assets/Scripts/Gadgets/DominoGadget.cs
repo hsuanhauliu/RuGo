@@ -8,4 +8,10 @@ public class DominoGadget : Gadget
     {
         return GadgetInventory.Domino;
     }
+
+    public void SetDominoInWorld()
+    {
+        ChangeState(GadgetState.InWorld);
+        transform.SetParent(World.Instance.transform);
+    }
 }

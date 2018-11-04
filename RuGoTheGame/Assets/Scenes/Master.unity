@@ -643,10 +643,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: badf094b8f786427eb22d2db5e4670b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MakeGadgetSolid: 0
-  mInteractableObject: {fileID: 0}
-  isPhysicsMode: 0
-  CurrentGadgetState: 0
 --- !u!1 &452613145
 GameObject:
   m_ObjectHideFlags: 0
@@ -897,6 +893,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &521112112 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4220431479120062, guid: afec65f27dcd2c74cba31fc61eea61e6,
+    type: 2}
+  m_PrefabInternal: {fileID: 567680006}
 --- !u!1 &527946648
 GameObject:
   m_ObjectHideFlags: 0
@@ -1033,6 +1034,30 @@ Prefab:
       propertyPath: interactGrab
       value: 
       objectReference: {fileID: 745988740}
+    - target: {fileID: 1200292382491122, guid: afec65f27dcd2c74cba31fc61eea61e6, type: 2}
+      propertyPath: m_TagString
+      value: PlayerHand
+      objectReference: {fileID: 0}
+    - target: {fileID: 1671039121602088, guid: afec65f27dcd2c74cba31fc61eea61e6, type: 2}
+      propertyPath: m_TagString
+      value: PlayerHand
+      objectReference: {fileID: 0}
+    - target: {fileID: 1138247430904094, guid: afec65f27dcd2c74cba31fc61eea61e6, type: 2}
+      propertyPath: m_TagString
+      value: PlayerHand
+      objectReference: {fileID: 0}
+    - target: {fileID: 1087066476825678, guid: afec65f27dcd2c74cba31fc61eea61e6, type: 2}
+      propertyPath: m_TagString
+      value: PlayerHand
+      objectReference: {fileID: 0}
+    - target: {fileID: 1237819446708720, guid: afec65f27dcd2c74cba31fc61eea61e6, type: 2}
+      propertyPath: m_TagString
+      value: PlayerHand
+      objectReference: {fileID: 0}
+    - target: {fileID: 1398406636836058, guid: afec65f27dcd2c74cba31fc61eea61e6, type: 2}
+      propertyPath: m_TagString
+      value: PlayerHand
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: afec65f27dcd2c74cba31fc61eea61e6, type: 2}
   m_IsPrefabAsset: 0
@@ -1247,6 +1272,9 @@ GameObject:
   - component: {fileID: 745988739}
   - component: {fileID: 745988741}
   - component: {fileID: 745988740}
+  - component: {fileID: 745988743}
+  - component: {fileID: 745988742}
+  - component: {fileID: 745988744}
   m_Layer: 0
   m_Name: RightControllerScriptAlias
   m_TagString: Untagged
@@ -1346,6 +1374,81 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   customColliderContainer: {fileID: 567680008}
+--- !u!114 &745988742
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 745988737}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7fc65878c7102524bb8c2bcfbefff497, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playareaCursor: {fileID: 0}
+  directionIndicator: {fileID: 0}
+  customRaycast: {fileID: 0}
+  pointerOriginSmoothingSettings:
+    smoothsPosition: 0
+    maxAllowedPerFrameDistanceDifference: 0.003
+    smoothsRotation: 0
+    maxAllowedPerFrameAngleDifference: 1.5
+  validCollisionColor: {r: 0, g: 1, b: 0, a: 1}
+  invalidCollisionColor: {r: 1, g: 0, b: 0, a: 1}
+  tracerVisibility: 0
+  cursorVisibility: 0
+  maximumLength: 100
+  scaleFactor: 0.002
+  cursorScaleMultiplier: 25
+  cursorMatchTargetRotation: 0
+  cursorDistanceRescale: 0
+  maximumCursorScale: {x: Infinity, y: Infinity, z: Infinity}
+  customTracer: {fileID: 0}
+  customCursor: {fileID: 0}
+--- !u!114 &745988743
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 745988737}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ec704cceb26f6f49b6c900fc83d8d18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enableTeleport: 0
+  targetListPolicy: {fileID: 745988744}
+  pointerRenderer: {fileID: 745988742}
+  activationButton: 0
+  holdButtonToActivate: 1
+  activateOnEnable: 0
+  activationDelay: 0
+  selectionButton: 0
+  selectOnPress: 0
+  selectionDelay: 0
+  selectAfterHoverDuration: 0
+  interactWithObjects: 0
+  grabToPointerTip: 0
+  attachedTo: {fileID: 0}
+  controllerEvents: {fileID: 745988739}
+  interactUse: {fileID: 0}
+  customOrigin: {fileID: 775059235}
+  controller: {fileID: 0}
+--- !u!114 &745988744
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 745988737}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ed2aa1a29b92ca4f84a26a5f6e9218b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  operation: 0
+  checkType: 1
+  identifiers:
+  - PlayerHand
 --- !u!1 &746911765
 GameObject:
   m_ObjectHideFlags: 0
@@ -1456,6 +1559,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   customColliderContainer: {fileID: 2060681470}
+--- !u!1 &775059234
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 775059235}
+  m_Layer: 0
+  m_Name: FingerTip
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &775059235
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 775059234}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.0100000035, y: 0.010000703, z: 0.010000004}
+  m_Children: []
+  m_Father: {fileID: 521112112}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!1 &787240741
 GameObject:
   m_ObjectHideFlags: 0
@@ -2487,6 +2618,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selected: 0
+--- !u!1 &1390590749
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1390590750}
+  m_Layer: 0
+  m_Name: FingerTip
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1390590750
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1390590749}
+  m_LocalRotation: {x: -0.707107, y: 0.000000013038514, z: 0.0000000013969838, w: 0.7071067}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.010000005, y: 0.010000707, z: 0.010000006}
+  m_Children: []
+  m_Father: {fileID: 1906475793}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!1 &1406866542
 GameObject:
   m_ObjectHideFlags: 0
@@ -3010,6 +3169,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4726844815573086, guid: afec65f27dcd2c74cba31fc61eea61e6,
     type: 2}
   m_PrefabInternal: {fileID: 989274527}
+--- !u!4 &1906475793 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4220431479120062, guid: afec65f27dcd2c74cba31fc61eea61e6,
+    type: 2}
+  m_PrefabInternal: {fileID: 1995905351}
 --- !u!1001 &1933058519
 Prefab:
   m_ObjectHideFlags: 0
@@ -3190,6 +3354,30 @@ Prefab:
       propertyPath: interactGrab
       value: 
       objectReference: {fileID: 745988740}
+    - target: {fileID: 1200292382491122, guid: afec65f27dcd2c74cba31fc61eea61e6, type: 2}
+      propertyPath: m_TagString
+      value: PlayerHand
+      objectReference: {fileID: 0}
+    - target: {fileID: 1671039121602088, guid: afec65f27dcd2c74cba31fc61eea61e6, type: 2}
+      propertyPath: m_TagString
+      value: PlayerHand
+      objectReference: {fileID: 0}
+    - target: {fileID: 1138247430904094, guid: afec65f27dcd2c74cba31fc61eea61e6, type: 2}
+      propertyPath: m_TagString
+      value: PlayerHand
+      objectReference: {fileID: 0}
+    - target: {fileID: 1087066476825678, guid: afec65f27dcd2c74cba31fc61eea61e6, type: 2}
+      propertyPath: m_TagString
+      value: PlayerHand
+      objectReference: {fileID: 0}
+    - target: {fileID: 1237819446708720, guid: afec65f27dcd2c74cba31fc61eea61e6, type: 2}
+      propertyPath: m_TagString
+      value: PlayerHand
+      objectReference: {fileID: 0}
+    - target: {fileID: 1398406636836058, guid: afec65f27dcd2c74cba31fc61eea61e6, type: 2}
+      propertyPath: m_TagString
+      value: PlayerHand
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: afec65f27dcd2c74cba31fc61eea61e6, type: 2}
   m_IsPrefabAsset: 0

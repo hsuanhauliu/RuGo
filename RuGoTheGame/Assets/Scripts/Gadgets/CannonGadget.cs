@@ -102,7 +102,7 @@ public class CannonGadget : Gadget
         base.MakeTransparent(keepCollision);
         if(mTrajectory != null)
         {
-            if (CurrentGadgetState != GadgetState.InShelf)
+            if (CurrentGadgetState == GadgetState.InWorld)
             {
                 mTrajectory.enabled = true;
             }

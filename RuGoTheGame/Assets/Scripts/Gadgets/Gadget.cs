@@ -55,7 +55,7 @@ public abstract class Gadget : MonoBehaviour
 
     protected bool isPhysicsMode;
     
-    public enum GadgetState { InShelf, InWorld };
+    public enum GadgetState { InShelf, FirstPlacement, InWorld };
     public GadgetState CurrentGadgetState;
 
     protected void Start()
@@ -148,8 +148,9 @@ public abstract class Gadget : MonoBehaviour
     {
         switch(CurrentGadgetState) 
         {
-            case GadgetState.InShelf:
+            case GadgetState.FirstPlacement:
                 {
+                    ChangeState(GadgetState.InWorld);
                     World.Instance.InsertGadget(this);
                 }
                 break;
@@ -167,7 +168,7 @@ public abstract class Gadget : MonoBehaviour
     {
         if(CurrentGadgetState == GadgetState.InShelf)
         {
-            ChangeState(GadgetState.InWorld);
+            ChangeState(GadgetState.FirstPlacement);
 
             mInteractableObject.OverridePreviousState(World.Instance.transform, false, true);
             GameManager.Instance.ChangeGameMode(GameMode.NONE);
@@ -223,7 +224,7 @@ public abstract class Gadget : MonoBehaviour
         return isPhysicsMode;
     }
 
-    private void ChangeState(GadgetState newState)
+    protected void ChangeState(GadgetState newState)
     {
         CurrentGadgetState = newState;
     }
