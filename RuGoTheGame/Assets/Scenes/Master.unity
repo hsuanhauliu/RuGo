@@ -618,7 +618,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc004bb4a874b4ce48e2db29cea73593, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RightControllerEvents: {fileID: 745988739}
 --- !u!4 &452613147
 Transform:
   m_ObjectHideFlags: 0
@@ -804,7 +803,6 @@ GameObject:
   m_Component:
   - component: {fileID: 498110774}
   - component: {fileID: 498110773}
-  - component: {fileID: 498110775}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -824,7 +822,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PathTool: {fileID: 210995599}
-  MainCamera: {fileID: 110940736}
+  RightControllerEvents: {fileID: 745988739}
+  LeftControllerEvents: {fileID: 746911767}
+  CurrentGameMode: 0
 --- !u!4 &498110774
 Transform:
   m_ObjectHideFlags: 0
@@ -838,17 +838,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &498110775
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 498110772}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 09c9a13244d8e1345b5073af30f772de, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &535166446
 GameObject:
   m_ObjectHideFlags: 0

@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 
 public enum GadgetInventory
 {
-    PathTool, Ramp, Ball, Box, Cannon, Spinner, Fan, Airplane, Domino, Pendulum, NUM
+    Ramp, Ball, Box, Cannon, Spinner, Fan, Airplane, Domino, Pendulum, NUM
 }
 
 public class GadgetLayers
@@ -55,17 +55,18 @@ public abstract class Gadget : MonoBehaviour
 
     protected bool isPhysicsMode;
     
-    public enum GadgetState { OnTable, InWorld };
-    public GadgetState currentGadgetState;
+    public enum GadgetState { InShelf, InWorld };
+    public GadgetState CurrentGadgetState;
 
     protected void Start()
     {
-        currentGadgetState = GadgetState.OnTable;
+       
     }
 
     protected void Awake()
     {
         MakeGadgetInteractable();
+        CurrentGadgetState = GadgetState.InShelf;
     }
 
     private void Update()
@@ -145,11 +146,10 @@ public abstract class Gadget : MonoBehaviour
 
     protected void OnGadgetUnGrabbed(object sender, VRTK.InteractableObjectEventArgs e)
     {
-        switch(currentGadgetState) 
+        switch(CurrentGadgetState) 
         {
-            case GadgetState.OnTable:
+            case GadgetState.InShelf:
                 {
-                    ChangeState(GadgetState.InWorld);
                     World.Instance.InsertGadget(this);
                 }
                 break;
@@ -165,10 +165,12 @@ public abstract class Gadget : MonoBehaviour
 
     protected void OnGadgetGrabbed(object sender, VRTK.InteractableObjectEventArgs e)
     {
-        if(currentGadgetState == GadgetState.OnTable)
+        if(CurrentGadgetState == GadgetState.InShelf)
         {
+            ChangeState(GadgetState.InWorld);
+
             mInteractableObject.OverridePreviousState(World.Instance.transform, false, true);
-            World.Instance.ToggleShelf();
+            GameManager.Instance.ChangeGameMode(GameMode.NONE);
         }
 
         MakeTransparent();
@@ -193,8 +195,6 @@ public abstract class Gadget : MonoBehaviour
 
     protected void SetLayer(Transform t, string layerName)
     {
-        print(t.gameObject.name + " " + layerName);
-
         t.gameObject.layer = LayerMask.NameToLayer(layerName);
 
         foreach (Transform child in t)
@@ -225,6 +225,6 @@ public abstract class Gadget : MonoBehaviour
 
     private void ChangeState(GadgetState newState)
     {
-        currentGadgetState = newState;
+        CurrentGadgetState = newState;
     }
 }

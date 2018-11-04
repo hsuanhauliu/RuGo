@@ -22,10 +22,14 @@ public class PathTool : MonoBehaviour
 
     void Update()
     {
+        if (GameManager.Instance.CurrentGameMode != GameMode.DRAW)
+            return;
+
         if (drawingPath.Count == 1 && pathVisualizer.enabled)
         {
             VisualizeStraightLine();
         }
+
         //TODO Subscribe to VRTK Controller Events
         /* 
         if (drawingPath.Count == 0 && RuGoInteraction.Instance.IsConfirmPressed)

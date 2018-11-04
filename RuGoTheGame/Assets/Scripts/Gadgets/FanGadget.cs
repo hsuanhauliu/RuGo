@@ -7,6 +7,7 @@ public class FanGadget : Gadget
     // This mask is used to control objects the wind interacts with, it is set in the editor.
     private LayerMask mLayerMask;
     private AudioSource mAudioData;
+
     public float WindZoneRadius = 1.0f;
     public float WindZoneConeHalfAngle = 30.0f;
     public float WindZoneOffset = -0.5f;
@@ -104,7 +105,15 @@ public class FanGadget : Gadget
     {
         base.MakeTransparent(keepCollision);
         mIsFanOn = false;
-        AffectVisual.SetActive(true);
+
+        if (CurrentGadgetState != GadgetState.InShelf)
+        {
+            AffectVisual.SetActive(true);
+        }
+        else
+        {
+            AffectVisual.SetActive(false);
+        }
         
         if (mAudioData != null) {
             mAudioData.Stop();

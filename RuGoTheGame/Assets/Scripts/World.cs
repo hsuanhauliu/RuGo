@@ -12,9 +12,8 @@ public class World : MonoBehaviour
     private string WorldName;
     private readonly string AUTO_SAVE_FILE = "autosave.dat";
     private readonly string SAVED_GAME_DIR = "SavedGames/";
-    private GameObject mGadgetShelf;
 
-    public VRTK.VRTK_ControllerEvents RightControllerEvents;
+    private GameObject mGadgetShelf;
 
     public static World Instance = null;
     private void MakeSingleton()
@@ -36,15 +35,7 @@ public class World : MonoBehaviour
         InsertInitialGadgets();
         CreateDirectory(SAVED_GAME_DIR);
         InitializeNewWorld();   //TODO load the first world instead
-
-        RightControllerEvents.SubscribeToButtonAliasEvent(VRTK.VRTK_ControllerEvents.ButtonAlias.TriggerPress, true, RightControllerEvents_TriggerClicked);
     }
-
-    void RightControllerEvents_TriggerClicked(object sender, VRTK.ControllerInteractionEventArgs e)
-    {
-        ToggleShelf();
-    }
-
 
     private void Awake()
     {
@@ -184,18 +175,24 @@ public class World : MonoBehaviour
         SpawnBubbles();
         SpawnGadgets();
 
-        ToggleShelf();
+        ShowShelf(false);
     }
 
-    public void ToggleShelf()
+    public void ShowShelf(bool show)
     {
-        bool enable = !mGadgetShelf.activeSelf;
-
-        StartCoroutine("SetShelfActive", enable);
-        
-        if (enable)
+        if(!show)
         {
-            Transform camera = GameObject.FindWithTag("MainCamera").transform;
+            StartCoroutine("DelayHideShelf");
+        }
+        else
+        {
+            mGadgetShelf.SetActive(show);
+        }
+        
+
+        if (show)
+        {
+            Transform camera = GameManager.Instance.MainCamera.transform;
             Vector3 cameraXZPosition = new Vector3(camera.position.x, 0.0f, camera.position.z);
             Vector3 cameraForward = new Vector3(camera.forward.x, 0.0f, camera.forward.z);
             mGadgetShelf.transform.position = cameraXZPosition + cameraForward;
@@ -203,16 +200,15 @@ public class World : MonoBehaviour
 
             mGadgetShelf.transform.LookAt(cameraXZPosition, Vector3.up);
 
-            mGadgetShelf.transform.position = mGadgetShelf.transform.position + new Vector3(0.0f, 1.0f, 0.0f);
+            mGadgetShelf.transform.position = mGadgetShelf.transform.position + new Vector3(0.0f, camera.position.y, 0.0f);
         }
     }
 
-    private IEnumerator SetShelfActive(bool enable)
+    private IEnumerator DelayHideShelf()
     {
-        yield return new WaitForSeconds(0.5f);
-        mGadgetShelf.SetActive(enable);
+        yield return new WaitForSeconds(0.3f);
 
-        yield return null;
+        mGadgetShelf.SetActive(false);
     }
 
     private void SpawnInvisibleShelf()
@@ -229,9 +225,9 @@ public class World : MonoBehaviour
     {
         string bubbleEffectName = "Bubble";
 
-        for (int i = 1; i < (int)GadgetInventory.NUM; i++)
+        for (int i = 0; i < (int)GadgetInventory.NUM; i++)
         {
-            Transform placeHolder = mGadgetShelf.transform.GetChild(i - 1);
+            Transform placeHolder = mGadgetShelf.transform.GetChild(i);
 
             GameObject gadgetResource = Resources.Load(bubbleEffectName) as GameObject;
             GameObject gadgetObj = Instantiate(gadgetResource, placeHolder.transform);
@@ -241,9 +237,9 @@ public class World : MonoBehaviour
 
     private void SpawnGadgets()
     {
-        for (int i = 1; i < (int)GadgetInventory.NUM; i++)
+        for (int i = 0; i < (int)GadgetInventory.NUM; i++)
         {
-            Transform placeHolder = mGadgetShelf.transform.GetChild(i - 1);
+            Transform placeHolder = mGadgetShelf.transform.GetChild(i);
 
             if (placeHolder.childCount < 2) // This is set to 2 because the placeholder has a bubble now
             {
@@ -263,6 +259,7 @@ public class World : MonoBehaviour
 
     public void InsertGadget(Gadget gadget)
     {
+        gadget.gameObject.name = gadget.GetType().ToString() + gadgetsInWorld.Count.ToString();
         gadgetsInWorld.Add(gadget);
         gadget.SetLayer(GadgetLayers.INWORLD);
         MarkWorldModified();

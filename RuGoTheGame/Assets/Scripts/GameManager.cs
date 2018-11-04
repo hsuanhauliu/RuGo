@@ -2,50 +2,129 @@
 using UnityEngine.UI;
 
 
+public enum GameMode { NONE, BUILD, DRAW, DELETE };
+
 public class GameManager : MonoBehaviour
 {
-    public PathTool PathTool;
-
-    // #TEMP HACK: How to do this for VRTK or does this go away?
-    public GameObject MainCamera;
-
-    private enum GameMode { Build, Select, Draw };
-    private GameMode currentGameMode;
-
-    private bool BuildModeEnabled
+    private GameObject mMainCamera;
+    public GameObject MainCamera
     {
         get
         {
-            return currentGameMode == GameMode.Build;
+            if(mMainCamera == null)
+            {
+                mMainCamera = GameObject.FindGameObjectWithTag("MainCamera");
+            }
+
+            return mMainCamera;
         }
     }
 
-    void Start()
+    public PathTool PathTool;
+    public VRTK.VRTK_ControllerEvents RightControllerEvents;
+    public VRTK.VRTK_ControllerEvents LeftControllerEvents;
+
+    public GameMode CurrentGameMode;
+
+    void Awake()
     {
-        EnableBuildMode();
+        MakeSingleton();
+
+        CurrentGameMode = GameMode.NONE;
+
+        /* Setup Controller Events */
+        RightControllerEvents.SubscribeToButtonAliasEvent(VRTK.VRTK_ControllerEvents.ButtonAlias.TriggerPress, true, RightControllerEvents_TriggerClicked);
+        RightControllerEvents.SubscribeToButtonAliasEvent(VRTK.VRTK_ControllerEvents.ButtonAlias.TouchpadPress, true, RightControllerEvents_TouchpadDown);
+        RightControllerEvents.SubscribeToButtonAliasEvent(VRTK.VRTK_ControllerEvents.ButtonAlias.TouchpadPress, false, RightControllerEvents_TouchpadUp);
     }
 
-    /************************** Public Functions **************************/
-
-    public void EnableDrawMode()
+    public static GameManager Instance = null;
+    private void MakeSingleton()
     {
-        PathTool.Activate(CreateGadgetAlongPath);
-        this.currentGameMode = GameMode.Draw;
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else if (Instance != this)
+        {
+            Destroy(gameObject);
+        }
+        DontDestroyOnLoad(gameObject);
     }
 
-    public void EnableBuildMode()
+    /************************** State Management **************************/
+    public void ChangeGameMode(GameMode newGameMode)
     {
-        this.currentGameMode = GameMode.Build;
+        // Exit current Game mode
+        switch(CurrentGameMode)
+        {
+            case GameMode.BUILD:
+                {
+                    World.Instance.ShowShelf(false);
+                }
+                break;
+            case GameMode.DRAW:
+                {
+                    PathTool.Deactivate();
+                }
+                break;
+            case GameMode.DELETE:
+                break;
+        }
+
+        CurrentGameMode = newGameMode;
+
+        // Enter new Game mode
+        switch (CurrentGameMode)
+        {
+            case GameMode.BUILD:
+                {
+                    World.Instance.ShowShelf(true);
+                }
+                break;
+            case GameMode.DRAW:
+                {
+                    PathTool.Activate(CreateGadgetAlongPath);
+                }
+                break;
+            case GameMode.DELETE:
+                break;
+        }
     }
 
-    public void EnableSelectMode()
+    /************************** Input Events ********************************/
+    void RightControllerEvents_TriggerClicked(object sender, VRTK.ControllerInteractionEventArgs e)
     {
-        PathTool.Deactivate();
-        this.currentGameMode = GameMode.Select;
+        if(CurrentGameMode == GameMode.BUILD)
+        {
+            ChangeGameMode(GameMode.NONE);
+        }
+        else
+        {
+            ChangeGameMode(GameMode.BUILD);
+        }
     }
 
-    // TODO make it extendable to use for gadgets other than just the Domino
-    public void CreateGadgetAlongPath(Vector3[] path)
+    void RightControllerEvents_TouchpadDown(object sender, VRTK.ControllerInteractionEventArgs e)
+    {
+        if(e.touchpadAxis.y > 0.5f)
+        {
+            ChangeGameMode(GameMode.DRAW);
+        }
+        else
+        {
+            ChangeGameMode(GameMode.DELETE);
+        }
+    }
+
+    void RightControllerEvents_TouchpadUp(object sender, VRTK.ControllerInteractionEventArgs e)
+    {
+        ChangeGameMode(GameMode.NONE);
+    }
+
+
+    /***************************************** HELPERS ******************************************/
+    private void CreateGadgetAlongPath(Vector3[] path)
     {
         string gadgetName = "Domino";
         GameObject gadgetPreb = Resources.Load(gadgetName) as GameObject;
@@ -82,6 +161,5 @@ public class GameManager : MonoBehaviour
             gadget.Deselect();
             World.Instance.InsertGadget(gadget);
         }
-        EnableBuildMode();
     }
 }
