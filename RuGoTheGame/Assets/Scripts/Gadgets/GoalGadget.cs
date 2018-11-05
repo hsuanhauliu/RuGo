@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class GoalGadget : Gadget {
     public GameObject RocketPrefab;
+    public GameObject Confetti;
     private ParticleSystem mFireWorks;
     public Transform LeftPole;
     public Transform RightPole;
@@ -64,6 +65,7 @@ public class GoalGadget : Gadget {
             }
 
             mFireWorks.Play(true);
+            GameObject go = Instantiate(Resources.Load("Confetti")) as GameObject;
             //TODO ADD CONFETTI
         }
     }
