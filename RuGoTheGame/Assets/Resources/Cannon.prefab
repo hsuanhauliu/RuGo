@@ -1230,6 +1230,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MakeGadgetSolid: 0
+  CurrentGadgetState: 0
+  CannonBallPrefab: {fileID: 1819625808858014, guid: 0731e77ecf80248378774c83e04a88ec,
+    type: 2}
 --- !u!114 &114475843627916382
 MonoBehaviour:
   m_ObjectHideFlags: 1

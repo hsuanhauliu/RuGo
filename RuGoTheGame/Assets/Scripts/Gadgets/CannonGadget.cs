@@ -4,20 +4,20 @@ using UnityEngine;
 
 public class CannonGadget : Gadget
 {
-    private GameObject mCannonBallPrefab;
+    public GameObject CannonBallPrefab;
+
     private LineRenderer mTrajectory;
     private Transform mHeading;
     private Transform mBarrelTip;
     private Transform mBarrel;
 
-    private float mass = 0.5f;
+    private float mCannonBallMass = 0.5f;
 
     private AudioSource mAudioData;
 
     new void Awake()
     {
         base.Awake();
-        mCannonBallPrefab = Resources.Load("CannonBall") as GameObject;
         mBarrel = this.transform.Find("Wooden_pillow");
         mHeading = mBarrel.Find("Heading");
         mBarrelTip = mBarrel.Find("BarrelTip");
@@ -35,6 +35,8 @@ public class CannonGadget : Gadget
         mTrajectory.endWidth = 0.01f;
        
         mAudioData = GetComponent<AudioSource>();
+
+        mCannonBallMass = CannonBallPrefab.GetComponent<Rigidbody>().mass;
     }
 
     public override void PerformSwitchAction()
@@ -67,7 +69,7 @@ public class CannonGadget : Gadget
         {
             List<Vector3> trajectory_points = new List<Vector3>();
             
-            Vector3 initialVelocity = mBarrelTip.forward * 1.3f / mass;
+            Vector3 initialVelocity = mBarrelTip.forward * 1.3f / mCannonBallMass;
             
             Vector3 prev = start;
             int i;
@@ -116,7 +118,7 @@ public class CannonGadget : Gadget
     private void FireCannon() 
     {
         mAudioData.Play(0);
-        GameObject cannonBall = Instantiate(mCannonBallPrefab, mBarrel);
+        GameObject cannonBall = Instantiate(CannonBallPrefab, mBarrel);
         cannonBall.transform.localPosition = mHeading.localPosition;
         Rigidbody rigidBody = cannonBall.GetComponent<Rigidbody>();
 
