@@ -214,11 +214,15 @@ public class World : MonoBehaviour
     {
         float startTime = Time.time;
         float fraction = 0;
+        float random_x = UnityEngine.Random.Range(0, 0.2f);
+        float random_y = UnityEngine.Random.Range(0, 0.2f);
+        Vector3 startingPosition = new Vector3(random_x, random_y, 0);
+        float rate = UnityEngine.Random.Range(0.7f, 1.0f);
 
-        while (fraction <= 1)
+        while (fraction * rate <= 1)
         {
             fraction = Time.time - startTime;
-            mGadgetShelf.transform.GetChild(i).localPosition = Vector3.Lerp(Vector3.zero, shelfContainersPositions[i], fraction);
+            mGadgetShelf.transform.GetChild(i).localPosition = Vector3.Lerp(startingPosition, shelfContainersPositions[i], fraction * rate);
             yield return null;
         }
     }
