@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 
 public enum GadgetInventory
 {
-    Ramp, Ball, Box, Cannon, Spinner, Fan, Airplane, Domino, Pendulum, NUM
+    Ramp, Ball, Box, Cannon, Spinner, Fan, Airplane, Domino, Pendulum, NUM // #TODO: Insert Goal here
 }
 
 public class GadgetLayers
@@ -103,7 +103,9 @@ public abstract class Gadget : MonoBehaviour
             foreach (Rigidbody body in rigidBodies)
             {
                 bool shouldBeKinematic = !enable;
-                if(body.gameObject.GetComponent<Collider>() is MeshCollider)
+                // If we have a non-convex mesh collider set is kinematic to true.
+                MeshCollider attachedCollider = body.gameObject.GetComponent<Collider>() as MeshCollider;
+                if (attachedCollider != null && !attachedCollider.convex)
                 {
                     shouldBeKinematic = true;
                 }
