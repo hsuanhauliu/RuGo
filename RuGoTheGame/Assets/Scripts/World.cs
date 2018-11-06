@@ -18,6 +18,12 @@ public class World : MonoBehaviour
     public GameObject BubblePrefab;
     public static World Instance = null;
 
+    /* Shelf control variables */
+    public float ShiftRateMin = 1.0f;
+    public float ShiftRateMax = 1.2f;
+    public float GadgetOffsetMax = 0.2f;
+
+
     private void MakeSingleton()
     {
         if (Instance == null)
@@ -214,15 +220,16 @@ public class World : MonoBehaviour
     {
         float startTime = Time.time;
         float fraction = 0;
-        float random_x = UnityEngine.Random.Range(0, 0.2f);
-        float random_y = UnityEngine.Random.Range(0, 0.2f);
+        float random_x = UnityEngine.Random.Range(0, GadgetOffsetMax);
+        float random_y = UnityEngine.Random.Range(0, GadgetOffsetMax);
         Vector3 startingPosition = new Vector3(random_x, random_y, 0);
-        float rate = UnityEngine.Random.Range(0.7f, 1.0f);
+        float rate = UnityEngine.Random.Range(ShiftRateMin, ShiftRateMax);
 
         while (fraction * rate <= 1)
         {
             fraction = Time.time - startTime;
             mGadgetShelf.transform.GetChild(i).localPosition = Vector3.Lerp(startingPosition, shelfContainersPositions[i], fraction * rate);
+            mGadgetShelf.transform.GetChild(i).localScale = Vector3.Lerp(Vector3.zero, Vector3.one, fraction * rate);
             yield return null;
         }
     }
