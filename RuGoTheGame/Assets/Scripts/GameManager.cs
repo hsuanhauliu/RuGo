@@ -107,16 +107,14 @@ public class GameManager : MonoBehaviour
 
     void RightControllerEvents_TouchpadDown(object sender, VRTK.ControllerInteractionEventArgs e)
     {
-        ChangeGameMode(GameMode.DRAW); // Testing only
-
-        /*if (e.touchpadAxis.y > 0.5f)
+        if (e.touchpadAxis.y > 0.0f)
         {
             ChangeGameMode(GameMode.DRAW);
         }
         else
         {
             ChangeGameMode(GameMode.DELETE);
-        }*/
+        }
     }
 
     void RightControllerEvents_TouchpadUp(object sender, VRTK.ControllerInteractionEventArgs e)
