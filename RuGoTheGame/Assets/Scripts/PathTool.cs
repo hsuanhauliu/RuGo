@@ -31,11 +31,6 @@ public class PathTool : MonoBehaviour
         if (GameManager.Instance.CurrentGameMode != GameMode.DRAW)
             return;
 
-        /*if (drawingPath.Count == 1 && pathVisualizer.enabled)
-        {
-            VisualizeStraightLine();
-        }*/
-
         StorePointPosition();
 
         if (drawingPath.Count == 1)
