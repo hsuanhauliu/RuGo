@@ -76,6 +76,10 @@ public abstract class Gadget : MonoBehaviour
             MakeGadgetSolid = false;
             MakeSolid();
         }
+        if (this.transform.position.y < -10.0f)
+        {
+            RemoveFromScene();
+        }
     }
     
     public GadgetSaveData GetSaveData() {
