@@ -19,6 +19,9 @@ public class World : MonoBehaviour
     public static World Instance = null;
 
     /* Shelf control variables */
+    public float BubbleStartPosition = -0.3f;
+    public float BubbleEndPosition = 0.3f;
+    public float GapBetweenGadgets = 0.3f;
     public float ShiftRateMin = 1.0f;
     public float ShiftRateMax = 1.2f;
     public float GadgetOffsetMax = 0.2f;
@@ -236,8 +239,8 @@ public class World : MonoBehaviour
 
     private void SpawnGadgetShelf()
     {
-        float pos_x = -0.3f;
-        float pos_y = -0.3f;
+        float pos_x = BubbleStartPosition;
+        float pos_y = BubbleStartPosition;
         shelfContainersPositions = new Vector3[(int)GadgetInventory.NUM];
 
         for (int i = 0; i < (int)GadgetInventory.NUM; i++)
@@ -257,16 +260,35 @@ public class World : MonoBehaviour
             SpawnSingleGadget(gadgetName, container.transform);
 
             // Update next position
-            if (pos_x == 0.3f)
+            if (pos_x == BubbleEndPosition)
             {
-                pos_y += 0.3f;
-                pos_x = -0.3f;
+                pos_y += GapBetweenGadgets;
+                pos_x = BubbleStartPosition;
             }
             else
             {
-                pos_x += 0.3f;
+                pos_x += GapBetweenGadgets;
             }
         }
+
+        // spawn small bubbles for saved files
+        pos_x = BubbleStartPosition - GapBetweenGadgets;
+        pos_y = BubbleStartPosition - GapBetweenGadgets;
+
+        for (int i = 0; i < 5; i++)
+        {
+            GameObject container = new GameObject("File Container " + i.ToString());
+            container.transform.SetParent(mGadgetShelf.transform);
+            Vector3 container_pos = new Vector3(pos_x, pos_y, 0);
+            container.transform.localPosition = container_pos;
+
+            // load file bubble
+            GameObject bubbleObj = Instantiate(BubblePrefab, container.transform);
+            bubbleObj.transform.localScale *= 0.5f;
+
+            pos_x += GapBetweenGadgets;
+        }
+
     }
 
     private void RespawnGadgets()
@@ -278,6 +300,7 @@ public class World : MonoBehaviour
             {
                 string gadgetName = ((GadgetInventory)i).ToString();
                 SpawnSingleGadget(gadgetName, placeHolder);
+                return;
             }
         }
     }
