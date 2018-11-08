@@ -650,6 +650,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BubblePrefab: {fileID: 1383514117876776, guid: 8963659779b2745809ca635e105d0dc5,
     type: 2}
+  BubbleStartPosition: -0.3
+  BubbleEndPosition: 0.3
+  GapBetweenGadgets: 0.3
+  ShiftRateMin: 1
+  ShiftRateMax: 1.2
+  GadgetOffsetMax: 0.2
 --- !u!4 &452613147
 Transform:
   m_ObjectHideFlags: 0
