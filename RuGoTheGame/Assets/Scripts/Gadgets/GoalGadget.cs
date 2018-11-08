@@ -3,12 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GoalGadget : Gadget {
-    public GameObject RocketPrefab;
-    public GameObject Confetti;
-
     private AudioSource mAudioData;
 
-    private ParticleSystem mFireWorks;
     public Transform LeftPole;
     public Transform RightPole;
     public float THICKNESS = 0.01f;
@@ -55,11 +51,27 @@ public class GoalGadget : Gadget {
             IgnoreCollisionSelf(child);
         }
     }
+    
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.GetComponentInParent<Gadget>() != null) {
-            mFireWorks = Instantiate(RocketPrefab).GetComponent<ParticleSystem>();
+        if (other.gameObject.GetComponentInParent<Gadget>() != null && !GameManager.Instance.IsGameOver)
+        {
+            GameManager.Instance.ChangeGameMode(GameMode.COMPLETE);
+
+            GameObject[] goalObjects = GameObject.FindGameObjectsWithTag("Goal");
+
+            foreach (GameObject goalObject in goalObjects)
+            {
+
+                ParticleSystem pSystem = goalObject.GetComponent<ParticleSystem>();
+
+                if (pSystem)
+                {
+                    pSystem.Play(true);
+                }
+            }
+
             LineRenderer[] lasers = this.GetComponentsInChildren<LineRenderer>();
             foreach (LineRenderer laser in lasers)
             {
@@ -69,11 +81,7 @@ public class GoalGadget : Gadget {
                 laser.endColor = Color.green;
             }
 
-            mFireWorks.Play(true);
             mAudioData.Play();
-            
-            GameObject go = Instantiate(Resources.Load("Confetti")) as GameObject;
-            //TODO ADD CONFETTI
         }
     }
 }

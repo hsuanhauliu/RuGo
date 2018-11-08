@@ -8,6 +8,7 @@ TagManager:
   - FxTemporaire
   - projectile
   - PlayerHand
+  - Goal
   layers:
   - Default
   - TransparentFX

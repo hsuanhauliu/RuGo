@@ -143,6 +143,7 @@ public class World : MonoBehaviour
 
     public void Load(string fileName)
     {
+
         if (File.Exists(fileName))
         {
             BinaryFormatter bf = new BinaryFormatter();

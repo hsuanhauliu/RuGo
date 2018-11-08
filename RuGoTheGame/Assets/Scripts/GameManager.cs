@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 
 
-public enum GameMode { NONE, BUILD, DRAW, DELETE };
+public enum GameMode { NONE, BUILD, DRAW, DELETE, COMPLETE};
 
 public class GameManager : MonoBehaviour
 {
@@ -17,6 +18,12 @@ public class GameManager : MonoBehaviour
             }
 
             return mMainCamera;
+        }
+    }
+
+    public bool IsGameOver {
+        get {
+            return CurrentGameMode == GameMode.COMPLETE;
         }
     }
 
@@ -70,6 +77,10 @@ public class GameManager : MonoBehaviour
                 break;
             case GameMode.DELETE:
                 break;
+            case GameMode.COMPLETE:
+                World.Instance.LoadAuto();
+                break;
+
         }
 
         CurrentGameMode = newGameMode;
@@ -89,7 +100,17 @@ public class GameManager : MonoBehaviour
                 break;
             case GameMode.DELETE:
                 break;
+            case GameMode.COMPLETE:
+                IEnumerator coroutine = ResetGame();
+                StartCoroutine(coroutine);
+                break;
         }
+    }
+
+    private IEnumerator ResetGame()
+    {
+        yield return new WaitForSeconds(5.0f);
+        ChangeGameMode(GameMode.BUILD);
     }
 
     /************************** Input Events ********************************/
