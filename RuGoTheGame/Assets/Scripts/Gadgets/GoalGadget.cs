@@ -5,6 +5,9 @@ using UnityEngine;
 public class GoalGadget : Gadget {
     public GameObject RocketPrefab;
     public GameObject Confetti;
+
+    private AudioSource mAudioData;
+
     private ParticleSystem mFireWorks;
     public Transform LeftPole;
     public Transform RightPole;
@@ -20,6 +23,8 @@ public class GoalGadget : Gadget {
         base.Start();
       
         mCollider = this.GetComponent<BoxCollider>();
+        mAudioData = GetComponent<AudioSource>();
+
         mCollider.center = ((LeftPole.localPosition + RightPole.localPosition) / 2.0f);
         mCollider.center += new Vector3(0, transform.GetChild(0).localPosition.y, 0);
 
@@ -65,6 +70,8 @@ public class GoalGadget : Gadget {
             }
 
             mFireWorks.Play(true);
+            mAudioData.Play();
+            
             GameObject go = Instantiate(Resources.Load("Confetti")) as GameObject;
             //TODO ADD CONFETTI
         }
