@@ -159,6 +159,7 @@ GameObject:
   - component: {fileID: 65606611708879048}
   - component: {fileID: 114072651049000874}
   - component: {fileID: 54945591686961234}
+  - component: {fileID: 82072101439062116}
   m_Layer: 0
   m_Name: Goal
   m_TagString: Untagged
@@ -783,7 +784,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.17395386, y: 0.16701144, z: 0.01}
   m_Center: {x: 0.09297469, y: 0.046519145, z: 0}
---- !u!82 &82466086731863872
+--- !u!82 &82072101439062116
 AudioSource:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}

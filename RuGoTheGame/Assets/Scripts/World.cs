@@ -192,6 +192,8 @@ public class World : MonoBehaviour
         else
         {
             mGadgetShelf.SetActive(show);
+            AudioSource bubbleAudio = mGadgetShelf.GetComponent<AudioSource>();
+            bubbleAudio.Play();
         }
 
 
