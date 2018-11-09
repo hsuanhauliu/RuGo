@@ -78,7 +78,7 @@ public abstract class Gadget : MonoBehaviour
         }
         if (this.transform.position.y < -10.0f)
         {
-            RemoveFromScene();
+            World.Instance.RemoveGadget(this);
         }
     }
     
