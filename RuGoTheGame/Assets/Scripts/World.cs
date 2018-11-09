@@ -120,7 +120,9 @@ public class World : MonoBehaviour
     public void LoadWorld(string savedWorldName)
     {
         WorldName = savedWorldName;
-        string fileName = SAVED_GAME_DIR + savedWorldName + "/" + savedWorldName + ".dat";
+        //string fileName = SAVED_GAME_DIR + savedWorldName + "/" + savedWorldName + ".dat";
+        string fileName = SAVED_GAME_DIR + savedWorldName + "/" + "autosave" + ".dat";
+
         Load(fileName);
         AutoSave();
     }
@@ -208,7 +210,8 @@ public class World : MonoBehaviour
             mGadgetShelf.transform.LookAt(cameraXZPosition, Vector3.up);
             mGadgetShelf.transform.position = mGadgetShelf.transform.position + new Vector3(0.0f, camera.position.y, 0.0f);
 
-            for (int i = 0; i < shelfContainersPositions.Length; i++)
+            // the -1 in below for loop prevents from spawning first file load file in middle of menu 
+            for (int i = 0; i < shelfContainersPositions.Length-1; i++)
             {
                 StartCoroutine(ShiftGadgets(i));
             }
@@ -248,6 +251,12 @@ public class World : MonoBehaviour
 
         for (int i = 0; i < (int)GadgetInventory.NUM; i++)
         {
+            // to skip from spawning cube as main gadget
+            string gadgetNameToTest = ((GadgetInventory)i).ToString();
+            if (gadgetNameToTest.Equals("LoadCube"))
+            {
+                continue;
+            }
             // Create container and store their position
             GameObject container = new GameObject("Container " + i.ToString());
             container.transform.SetParent(mGadgetShelf.transform);
@@ -260,6 +269,7 @@ public class World : MonoBehaviour
 
             // Create gadget
             string gadgetName = ((GadgetInventory)i).ToString();
+            Debug.Log(gadgetName);
             SpawnSingleGadget(gadgetName, container.transform);
 
             // Update next position
@@ -280,6 +290,7 @@ public class World : MonoBehaviour
 
         for (int i = 0; i < 5; i++)
         {
+
             GameObject container = new GameObject("File Container " + i.ToString());
             container.transform.SetParent(mGadgetShelf.transform);
             Vector3 container_pos = new Vector3(pos_x, pos_y, 0);
@@ -289,13 +300,24 @@ public class World : MonoBehaviour
             GameObject bubbleObj = Instantiate(BubblePrefab, container.transform);
             bubbleObj.transform.localScale *= 0.5f;
 
-            pos_x += GapBetweenGadgets;
+            // Create gadget
+            string gadgetName = "LoadCube";
+            //SpawnSingleGadget(gadgetName, container.transform);
+            Debug.Log("initiating file at "+container.transform);
+            SpawnSingleFile(gadgetName,i, container.transform);
+            Debug.Log("placing"+i+" at "+container.transform);
+
+
+
+           pos_x += GapBetweenGadgets;
         }
 
     }
 
     private void RespawnGadgets()
     {
+        Debug.Log("Number of childern are "+mGadgetShelf.transform.childCount);
+        int StartFromHereForFile = 0;
         for (int i = 0; i < (int)GadgetInventory.NUM; i++)
         {
             Transform placeHolder = mGadgetShelf.transform.GetChild(i);
@@ -304,6 +326,29 @@ public class World : MonoBehaviour
                 string gadgetName = ((GadgetInventory)i).ToString();
                 SpawnSingleGadget(gadgetName, placeHolder);
                 return;
+            }
+            StartFromHereForFile += 1;
+        }
+    }
+
+    public void RespawnFiles()
+    {
+        int countOFchildern = mGadgetShelf.transform.childCount;
+        Debug.Log("countOFchildern "+ countOFchildern);
+        for (int i = 0; i < countOFchildern; i++)
+        {
+            if(i>9)
+            {
+                //Debug.Log(mGadgetShelf.transform.GetChild(i));
+                Transform placeHolder = mGadgetShelf.transform.GetChild(i);
+                if(placeHolder.childCount <2)
+                {
+                    string gadgetName = "LoadCube";
+                    SpawnSingleFile(gadgetName, i-10, placeHolder);
+                    Debug.Log("respawning " + (i-10) + " at " + placeHolder);
+
+                }
+
             }
         }
     }
@@ -315,6 +360,18 @@ public class World : MonoBehaviour
         gadgetObj.transform.localPosition = Vector3.zero;
         gadgetObj.name = gadgetName + " (OnShelf)";
         Gadget gadget = gadgetObj.GetComponent<Gadget>();
+        Debug.Log(gadget);
+        gadget.MakeTransparent(true);
+        gadget.SetLayer(GadgetLayers.SHELF);
+    }
+    private void SpawnSingleFile(string gadgetName,int number,  Transform parentTransform)
+    {
+        GameObject gadgetResource = Resources.Load(gadgetName) as GameObject;
+        GameObject gadgetObj = Instantiate(gadgetResource, parentTransform);
+        gadgetObj.transform.localPosition = Vector3.zero;
+        gadgetObj.name = gadgetName + number + " (OnShelf)";
+        Gadget gadget = gadgetObj.GetComponent<Gadget>();
+        Debug.Log(gadget);
         gadget.MakeTransparent(true);
         gadget.SetLayer(GadgetLayers.SHELF);
     }

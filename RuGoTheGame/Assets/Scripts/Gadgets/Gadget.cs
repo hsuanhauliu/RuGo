@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 
 public enum GadgetInventory
 {
-    Ramp, Ball, Goal, Box, Cannon, Spinner, Fan, Airplane, Domino, Pendulum, NUM // #TODO: Insert Goal here
+    Ramp, Ball, Goal, Box, Cannon, Spinner, Fan, Airplane, Domino, Pendulum, LoadCube, NUM // #TODO: Insert Goal here
 }
 
 public class GadgetLayers
@@ -172,6 +172,14 @@ public abstract class Gadget : MonoBehaviour
 
     protected void OnGadgetGrabbed(object sender, VRTK.InteractableObjectEventArgs e)
     {
+        if(this.name.Contains("LoadCube"))
+        {
+            RemoveFromScene();
+            World.Instance.LoadWorld(this.name.Replace("LoadCube", "").Split(' ')[0].Trim());
+            World.Instance.RespawnFiles();
+
+            return;
+        }
         if(CurrentGadgetState == GadgetState.InShelf)
         {
             ChangeState(GadgetState.FirstPlacement);
