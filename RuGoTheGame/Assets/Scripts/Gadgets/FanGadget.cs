@@ -18,6 +18,8 @@ public class FanGadget : Gadget
     public Transform Blades;
     public Transform Swivel;
     public GameObject AffectVisual;
+
+    public bool ForceFanToggle = false;
     
     private bool mIsFanOn = false;
     private float mCurFanSpeed = 0.0f;
@@ -28,8 +30,8 @@ public class FanGadget : Gadget
     new void Start()
     {
         base.Start();
-        
-        mLayerMask = LayerMask.GetMask(LayerMask.LayerToName(this.gameObject.layer));
+
+        mLayerMask = LayerMask.GetMask(GadgetLayers.INWORLD);
         mAudioData = GetComponent<AudioSource>();
 
         mCurFanSpeed = 0.0f;
@@ -42,11 +44,18 @@ public class FanGadget : Gadget
         coneHelper.Length = WindZoneRadius;
         coneHelper.ConeHalfAngle = WindZoneConeHalfAngle;
         AffectVisual.transform.localPosition = mOffset;
-        AffectVisual.SetActive(!isPhysicsMode);
+        AffectVisual.SetActive(!isPhysicsMode);             // #TODO: POTENTIALLY CAUSING ISSUE FOR THE GADGET SHELF VISUALIZATION BUG
     }
 
     void Update()
     {
+        // DEBUG ONLY
+        if(ForceFanToggle)
+        {
+            PerformSwitchAction();
+            ForceFanToggle = false;
+        }
+
         Vector3 fanForward = Blades.transform.right;
         mCurFanSpeed = Mathf.Lerp(mCurFanSpeed, mTargetFanSpeed, Time.deltaTime);
         Blades.Rotate(Vector3.right, mCurFanSpeed);
@@ -84,14 +93,19 @@ public class FanGadget : Gadget
     
     public override void PerformSwitchAction()
     {
-        mIsFanOn = !mIsFanOn;
-        if (!mIsFanOn) {
-            mTargetFanSpeed = 0.0f;
-            mAudioData.Stop();
-        }
-        else {
-            mTargetFanSpeed = FanSpeed;
-            mAudioData.Play();
+        if(CurrentGadgetState == GadgetState.InWorld)
+        {
+            mIsFanOn = !mIsFanOn;
+            if (!mIsFanOn)
+            {
+                mTargetFanSpeed = 0.0f;
+                mAudioData.Stop();
+            }
+            else
+            {
+                mTargetFanSpeed = FanSpeed;
+                mAudioData.Play();
+            }
         }
     }
 
@@ -106,7 +120,7 @@ public class FanGadget : Gadget
         base.MakeTransparent(keepCollision);
         mIsFanOn = false;
 
-        if (CurrentGadgetState == GadgetState.InWorld)
+        if (CurrentGadgetState == GadgetState.InWorld)  // #TODO: POTENTIALLY CAUSING ISSUE FOR THE GADGET SHELF VISUALIZATION BUG. MAYBE TURN ON FOR FirstPlacement GadgetState as well.
         {
             AffectVisual.SetActive(true);
         }

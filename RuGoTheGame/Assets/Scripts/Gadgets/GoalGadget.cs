@@ -12,7 +12,7 @@ public class GoalGadget : Gadget {
 
     public override GadgetInventory GetGadgetType()
     {
-        return GadgetInventory.NUM; // #TODO: This should be changed to .Goal
+        return GadgetInventory.Goal;
     }
 
     new void Start () {
