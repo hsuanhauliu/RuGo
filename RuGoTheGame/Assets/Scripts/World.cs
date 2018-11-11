@@ -295,7 +295,7 @@ public class World : MonoBehaviour
             bubbleObj.transform.localScale *= 0.5f;
 
             // Create gadget
-            string gadgetName = "LoadCube" + i;
+            string gadgetName = "LoadCube" ;
 
             LoadCube spawnedLoadCube = SpawnSingleGadget(gadgetName, container.transform) as LoadCube;
             spawnedLoadCube.Slot = i.ToString();
@@ -331,7 +331,7 @@ public class World : MonoBehaviour
             if(placeHolder.childCount < 2)
             {
                 int slot = i - (int)GadgetInventory.NUM;
-                string gadgetName = "LoadCube" + slot;
+                string gadgetName = "LoadCube" ;
                 LoadCube spawnedLoadCube = SpawnSingleGadget(gadgetName, placeHolder) as LoadCube;
                 spawnedLoadCube.Slot = slot.ToString();
             }
