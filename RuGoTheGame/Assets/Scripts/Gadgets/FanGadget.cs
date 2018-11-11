@@ -44,7 +44,7 @@ public class FanGadget : Gadget
         coneHelper.Length = WindZoneRadius;
         coneHelper.ConeHalfAngle = WindZoneConeHalfAngle;
         AffectVisual.transform.localPosition = mOffset;
-        AffectVisual.SetActive(!isPhysicsMode);             // #TODO: POTENTIALLY CAUSING ISSUE FOR THE GADGET SHELF VISUALIZATION BUG
+        AffectVisual.SetActive(false);
     }
 
     void Update()

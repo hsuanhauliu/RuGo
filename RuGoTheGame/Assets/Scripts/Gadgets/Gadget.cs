@@ -180,15 +180,20 @@ public abstract class Gadget : MonoBehaviour
 
             return;
         }
-        if(CurrentGadgetState == GadgetState.InShelf)
+        if (CurrentGadgetState == GadgetState.InShelf)
         {
+            ChangeState(GadgetState.InWorld);
+            MakeTransparent();
+
             ChangeState(GadgetState.FirstPlacement);
 
             mInteractableObject.OverridePreviousState(World.Instance.transform, false, true);
             GameManager.Instance.ChangeGameMode(GameMode.NONE);
         }
-
-        MakeTransparent();
+        else
+        {
+            MakeTransparent();
+        }
     }
 
 

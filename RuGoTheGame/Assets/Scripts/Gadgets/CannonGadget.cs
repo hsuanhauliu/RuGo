@@ -26,6 +26,7 @@ public class CannonGadget : Gadget
         if (mTrajectory == null) 
         {
             mTrajectory = mBarrel.gameObject.AddComponent<LineRenderer>();
+            mTrajectory.enabled = false;
         }
 
         mTrajectory.material = new Material(Shader.Find("Unlit/Texture"));
@@ -46,7 +47,7 @@ public class CannonGadget : Gadget
 
     private void Update()
     {
-        if (mTrajectory != null) 
+        if (mTrajectory != null && mTrajectory.enabled) 
         {
             PlotTrajectory();   
         }
