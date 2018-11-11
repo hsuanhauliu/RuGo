@@ -271,14 +271,14 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1484013162057696}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4189100928982884}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!4 &4241757889379330
 Transform:
   m_ObjectHideFlags: 1
@@ -892,9 +892,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MakeGadgetSolid: 0
   CurrentGadgetState: 0
-  RocketPrefab: {fileID: 1378233860486274, guid: 7fa9356d140a84afda848c383b3a4e24,
-    type: 2}
-  Confetti: {fileID: 0}
   LeftPole: {fileID: 4277585878698200}
   RightPole: {fileID: 4387264089452306}
   THICKNESS: 0.01
