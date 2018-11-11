@@ -144,10 +144,24 @@ public abstract class Gadget : MonoBehaviour
         mInteractableObject.disableWhenIdle = false;
         childOfController.precisionGrab = true;
 
+        mInteractableObject.InteractableObjectTouched += OnGadgetTouched;
         mInteractableObject.InteractableObjectGrabbed += OnGadgetGrabbed;
         mInteractableObject.InteractableObjectUngrabbed += OnGadgetUnGrabbed;
 
         mInteractableObject.enabled = true;
+    }
+
+    private void OnGadgetTouched(object sender, VRTK.InteractableObjectEventArgs e)
+    {
+        GadgetTouched();
+    }
+
+    protected virtual void GadgetTouched()
+    {
+        if (GameManager.Instance.CurrentGameMode == GameMode.DELETE)
+        {
+            World.Instance.RemoveGadget(this);
+        }
     }
 
     private void OnGadgetUnGrabbed(object sender, VRTK.InteractableObjectEventArgs e)
@@ -205,7 +219,7 @@ public abstract class Gadget : MonoBehaviour
     }
 
     public virtual void RemoveFromScene()
-    {
+    {   
         Destroy(this.gameObject);
     }
 
