@@ -19,9 +19,6 @@ public class World : MonoBehaviour
     public static World Instance = null;
 
     /* Shelf control variables */
-    public float BubbleStartPosition = -0.3f;
-    public float BubbleEndPosition = 0.3f;
-    public float GapBetweenGadgets = 0.3f;
     public float ShiftRateMin = 1.0f;
     public float ShiftRateMax = 1.2f;
     public float GadgetOffsetMax = 0.2f;
@@ -201,17 +198,14 @@ public class World : MonoBehaviour
 
         if (show)
         {
-            Transform camera = GameManager.Instance.MainCamera.transform;
-            Vector3 cameraXZPosition = new Vector3(camera.position.x, 0.0f, camera.position.z);
-            Vector3 cameraForward = new Vector3(camera.forward.x, 0.0f, camera.forward.z);
-            mGadgetShelf.transform.position = cameraXZPosition + cameraForward;
+            Transform myCamera = GameManager.Instance.MainCamera.transform;
+            Vector3 pureCameraRotation = myCamera.rotation.eulerAngles;
 
-
-            mGadgetShelf.transform.LookAt(cameraXZPosition, Vector3.up);
-            mGadgetShelf.transform.position = mGadgetShelf.transform.position + new Vector3(0.0f, camera.position.y, 0.0f);
+            mGadgetShelf.transform.position = myCamera.position;
+            mGadgetShelf.transform.rotation = Quaternion.Euler(0.0f, myCamera.rotation.eulerAngles.y, 0.0f);
 
             // the -1 in below for loop prevents from spawning first file load file in middle of menu 
-            for (int i = 0; i < shelfContainersPositions.Length-1; i++)
+            for (int i = 0; i < shelfContainersPositions.Length - 1; i++)
             {
                 StartCoroutine(ShiftGadgets(i));
             }
@@ -245,8 +239,10 @@ public class World : MonoBehaviour
 
     private void SpawnGadgetShelf()
     {
-        float pos_x = BubbleStartPosition;
-        float pos_y = BubbleStartPosition;
+        float shelfRadius = 1.0f;
+        float startDegree_xz = 15.0f;
+        float y_pos = 0.0f;
+
         shelfContainersPositions = new Vector3[(int)GadgetInventory.NUM];
 
         for (int i = 0; i < (int)GadgetInventory.NUM; i++)
@@ -254,7 +250,11 @@ public class World : MonoBehaviour
             // Create container and store their position
             GameObject container = new GameObject("Container " + i.ToString());
             container.transform.SetParent(mGadgetShelf.transform);
-            Vector3 container_pos = new Vector3(pos_x, pos_y, 0);
+
+            float container_pos_x = shelfRadius * Mathf.Cos(startDegree_xz * (float)Math.PI / 180);
+            float container_pos_z = shelfRadius * Mathf.Sin(startDegree_xz * (float)Math.PI / 180);
+
+            Vector3 container_pos = new Vector3(container_pos_x, y_pos, container_pos_z);
             container.transform.localPosition = container_pos;
             shelfContainersPositions[i] = container_pos;
 
@@ -266,28 +266,26 @@ public class World : MonoBehaviour
             Debug.Log(gadgetName);
             SpawnSingleGadget(gadgetName, container.transform);
 
-            // Update next position
-            if (pos_x == BubbleEndPosition)
+            startDegree_xz += 15.0f;
+
+            if (startDegree_xz == 165.0f)
             {
-                pos_y += GapBetweenGadgets;
-                pos_x = BubbleStartPosition;
-            }
-            else
-            {
-                pos_x += GapBetweenGadgets;
+                startDegree_xz = 15.0f;
+                y_pos += 0.3f;
             }
         }
 
         // spawn small bubbles for saved files
-        pos_x = BubbleStartPosition - GapBetweenGadgets;
-        pos_y = BubbleStartPosition - GapBetweenGadgets;
-
+        startDegree_xz = 40.0f;
+        y_pos = -0.3f;
         for (int i = 0; i < 5; i++)
         {
-
             GameObject container = new GameObject("File Container " + i.ToString());
             container.transform.SetParent(mGadgetShelf.transform);
-            Vector3 container_pos = new Vector3(pos_x, pos_y, 0);
+
+            float container_pos_x = shelfRadius * Mathf.Cos(startDegree_xz * (float)Math.PI / 180);
+            float container_pos_z = Mathf.Sin(startDegree_xz * (float)Math.PI / 180);
+            Vector3 container_pos = new Vector3(container_pos_x, y_pos, container_pos_z);
             container.transform.localPosition = container_pos;
 
             // load file bubble
@@ -296,13 +294,11 @@ public class World : MonoBehaviour
 
             // Create gadget
             string gadgetName = "LoadCube" ;
-
             LoadCube spawnedLoadCube = SpawnSingleGadget(gadgetName, container.transform) as LoadCube;
             spawnedLoadCube.Slot = i.ToString();
 
-            pos_x += GapBetweenGadgets;
+            startDegree_xz += 20.0f;
         }
-
     }
 
     private void RespawnGadgets()
