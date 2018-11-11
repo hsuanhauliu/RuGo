@@ -248,7 +248,8 @@ namespace VRTK
 
         protected virtual bool validObject(VRTK_InteractableObject checkObject)
         {
-            return (checkObject == null || checkObject.IsValidInteractableController(interactNearTouch.interactTouch.gameObject, checkObject.allowedNearTouchControllers));
+            // #KV: MODIFICATION TO NEAR TOUCH because this will allow non interactable objects to trigger near. In our case it is the GEO Collider.
+            return (checkObject != null && checkObject.IsValidInteractableController(interactNearTouch.interactTouch.gameObject, checkObject.allowedNearTouchControllers));
         }
     }
 }
