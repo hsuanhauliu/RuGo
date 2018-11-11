@@ -90,6 +90,11 @@ public class World : MonoBehaviour
 
     }
 
+    public void LoadCurrentSaveSlot()
+    {
+        LoadSaveSlot(CurrentSaveSlot);
+    }
+
     public void LoadSaveSlot(string saveSlot)
     {
         CurrentSaveSlot = saveSlot;
@@ -100,23 +105,21 @@ public class World : MonoBehaviour
         AutoSave();
     }
 
-    public void LoadCurrentSaveSlot()
-    {
-        LoadSaveSlot(CurrentSaveSlot);
-    }
-
-    public void LoadSerializedGadgets(string serializedFileName)
+    private void LoadSerializedGadgets(string serializedFileName)
     {
         if (File.Exists(serializedFileName))
         {
             BinaryFormatter bf = new BinaryFormatter();
-            FileStream file = File.Open(serializedFileName, FileMode.Open);
+            FileStream fileStream = File.Open(serializedFileName, FileMode.Open);
 
-            List<GadgetSaveData> savedGadgets = (List<GadgetSaveData>)bf.Deserialize(file);
-            Clear();
-            gadgetsInWorld = savedGadgets.ConvertAll<Gadget>(ConvertSavedDataToGadget);
+            if (fileStream.Length != 0) 
+            {
+                List<GadgetSaveData> savedGadgets = (List<GadgetSaveData>)bf.Deserialize(fileStream);
+                Clear();
+                gadgetsInWorld = savedGadgets.ConvertAll<Gadget>(ConvertSavedDataToGadget);
 
-            file.Close();
+            }
+            fileStream.Close();
         }
         else
         {
