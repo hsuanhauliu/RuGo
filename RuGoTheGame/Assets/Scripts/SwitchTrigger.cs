@@ -42,7 +42,8 @@ public class SwitchTrigger : MonoBehaviour {
         {
             Collider collisionCollider = collision.collider;
             Gadget otherGadget = collisionCollider.gameObject.GetComponentInParent<Gadget>();
-            if (otherGadget != null && otherGadget.GetPhysicsMode())
+            VRTK.VRTK_PlayerObject isPlayer = collisionCollider.gameObject.GetComponentInParent<VRTK.VRTK_PlayerObject>();
+            if ((otherGadget != null && otherGadget.GetPhysicsMode()) || isPlayer != null)
             {
                 mGadget.PerformSwitchAction();
             }
