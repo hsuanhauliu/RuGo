@@ -7,7 +7,12 @@ public enum GameMode { NONE, BUILD, DRAW, DELETE, COMPLETE};
 
 public class GameManager : MonoBehaviour
 {
+    [HideInInspector]
     public VRTK.VRTK_InteractNearTouch RightInteractNearTouch;
+    [HideInInspector]
+    public VRTK.VRTK_InteractGrab RightInteractGrab;
+    [HideInInspector]
+    public VRTK.VRTK_InteractTouch RightInteractTouch;
 
     private GameObject mMainCamera;
     public GameObject MainCamera
@@ -53,6 +58,8 @@ public class GameManager : MonoBehaviour
         rightInteractGrab.grabButton = VRTK.VRTK_ControllerEvents.ButtonAlias.TriggerPress;
 
         RightInteractNearTouch = RightControllerEvents.GetComponent<VRTK.VRTK_InteractNearTouch>();
+        RightInteractTouch = RightControllerEvents.GetComponent<VRTK.VRTK_InteractTouch>();
+        RightInteractGrab = RightControllerEvents.GetComponent<VRTK.VRTK_InteractGrab>();
     }
 
 
@@ -127,11 +134,14 @@ public class GameManager : MonoBehaviour
     /************************** Input Events ********************************/
     void RightControllerEvents_TriggerDown(object sender, VRTK.ControllerInteractionEventArgs e)
     {
-        if (RightInteractNearTouch.GetNearTouchedObjects().Count > 0)
+        
+        if (RightInteractNearTouch.GetNearTouchedObjects().Count > 0 || // If we near interactable objects
+            RightInteractGrab.GetGrabbedObject() != null || // .. or if we already have an object that we have grabbed
+            RightInteractTouch.GetTouchedObject() != null) // .. or if we are touching an interactable object
         {
-            Debug.Log("Looked to grab");
+            // .. then don't Draw
             return;
-        }   
+        }
 
         ChangeGameMode(GameMode.DRAW);
     }
