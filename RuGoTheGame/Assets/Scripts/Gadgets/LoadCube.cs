@@ -14,7 +14,7 @@ public class LoadCube : Gadget
     protected override void GrabGradget()
     {
         RemoveFromScene();
-        World.Instance.LoadWorld(Slot);
+        World.Instance.LoadSaveSlot(Slot);
         World.Instance.RespawnFiles();
     }
 }
