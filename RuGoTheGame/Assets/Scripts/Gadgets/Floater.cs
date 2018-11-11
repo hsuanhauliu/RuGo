@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Floater : Gadget
 {
-    public float amplitude = 0.01f;
+    public float amplitude = 0.001f;
     public float frequency = 1f;
 
     new void Start()
@@ -14,7 +14,9 @@ public class Floater : Gadget
 
     void Update()
     {
-        transform.position += (transform.up * (Mathf.Sin(Time.fixedTime * Mathf.PI * frequency) * amplitude));
+        if (CurrentGadgetState == GadgetState.InShelf) {
+            transform.position += (transform.up * (Mathf.Sin(Time.fixedTime * Mathf.PI * frequency) * amplitude));
+        }
     }
 
     public override GadgetInventory GetGadgetType()
