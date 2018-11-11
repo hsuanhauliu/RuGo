@@ -111,11 +111,10 @@ public class World : MonoBehaviour
         {
             BinaryFormatter bf = new BinaryFormatter();
             FileStream fileStream = File.Open(serializedFileName, FileMode.Open);
-
+            Clear();
             if (fileStream.Length != 0) 
             {
                 List<GadgetSaveData> savedGadgets = (List<GadgetSaveData>)bf.Deserialize(fileStream);
-                Clear();
                 gadgetsInWorld = savedGadgets.ConvertAll<Gadget>(ConvertSavedDataToGadget);
 
             }
