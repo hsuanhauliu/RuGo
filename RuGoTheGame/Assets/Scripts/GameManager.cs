@@ -7,7 +7,7 @@ public enum GameMode { NONE, BUILD, DRAW, DELETE, COMPLETE};
 
 public class GameManager : MonoBehaviour
 {
-    private VRTK.VRTK_InteractNearTouch mRightInteractNearTouch;
+    public VRTK.VRTK_InteractNearTouch RightInteractNearTouch;
 
     private GameObject mMainCamera;
     public GameObject MainCamera
@@ -52,7 +52,7 @@ public class GameManager : MonoBehaviour
         VRTK.VRTK_InteractGrab rightInteractGrab = RightControllerEvents.GetComponent<VRTK.VRTK_InteractGrab>();
         rightInteractGrab.grabButton = VRTK.VRTK_ControllerEvents.ButtonAlias.TriggerPress;
 
-        mRightInteractNearTouch = RightControllerEvents.GetComponent<VRTK.VRTK_InteractNearTouch>();
+        RightInteractNearTouch = RightControllerEvents.GetComponent<VRTK.VRTK_InteractNearTouch>();
     }
 
 
@@ -127,7 +127,7 @@ public class GameManager : MonoBehaviour
     /************************** Input Events ********************************/
     void RightControllerEvents_TriggerDown(object sender, VRTK.ControllerInteractionEventArgs e)
     {
-        if (mRightInteractNearTouch.GetNearTouchedObjects().Count > 0)
+        if (RightInteractNearTouch.GetNearTouchedObjects().Count > 0)
         {
             Debug.Log("Looked to grab");
             return;
