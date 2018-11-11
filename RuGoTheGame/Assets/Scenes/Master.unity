@@ -160,6 +160,11 @@ Prefab:
       propertyPath: m_Name
       value: Hand
       objectReference: {fileID: 0}
+    - target: {fileID: 137710368452278466, guid: afec65f27dcd2c74cba31fc61eea61e6,
+        type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 262bb64baa2a33c4595a706264ef355e, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: afec65f27dcd2c74cba31fc61eea61e6, type: 2}
   m_IsPrefabAsset: 0
@@ -1063,9 +1068,12 @@ MonoBehaviour:
   RightInteractNearTouch: {fileID: 0}
   RightInteractGrab: {fileID: 0}
   RightInteractTouch: {fileID: 0}
+  RightRenderer: {fileID: 0}
+  LeftRenderer: {fileID: 0}
   PathTool: {fileID: 210995599}
   RightControllerEvents: {fileID: 745988739}
   LeftControllerEvents: {fileID: 746911767}
+  LeftPlatformCollider: {fileID: 683454307}
   CurrentGameMode: 0
 --- !u!4 &498110774
 Transform:
@@ -2017,6 +2025,11 @@ Prefab:
       propertyPath: m_Name
       value: Hand
       objectReference: {fileID: 0}
+    - target: {fileID: 137710368452278466, guid: afec65f27dcd2c74cba31fc61eea61e6,
+        type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 262bb64baa2a33c4595a706264ef355e, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: afec65f27dcd2c74cba31fc61eea61e6, type: 2}
   m_IsPrefabAsset: 0
