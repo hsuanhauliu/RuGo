@@ -7,6 +7,8 @@ public enum GameMode { NONE, BUILD, DRAW, DELETE, COMPLETE};
 
 public class GameManager : MonoBehaviour
 {
+    private VRTK.VRTK_InteractNearTouch mRightInteractNearTouch;
+
     private GameObject mMainCamera;
     public GameObject MainCamera
     {
@@ -40,10 +42,19 @@ public class GameManager : MonoBehaviour
         CurrentGameMode = GameMode.NONE;
 
         /* Setup Controller Events */
-        RightControllerEvents.SubscribeToButtonAliasEvent(VRTK.VRTK_ControllerEvents.ButtonAlias.TriggerPress, true, RightControllerEvents_TriggerClicked);
-        RightControllerEvents.SubscribeToButtonAliasEvent(VRTK.VRTK_ControllerEvents.ButtonAlias.TouchpadPress, true, RightControllerEvents_TouchpadDown);
+        RightControllerEvents.SubscribeToButtonAliasEvent(VRTK.VRTK_ControllerEvents.ButtonAlias.TriggerPress, true, RightControllerEvents_TriggerDown);
+        RightControllerEvents.SubscribeToButtonAliasEvent(VRTK.VRTK_ControllerEvents.ButtonAlias.TriggerPress, false, RightControllerEvents_TriggerUp);
+        RightControllerEvents.SubscribeToButtonAliasEvent(VRTK.VRTK_ControllerEvents.ButtonAlias.GripPress, true, RightControllerEvents_GripDown);
+        RightControllerEvents.SubscribeToButtonAliasEvent(VRTK.VRTK_ControllerEvents.ButtonAlias.GripPress, false, RightControllerEvents_GripUp);
         RightControllerEvents.SubscribeToButtonAliasEvent(VRTK.VRTK_ControllerEvents.ButtonAlias.TouchpadPress, false, RightControllerEvents_TouchpadUp);
+
+        /* Setup Controller VRTK scripts */
+        VRTK.VRTK_InteractGrab rightInteractGrab = RightControllerEvents.GetComponent<VRTK.VRTK_InteractGrab>();
+        rightInteractGrab.grabButton = VRTK.VRTK_ControllerEvents.ButtonAlias.TriggerPress;
+
+        mRightInteractNearTouch = RightControllerEvents.GetComponent<VRTK.VRTK_InteractNearTouch>();
     }
+
 
     public static GameManager Instance = null;
     private void MakeSingleton()
@@ -114,9 +125,51 @@ public class GameManager : MonoBehaviour
     }
 
     /************************** Input Events ********************************/
-    void RightControllerEvents_TriggerClicked(object sender, VRTK.ControllerInteractionEventArgs e)
+    void RightControllerEvents_TriggerDown(object sender, VRTK.ControllerInteractionEventArgs e)
     {
-        if(CurrentGameMode == GameMode.BUILD)
+        if (mRightInteractNearTouch.GetNearTouchedObjects().Count > 0)
+        {
+            Debug.Log("Looked to grab");
+            return;
+        }   
+
+        ChangeGameMode(GameMode.DRAW);
+    }
+
+    void RightControllerEvents_TriggerUp(object sender, VRTK.ControllerInteractionEventArgs e)
+    {
+        if (CurrentGameMode == GameMode.DRAW)
+        {
+            ChangeGameMode(GameMode.NONE);
+        }
+    }
+
+    void RightControllerEvents_GripDown(object sender, VRTK.ControllerInteractionEventArgs e)
+    {
+        // This is only possible if the user is not in draw mode already
+        if (CurrentGameMode != GameMode.DRAW)
+        {
+            ChangeGameMode(GameMode.DELETE);
+        }
+    }
+
+    void RightControllerEvents_GripUp(object sender, VRTK.ControllerInteractionEventArgs e)
+    {
+        if (CurrentGameMode == GameMode.DELETE)
+        {
+            ChangeGameMode(GameMode.NONE);
+        }
+    }
+
+    void RightControllerEvents_TouchpadUp(object sender, VRTK.ControllerInteractionEventArgs e)
+    {
+        ToggleBuildMode();
+    }
+
+    /**************************************** GAME MODE ACTION **********************************/
+    void ToggleBuildMode()
+    {
+        if (CurrentGameMode == GameMode.BUILD)
         {
             ChangeGameMode(GameMode.NONE);
         }
@@ -124,23 +177,6 @@ public class GameManager : MonoBehaviour
         {
             ChangeGameMode(GameMode.BUILD);
         }
-    }
-
-    void RightControllerEvents_TouchpadDown(object sender, VRTK.ControllerInteractionEventArgs e)
-    {
-        if (e.touchpadAxis.y > 0.0f)
-        {
-            ChangeGameMode(GameMode.DRAW);
-        }
-        else
-        {
-            ChangeGameMode(GameMode.DELETE);
-        }
-    }
-
-    void RightControllerEvents_TouchpadUp(object sender, VRTK.ControllerInteractionEventArgs e)
-    {
-        ChangeGameMode(GameMode.NONE);
     }
 
 

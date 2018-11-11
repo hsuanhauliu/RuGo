@@ -138,15 +138,15 @@ public abstract class Gadget : MonoBehaviour
     private void MakeGadgetInteractable()
     {
         mInteractableObject = gameObject.AddComponent<VRTK.VRTK_InteractableObject>();
-        VRTK.GrabAttachMechanics.VRTK_ChildOfControllerGrabAttach childOfController = gameObject.AddComponent<VRTK.GrabAttachMechanics.VRTK_ChildOfControllerGrabAttach>();
-        mInteractableObject.grabAttachMechanicScript = childOfController;
         mInteractableObject.isGrabbable = true;
         mInteractableObject.disableWhenIdle = false;
-        childOfController.precisionGrab = true;
-
         mInteractableObject.InteractableObjectTouched += OnGadgetTouched;
         mInteractableObject.InteractableObjectGrabbed += OnGadgetGrabbed;
         mInteractableObject.InteractableObjectUngrabbed += OnGadgetUnGrabbed;
+
+        VRTK.GrabAttachMechanics.VRTK_ChildOfControllerGrabAttach childOfController = gameObject.AddComponent<VRTK.GrabAttachMechanics.VRTK_ChildOfControllerGrabAttach>();
+        mInteractableObject.grabAttachMechanicScript = childOfController;
+        childOfController.precisionGrab = true;
 
         mInteractableObject.enabled = true;
     }
