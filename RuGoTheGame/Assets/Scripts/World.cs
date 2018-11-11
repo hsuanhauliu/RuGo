@@ -19,6 +19,7 @@ public class World : MonoBehaviour
     public static World Instance = null;
 
     /* Shelf control variables */
+    public float shelfRadius = 1.0f;
     public float ShiftRateMin = 1.0f;
     public float ShiftRateMax = 1.2f;
     public float GadgetOffsetMax = 0.2f;
@@ -202,7 +203,7 @@ public class World : MonoBehaviour
             Vector3 pureCameraRotation = myCamera.rotation.eulerAngles;
 
             mGadgetShelf.transform.position = myCamera.position;
-            mGadgetShelf.transform.rotation = Quaternion.Euler(0.0f, myCamera.rotation.eulerAngles.y, 0.0f);
+            mGadgetShelf.transform.rotation = Quaternion.Euler(0.0f, myCamera.rotation.eulerAngles.y - 90.0f, 0.0f);
 
             // the -1 in below for loop prevents from spawning first file load file in middle of menu 
             for (int i = 0; i < shelfContainersPositions.Length - 1; i++)
@@ -225,7 +226,7 @@ public class World : MonoBehaviour
         float fraction = 0;
         float random_x = UnityEngine.Random.Range(0, GadgetOffsetMax);
         float random_y = UnityEngine.Random.Range(0, GadgetOffsetMax);
-        Vector3 startingPosition = new Vector3(random_x, random_y, 0);
+        Vector3 startingPosition = new Vector3(random_x + shelfRadius, random_y, 0);
         float rate = UnityEngine.Random.Range(ShiftRateMin, ShiftRateMax);
 
         while (fraction * rate <= 1)
@@ -239,8 +240,9 @@ public class World : MonoBehaviour
 
     private void SpawnGadgetShelf()
     {
-        float shelfRadius = 1.0f;
-        float startDegree_xz = 15.0f;
+        float startDegree_xz = -60.0f;
+        float gap = 30f;
+        int counter = 0;
         float y_pos = 0.0f;
 
         shelfContainersPositions = new Vector3[(int)GadgetInventory.NUM];
@@ -266,18 +268,37 @@ public class World : MonoBehaviour
             Debug.Log(gadgetName);
             SpawnSingleGadget(gadgetName, container.transform);
 
-            startDegree_xz += 15.0f;
+            startDegree_xz += gap;
+            counter += 1;
 
-            if (startDegree_xz == 165.0f)
+            if (counter == 5)
             {
-                startDegree_xz = 15.0f;
-                y_pos += 0.3f;
+                counter = 0;
+                startDegree_xz = -60.0f;
+                if (y_pos >= 0)
+                {
+                    y_pos += 0.3f;
+                    y_pos = -y_pos;
+                }
+                else
+                {
+                    y_pos = -y_pos;
+                }
             }
         }
 
         // spawn small bubbles for saved files
-        startDegree_xz = 40.0f;
-        y_pos = -0.3f;
+        startDegree_xz = -20.0f;
+        if (y_pos >= 0)
+        {
+            y_pos += 0.3f;
+            y_pos = -y_pos;
+        }
+        else
+        {
+            y_pos = -y_pos;
+        }
+
         for (int i = 0; i < 5; i++)
         {
             GameObject container = new GameObject("File Container " + i.ToString());
@@ -297,7 +318,7 @@ public class World : MonoBehaviour
             LoadCube spawnedLoadCube = SpawnSingleGadget(gadgetName, container.transform) as LoadCube;
             spawnedLoadCube.Slot = i.ToString();
 
-            startDegree_xz += 20.0f;
+            startDegree_xz += 10.0f;
         }
     }
 
