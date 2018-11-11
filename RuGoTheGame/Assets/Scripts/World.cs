@@ -9,7 +9,9 @@ public class World : MonoBehaviour
 {
     private List<Gadget> gadgetsInWorld;
     private bool isWorldStateModified = false;
-    private string WorldName;
+
+    private string CurrentSaveSlot;
+
     private readonly string AUTO_SAVE_FILE = "autosave.dat";
     private readonly string SAVED_GAME_DIR = "SavedGames/";
     private GameObject mGadgetShelf;
@@ -43,8 +45,7 @@ public class World : MonoBehaviour
         gadgetsInWorld = new List<Gadget>();
         SpawnGadgetShelf();
         ShowShelf(false);
-        CreateDirectory(SAVED_GAME_DIR);
-        InitializeNewWorld();   //TODO load the first world instead
+        LoadLastModifiedSaveSlot();
     }
 
     private void Awake()
@@ -63,42 +64,20 @@ public class World : MonoBehaviour
         }
     }
 
-    public void CreateNewWorld()
+    public void LoadLastModifiedSaveSlot()
     {
-        Clear();
-        InitializeNewWorld();
-        Save();
-    }
-
-    public void InitializeNewWorld()
-    {
-        string[] timeStamp = System.DateTime.UtcNow.ToString().Replace(":", " ").Replace("/", " ").Split(' ');
-        WorldName = string.Join(string.Empty, timeStamp);
-    }
-
-    public void Save()
-    {
-        CreateDirectory(SAVED_GAME_DIR + WorldName);
-
-        BinaryFormatter bf = new BinaryFormatter();
-        FileStream file = File.Create(SAVED_GAME_DIR + WorldName + "/" + WorldName + ".dat");
-
-        List<GadgetSaveData> saveData = gadgetsInWorld.ConvertAll<GadgetSaveData>((Gadget input) => input.GetSaveData());
-        bf.Serialize(file, saveData);
-        file.Close();
-
-        AutoSave();
+        //TODO: Determine Last Modified Save Slot #
+        LoadSaveSlot("0");
     }
 
     private void AutoSave()
     {
-        string fileName = SAVED_GAME_DIR + WorldName + "/" + WorldName + ".dat";
+        string currentSaveSlotFile = SAVED_GAME_DIR + CurrentSaveSlot + "/" + AUTO_SAVE_FILE ;
 
-        if (File.Exists(fileName))
+        if (File.Exists(currentSaveSlotFile))
         {
-            CreateDirectory(SAVED_GAME_DIR + WorldName);
             BinaryFormatter bf = new BinaryFormatter();
-            FileStream file = File.Create(SAVED_GAME_DIR + WorldName + "/" + AUTO_SAVE_FILE);
+            FileStream file = File.Create(SAVED_GAME_DIR + CurrentSaveSlot + "/" + AUTO_SAVE_FILE);
 
             List<GadgetSaveData> saveData = gadgetsInWorld.ConvertAll<GadgetSaveData>((Gadget input) => input.GetSaveData());
             bf.Serialize(file, saveData);
@@ -106,48 +85,32 @@ public class World : MonoBehaviour
         }
         else
         {
-            BinaryFormatter bf = new BinaryFormatter();
-            FileStream file = File.Create(SAVED_GAME_DIR + "/" + AUTO_SAVE_FILE);
-
-            List<GadgetSaveData> saveData = gadgetsInWorld.ConvertAll<GadgetSaveData>((Gadget input) => input.GetSaveData());
-            bf.Serialize(file, saveData);
-            file.Close();
+            Debug.Log("Loading AutoSave Failed. File " + currentSaveSlotFile + "doesn't exist");
         }
+
     }
 
-    public void LoadWorld(string savedWorldName)
+    public void LoadSaveSlot(string saveSlot)
     {
-        WorldName = savedWorldName;
-        //string fileName = SAVED_GAME_DIR + savedWorldName + "/" + savedWorldName + ".dat";
-        string fileName = SAVED_GAME_DIR + savedWorldName + "/" + "autosave" + ".dat";
+        CurrentSaveSlot = saveSlot;
 
-        Load(fileName);
+        string serializedAutoSaveFile = SAVED_GAME_DIR + CurrentSaveSlot + "/" + AUTO_SAVE_FILE;
+
+        LoadSerializedGadgets(serializedAutoSaveFile);
         AutoSave();
     }
 
-    public void LoadAuto()
+    public void LoadCurrentSaveSlot()
     {
-        string fileName = SAVED_GAME_DIR + WorldName + "/" + WorldName + ".dat";
-
-        if (File.Exists(fileName))
-        {
-            string worldAutoSaveFile = SAVED_GAME_DIR + WorldName + "/" + AUTO_SAVE_FILE;
-            Load(worldAutoSaveFile);
-        }
-        else if (gadgetsInWorld.Count != 0)
-        {
-            string tempAutoSaveFile = SAVED_GAME_DIR + "/" + AUTO_SAVE_FILE;
-            Load(tempAutoSaveFile);
-        }
+        LoadSaveSlot(CurrentSaveSlot);
     }
 
-    public void Load(string fileName)
+    public void LoadSerializedGadgets(string serializedFileName)
     {
-
-        if (File.Exists(fileName))
+        if (File.Exists(serializedFileName))
         {
             BinaryFormatter bf = new BinaryFormatter();
-            FileStream file = File.Open(fileName, FileMode.Open);
+            FileStream file = File.Open(serializedFileName, FileMode.Open);
 
             List<GadgetSaveData> savedGadgets = (List<GadgetSaveData>)bf.Deserialize(file);
             Clear();
@@ -157,7 +120,7 @@ public class World : MonoBehaviour
         }
         else
         {
-            Debug.Log("Loading Data failed. File " + fileName + "doesn't exist");
+            Debug.Log("Loading Data failed. File " + serializedFileName + "doesn't exist");
         }
     }
 
@@ -271,7 +234,7 @@ public class World : MonoBehaviour
 
             // Create gadget
             string gadgetName = ((GadgetInventory)i).ToString();
-            Debug.Log(gadgetName);
+
             SpawnSingleGadget(gadgetName, container.transform);
 
             startDegree_xz += gap;
@@ -330,7 +293,6 @@ public class World : MonoBehaviour
 
     private void RespawnGadgets()
     {
-        Debug.Log("Number of childern are "+mGadgetShelf.transform.childCount);
         int StartFromHereForFile = 0;
         for (int i = 0; i < (int)GadgetInventory.NUM; i++)
         {
@@ -368,7 +330,7 @@ public class World : MonoBehaviour
         gadgetObj.transform.localPosition = Vector3.zero;
         gadgetObj.name = gadgetName + " (OnShelf)";
         Gadget gadget = gadgetObj.GetComponent<Gadget>();
-        Debug.Log(gadget);
+
         gadget.MakeTransparent(true);
         gadget.SetLayer(GadgetLayers.SHELF);
 
@@ -395,10 +357,5 @@ public class World : MonoBehaviour
         isWorldStateModified = true;
     }
 
-    /***************************************** HELPERS ******************************************/
-
-    private void CreateDirectory(string directoryName)
-    {
-        System.IO.Directory.CreateDirectory(directoryName);
-    }
+   
 }

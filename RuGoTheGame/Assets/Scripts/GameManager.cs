@@ -89,7 +89,7 @@ public class GameManager : MonoBehaviour
             case GameMode.DELETE:
                 break;
             case GameMode.COMPLETE:
-                World.Instance.LoadAuto();
+                World.Instance.LoadCurrentSaveSlot();
                 break;
 
         }
