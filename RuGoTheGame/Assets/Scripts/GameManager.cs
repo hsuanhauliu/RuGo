@@ -38,6 +38,8 @@ public class GameManager : MonoBehaviour
     public VRTK.VRTK_ControllerEvents RightControllerEvents;
     public VRTK.VRTK_ControllerEvents LeftControllerEvents;
 
+    public BoxCollider LeftPlatformCollider;
+
     public GameMode CurrentGameMode;
 
     void Awake()
@@ -53,6 +55,9 @@ public class GameManager : MonoBehaviour
         RightControllerEvents.SubscribeToButtonAliasEvent(VRTK.VRTK_ControllerEvents.ButtonAlias.GripPress, false, RightControllerEvents_GripUp);
         RightControllerEvents.SubscribeToButtonAliasEvent(VRTK.VRTK_ControllerEvents.ButtonAlias.TouchpadPress, false, RightControllerEvents_TouchpadUp);
 
+        LeftControllerEvents.SubscribeToButtonAliasEvent(VRTK.VRTK_ControllerEvents.ButtonAlias.TriggerPress, true, LeftControllerEvents_TriggerDown);
+        LeftControllerEvents.SubscribeToButtonAliasEvent(VRTK.VRTK_ControllerEvents.ButtonAlias.TriggerPress, false, LeftControllerEvents_TriggerUp);
+
         /* Setup Controller VRTK scripts */
         VRTK.VRTK_InteractGrab rightInteractGrab = RightControllerEvents.GetComponent<VRTK.VRTK_InteractGrab>();
         rightInteractGrab.grabButton = VRTK.VRTK_ControllerEvents.ButtonAlias.TriggerPress;
@@ -60,6 +65,8 @@ public class GameManager : MonoBehaviour
         RightInteractNearTouch = RightControllerEvents.GetComponent<VRTK.VRTK_InteractNearTouch>();
         RightInteractTouch = RightControllerEvents.GetComponent<VRTK.VRTK_InteractTouch>();
         RightInteractGrab = RightControllerEvents.GetComponent<VRTK.VRTK_InteractGrab>();
+
+        LeftPlatformCollider.isTrigger = true;
     }
 
 
@@ -132,6 +139,16 @@ public class GameManager : MonoBehaviour
     }
 
     /************************** Input Events ********************************/
+    void LeftControllerEvents_TriggerDown(object sender, VRTK.ControllerInteractionEventArgs e)
+    {
+        LeftPlatformCollider.isTrigger = true;
+    }
+
+    void LeftControllerEvents_TriggerUp(object sender, VRTK.ControllerInteractionEventArgs e)
+    {
+        LeftPlatformCollider.isTrigger = false;
+    }
+
     void RightControllerEvents_TriggerDown(object sender, VRTK.ControllerInteractionEventArgs e)
     {
         
