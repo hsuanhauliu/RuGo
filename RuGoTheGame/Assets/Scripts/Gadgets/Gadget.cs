@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 
 public enum GadgetInventory
 {
-    Ramp, Ball, Goal, Box, Cannon, Spinner, Fan, Airplane, Domino, Pendulum, LoadCube, NUM // #TODO: Insert Goal here
+    Ramp, Ball, Goal, Box, Cannon, Spinner, Fan, Airplane, Domino, Pendulum, Floater, LoadCube, NUM // #TODO: Insert Goal here
 }
 
 public class GadgetLayers
