@@ -4,9 +4,17 @@ using UnityEngine;
 
 public class LoadCube : Gadget
 {
+    public string Slot;
 
     public override GadgetInventory GetGadgetType()
     {
-        return GadgetInventory.LoadCube;
+        return GadgetInventory.NUM; // #TODO: If time permits, figure out gadget types for this guy.
+    }
+
+    protected override void GrabGradget()
+    {
+        RemoveFromScene();
+        World.Instance.LoadWorld(Slot);
+        World.Instance.RespawnFiles();
     }
 }

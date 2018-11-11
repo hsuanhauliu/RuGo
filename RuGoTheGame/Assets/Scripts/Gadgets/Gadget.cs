@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 
 public enum GadgetInventory
 {
-    Ramp, Ball, Goal, Box, Cannon, Spinner, Fan, Airplane, Domino, Pendulum, Floater, LoadCube, NUM // #TODO: Insert Goal here
+    Ramp, Ball, Goal, Box, Cannon, Spinner, Fan, Airplane, Domino, Pendulum, Floater, NUM // #TODO: If time permits, split the heirarchy to Insertable gadgets and Tools gadgets for LoadCube
 }
 
 public class GadgetLayers
@@ -150,9 +150,14 @@ public abstract class Gadget : MonoBehaviour
         mInteractableObject.enabled = true;
     }
 
-    protected void OnGadgetUnGrabbed(object sender, VRTK.InteractableObjectEventArgs e)
+    private void OnGadgetUnGrabbed(object sender, VRTK.InteractableObjectEventArgs e)
     {
-        switch(CurrentGadgetState) 
+        UnGrabGradget();
+    }
+
+    protected virtual void UnGrabGradget()
+    {
+        switch (CurrentGadgetState)
         {
             case GadgetState.FirstPlacement:
                 {
@@ -167,35 +172,26 @@ public abstract class Gadget : MonoBehaviour
                 break;
         }
         MakeSolid();
+    }
+    
 
+    private void OnGadgetGrabbed(object sender, VRTK.InteractableObjectEventArgs e)
+    {
+        GrabGradget();
     }
 
-    protected void OnGadgetGrabbed(object sender, VRTK.InteractableObjectEventArgs e)
+    protected virtual void GrabGradget()
     {
-        if(this.name.Contains("LoadCube"))
-        {
-            RemoveFromScene();
-            World.Instance.LoadWorld(this.name.Replace("LoadCube", "").Split(' ')[0].Trim());
-            World.Instance.RespawnFiles();
-
-            return;
-        }
         if (CurrentGadgetState == GadgetState.InShelf)
         {
-            ChangeState(GadgetState.InWorld);
-            MakeTransparent();
-
             ChangeState(GadgetState.FirstPlacement);
 
             mInteractableObject.OverridePreviousState(World.Instance.transform, false, true);
             GameManager.Instance.ChangeGameMode(GameMode.NONE);
         }
-        else
-        {
-            MakeTransparent();
-        }
-    }
 
+        MakeTransparent();
+    }
 
     /************************** Public Functions **************************/
 

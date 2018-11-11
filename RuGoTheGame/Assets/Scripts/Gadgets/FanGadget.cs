@@ -120,7 +120,7 @@ public class FanGadget : Gadget
         base.MakeTransparent(keepCollision);
         mIsFanOn = false;
 
-        if (CurrentGadgetState == GadgetState.InWorld)  // #TODO: POTENTIALLY CAUSING ISSUE FOR THE GADGET SHELF VISUALIZATION BUG. MAYBE TURN ON FOR FirstPlacement GadgetState as well.
+        if (CurrentGadgetState == GadgetState.InWorld || CurrentGadgetState == GadgetState.FirstPlacement) 
         {
             AffectVisual.SetActive(true);
         }
