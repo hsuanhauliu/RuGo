@@ -187,7 +187,7 @@ public class World : MonoBehaviour
     {
         if (!show)
         {
-            StartCoroutine("DelayHideShelf");
+            StartCoroutine(DelayHideShelf());
         }
         else
         {
@@ -217,6 +217,12 @@ public class World : MonoBehaviour
     {
         yield return new WaitForSeconds(0.3f);
 
+        Gadget[] shelfGadgets = mGadgetShelf.GetComponentsInChildren<Gadget>();
+        foreach (Gadget gadget in shelfGadgets)
+        {
+            GameManager.Instance.RightInteractNearTouch.ForceStopNearTouching(gadget.gameObject);
+        }
+        
         mGadgetShelf.SetActive(false);
     }
 

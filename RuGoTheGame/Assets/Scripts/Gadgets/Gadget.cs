@@ -89,6 +89,7 @@ public abstract class Gadget : MonoBehaviour
     public void RestoreStateFromSaveData(GadgetSaveData data) {
         this.transform.position = data.GetPosition();
         this.transform.rotation = data.GetQuaternion();
+        this.ChangeState(GadgetState.InWorld);
         this.MakeSolid();
     }
 
