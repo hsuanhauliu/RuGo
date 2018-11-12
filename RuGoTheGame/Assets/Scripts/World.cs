@@ -334,8 +334,7 @@ public class World : MonoBehaviour
         Gadget gadget = gadgetObj.GetComponent<Gadget>();
 
         gadget.MakeTransparent(true);
-        gadget.SetLayer(GadgetLayers.SHELF);
-
+       
         return gadget;
     }
 
