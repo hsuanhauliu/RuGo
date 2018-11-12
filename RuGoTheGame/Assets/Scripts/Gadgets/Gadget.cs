@@ -66,7 +66,7 @@ public abstract class Gadget : MonoBehaviour
     protected void Awake()
     {
         MakeGadgetInteractable();
-        CurrentGadgetState = GadgetState.InShelf;
+        ChangeState(GadgetState.InShelf);
     }
 
     private void Update()
@@ -257,5 +257,13 @@ public abstract class Gadget : MonoBehaviour
     protected void ChangeState(GadgetState newState)
     {
         CurrentGadgetState = newState;
+        if (CurrentGadgetState == GadgetState.InWorld || CurrentGadgetState == GadgetState.FirstPlacement)
+        {
+            SetLayer(GadgetLayers.INWORLD);
+        }
+        else 
+        {
+            SetLayer(GadgetLayers.SHELF);
+        }
     }
 }

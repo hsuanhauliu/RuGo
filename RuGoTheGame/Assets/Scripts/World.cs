@@ -343,7 +343,6 @@ public class World : MonoBehaviour
     {
         gadget.gameObject.name = gadget.GetType().ToString() + gadgetsInWorld.Count.ToString();
         gadgetsInWorld.Add(gadget);
-        gadget.SetLayer(GadgetLayers.INWORLD);
         MarkWorldModified();
     }
 
