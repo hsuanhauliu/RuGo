@@ -43,8 +43,9 @@ public class World : MonoBehaviour
     void Start()
     {
         gadgetsInWorld = new List<Gadget>();
-        SpawnGadgetShelf();
-        ShowShelf(false);
+
+        //SpawnGadgetShelf();
+        //ShowShelf(false);
         LoadLastModifiedSaveSlot();
     }
 
@@ -151,6 +152,12 @@ public class World : MonoBehaviour
 
     public void ShowShelf(bool show)
     {
+        if (mGadgetShelf == null)
+        {
+            SpawnGadgetShelf();
+        }
+
+
         if (!show)
         {
             StartCoroutine(DelayHideShelf());
