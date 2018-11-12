@@ -112,11 +112,10 @@ public class World : MonoBehaviour
         {
             BinaryFormatter bf = new BinaryFormatter();
             FileStream fileStream = File.Open(serializedFileName, FileMode.Open);
-
+            Clear();
             if (fileStream.Length != 0) 
             {
                 List<GadgetSaveData> savedGadgets = (List<GadgetSaveData>)bf.Deserialize(fileStream);
-                Clear();
                 gadgetsInWorld = savedGadgets.ConvertAll<Gadget>(ConvertSavedDataToGadget);
 
             }
@@ -342,8 +341,7 @@ public class World : MonoBehaviour
         Gadget gadget = gadgetObj.GetComponent<Gadget>();
 
         gadget.MakeTransparent(true);
-        gadget.SetLayer(GadgetLayers.SHELF);
-
+       
         return gadget;
     }
 
@@ -351,7 +349,6 @@ public class World : MonoBehaviour
     {
         gadget.gameObject.name = gadget.GetType().ToString() + gadgetsInWorld.Count.ToString();
         gadgetsInWorld.Add(gadget);
-        gadget.SetLayer(GadgetLayers.INWORLD);
         MarkWorldModified();
     }
 

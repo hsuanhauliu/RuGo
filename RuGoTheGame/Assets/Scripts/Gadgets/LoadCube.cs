@@ -16,5 +16,6 @@ public class LoadCube : Gadget
         RemoveFromScene();
         World.Instance.LoadSaveSlot(Slot);
         World.Instance.RespawnFiles();
+        GameManager.Instance.ChangeGameMode(GameMode.NONE);
     }
 }

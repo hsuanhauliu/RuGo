@@ -13,6 +13,10 @@ public class GameManager : MonoBehaviour
     public VRTK.VRTK_InteractGrab RightInteractGrab;
     [HideInInspector]
     public VRTK.VRTK_InteractTouch RightInteractTouch;
+    [HideInInspector]
+    public SkinnedMeshRenderer RightRenderer;
+    [HideInInspector]
+    public SkinnedMeshRenderer LeftRenderer;
 
     private GameObject mMainCamera;
     public GameObject MainCamera
@@ -67,6 +71,12 @@ public class GameManager : MonoBehaviour
         RightInteractGrab = RightControllerEvents.GetComponent<VRTK.VRTK_InteractGrab>();
 
         LeftPlatformCollider.isTrigger = true;
+
+        LeftRenderer = LeftControllerEvents.gameObject.GetComponentInChildren<SkinnedMeshRenderer>();
+        RightRenderer = RightControllerEvents.gameObject.GetComponentInChildren<SkinnedMeshRenderer>();
+
+        SetHandVisibilityState(true, LeftRenderer);
+        SetHandVisibilityState(true, RightRenderer);
     }
 
 
@@ -141,12 +151,16 @@ public class GameManager : MonoBehaviour
     /************************** Input Events ********************************/
     void LeftControllerEvents_TriggerDown(object sender, VRTK.ControllerInteractionEventArgs e)
     {
-        LeftPlatformCollider.isTrigger = true;
+        LeftPlatformCollider.isTrigger = false;
+
+        SetHandVisibilityState(false, LeftRenderer);
     }
 
     void LeftControllerEvents_TriggerUp(object sender, VRTK.ControllerInteractionEventArgs e)
     {
-        LeftPlatformCollider.isTrigger = false;
+        LeftPlatformCollider.isTrigger = true;
+
+        SetHandVisibilityState(true, LeftRenderer);
     }
 
     void RightControllerEvents_TriggerDown(object sender, VRTK.ControllerInteractionEventArgs e)
@@ -160,6 +174,8 @@ public class GameManager : MonoBehaviour
             return;
         }
 
+        SetHandVisibilityState(false, RightRenderer);
+
         ChangeGameMode(GameMode.DRAW);
     }
 
@@ -169,6 +185,8 @@ public class GameManager : MonoBehaviour
         {
             ChangeGameMode(GameMode.NONE);
         }
+
+        SetHandVisibilityState(true, RightRenderer);
     }
 
     void RightControllerEvents_GripDown(object sender, VRTK.ControllerInteractionEventArgs e)
@@ -208,6 +226,13 @@ public class GameManager : MonoBehaviour
 
 
     /***************************************** HELPERS ******************************************/
+    private void SetHandVisibilityState(bool isGhost, SkinnedMeshRenderer handRenderer)
+    {
+        Color currentColor = handRenderer.material.color;
+        currentColor.a = isGhost ? 0.5f : 1.0f;
+        handRenderer.material.color = currentColor;
+    }
+
     private void CreateGadgetAlongPath(Vector3[] path)
     {
         string gadgetName = "Domino";
