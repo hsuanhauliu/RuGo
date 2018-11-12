@@ -15,7 +15,8 @@ public class World : MonoBehaviour
     private readonly string AUTO_SAVE_FILE = "autosave.dat";
     private readonly string SAVED_GAME_DIR = "SavedGames/";
     private GameObject mGadgetShelf;
-    private Vector3[] shelfContainersPositions;
+    private Vector3[] shelfGadgetContainersPositions;
+    private Vector3[] shelfFileContainersPositions;
 
     public GameObject BubblePrefab;
     public static World Instance = null;
@@ -25,6 +26,8 @@ public class World : MonoBehaviour
     public float ShiftRateMin = 1.0f;
     public float ShiftRateMax = 1.2f;
     public float GadgetOffsetMax = 0.2f;
+
+    private int numOfFiles = 5;
 
 
     private void MakeSingleton()
@@ -171,10 +174,14 @@ public class World : MonoBehaviour
             mGadgetShelf.transform.position = myCamera.position;
             mGadgetShelf.transform.rotation = Quaternion.Euler(0.0f, myCamera.rotation.eulerAngles.y - 90.0f, 0.0f);
 
-            // the -1 in below for loop prevents from spawning first file load file in middle of menu 
-            for (int i = 0; i < shelfContainersPositions.Length - 1; i++)
+            for (int i = 0; i < shelfGadgetContainersPositions.Length; i++)
             {
-                StartCoroutine(ShiftGadgets(i));
+                StartCoroutine(ShiftContainer(i, shelfGadgetContainersPositions[i]));
+            }
+
+            for (int i = 0; i < numOfFiles; i++)
+            {
+                StartCoroutine(ShiftContainer(shelfGadgetContainersPositions.Length + i, shelfFileContainersPositions[i]));
             }
         }
     }
@@ -188,7 +195,7 @@ public class World : MonoBehaviour
         mGadgetShelf.SetActive(false);
     }
 
-    private IEnumerator ShiftGadgets(int i)
+    private IEnumerator ShiftContainer(int containerIndex, Vector3 containerPosition)
     {
         float startTime = Time.time;
         float fraction = 0;
@@ -197,11 +204,16 @@ public class World : MonoBehaviour
         Vector3 startingPosition = new Vector3(random_x + shelfRadius, random_y, 0);
         float rate = UnityEngine.Random.Range(ShiftRateMin, ShiftRateMax);
 
+        Transform childContainer = mGadgetShelf.transform.GetChild(containerIndex);
+        childContainer.GetComponentInChildren<Gadget>().ShowShelf(true);
+
         while (fraction * rate <= 1)
         {
             fraction = Time.time - startTime;
-            mGadgetShelf.transform.GetChild(i).localPosition = Vector3.Lerp(startingPosition, shelfContainersPositions[i], fraction * rate);
-            mGadgetShelf.transform.GetChild(i).localScale = Vector3.Lerp(Vector3.zero, Vector3.one, fraction * rate);
+
+            childContainer.localPosition = Vector3.Lerp(startingPosition, containerPosition, fraction * rate);
+            childContainer.localScale = Vector3.Lerp(Vector3.zero, Vector3.one, fraction * rate);
+
             yield return null;
         }
     }
@@ -213,7 +225,7 @@ public class World : MonoBehaviour
         int counter = 0;
         float y_pos = 0.0f;
 
-        shelfContainersPositions = new Vector3[(int)GadgetInventory.NUM];
+        shelfGadgetContainersPositions = new Vector3[(int)GadgetInventory.NUM];
 
         for (int i = 0; i < (int)GadgetInventory.NUM; i++)
         {
@@ -226,7 +238,7 @@ public class World : MonoBehaviour
 
             Vector3 container_pos = new Vector3(container_pos_x, y_pos, container_pos_z);
             container.transform.localPosition = container_pos;
-            shelfContainersPositions[i] = container_pos;
+            shelfGadgetContainersPositions[i] = container_pos;
 
             // Create bubble
             GameObject bubbleObj = Instantiate(BubblePrefab, container.transform);
@@ -256,6 +268,8 @@ public class World : MonoBehaviour
         }
 
         // spawn small bubbles for saved files
+        shelfFileContainersPositions = new Vector3[numOfFiles];
+
         startDegree_xz = -20.0f;
         if (y_pos >= 0)
         {
@@ -267,7 +281,7 @@ public class World : MonoBehaviour
             y_pos = -y_pos;
         }
 
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < numOfFiles; i++)
         {
             GameObject container = new GameObject("File Container " + i.ToString());
             container.transform.SetParent(mGadgetShelf.transform);
@@ -276,6 +290,7 @@ public class World : MonoBehaviour
             float container_pos_z = Mathf.Sin(startDegree_xz * (float)Math.PI / 180);
             Vector3 container_pos = new Vector3(container_pos_x, y_pos, container_pos_z);
             container.transform.localPosition = container_pos;
+            shelfFileContainersPositions[i] = container_pos;
 
             // load file bubble
             GameObject bubbleObj = Instantiate(BubblePrefab, container.transform);

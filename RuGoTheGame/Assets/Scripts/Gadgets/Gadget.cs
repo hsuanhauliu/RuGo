@@ -254,6 +254,11 @@ public abstract class Gadget : MonoBehaviour
         return isPhysicsMode;
     }
 
+    public virtual void ShowShelf(bool show)
+    {
+
+    }
+
     protected void ChangeState(GadgetState newState)
     {
         CurrentGadgetState = newState;

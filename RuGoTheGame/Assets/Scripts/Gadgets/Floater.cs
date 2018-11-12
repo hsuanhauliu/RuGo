@@ -15,7 +15,7 @@ public class Floater : Gadget
     void Update()
     {
         if (CurrentGadgetState == GadgetState.InShelf) {
-            transform.position += (transform.up * (Mathf.Sin(Time.fixedTime * Mathf.PI * frequency) * amplitude));
+            transform.localPosition += (Vector3.up * (Mathf.Sin(Time.fixedTime * Mathf.PI * frequency) * amplitude));
         }
     }
 
@@ -24,4 +24,8 @@ public class Floater : Gadget
         return GadgetInventory.Floater;
     }
 
+    public override void ShowShelf(bool show)
+    {
+        transform.localPosition = Vector3.zero;
+    }
 }
