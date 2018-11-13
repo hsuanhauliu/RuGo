@@ -145,7 +145,7 @@ public class GameManager : MonoBehaviour
     private IEnumerator ResetGame()
     {
         yield return new WaitForSeconds(5.0f);
-        ChangeGameMode(GameMode.BUILD);
+        ChangeGameMode(GameMode.NONE);
     }
 
     /************************** Input Events ********************************/
