@@ -20,7 +20,7 @@ public class BallGadget : Gadget
     void OnCollisionEnter(Collision col)
     {
         print("\ncalling OnCollisionEnter with " + this.name + " and " + col.gameObject.name);
-        if (col.gameObject.name == "Ball" || col.gameObject.name == "button")
+        if (col.gameObject.name == "Ball" || col.gameObject.name == "button" || col.gameObject.name == "CubeRoom_GEO")
         {
         	mAudioData[0].Play();
         }
@@ -32,9 +32,19 @@ public class BallGadget : Gadget
         {
             mAudioData[1].Play();
         }
-		else
+		
+		if (CheckGrounded())
         {
             mAudioData[1].pitch = this.GetComponent<Rigidbody>().velocity.magnitude / 0.35f;
         }
+        else
+        {
+        	mAudioData[1].pitch = 0.0f;
+        }
+    }
+
+    private bool CheckGrounded() 
+    {
+    	return Physics.Raycast(transform.position, -Vector3.up, 0.04f);
     }
 }
