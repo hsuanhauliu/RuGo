@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using System.Collections;
 
 
-public enum GameMode { NONE, BUILD, DRAW, DELETE, COMPLETE};
+public enum GameMode { BUILD, SELECTION, DRAW, DELETE, COMPLETE};
 
 public class GameManager : MonoBehaviour
 {
@@ -50,7 +50,7 @@ public class GameManager : MonoBehaviour
     {
         MakeSingleton();
 
-        CurrentGameMode = GameMode.NONE;
+        CurrentGameMode = GameMode.BUILD;
 
         /* Setup Controller Events */
         RightControllerEvents.SubscribeToButtonAliasEvent(VRTK.VRTK_ControllerEvents.ButtonAlias.TriggerPress, true, RightControllerEvents_TriggerDown);
@@ -100,7 +100,7 @@ public class GameManager : MonoBehaviour
         // Exit current Game mode
         switch(CurrentGameMode)
         {
-            case GameMode.BUILD:
+            case GameMode.SELECTION:
                 {
                     World.Instance.ShowShelf(false);
                 }
@@ -123,7 +123,7 @@ public class GameManager : MonoBehaviour
         // Enter new Game mode
         switch (CurrentGameMode)
         {
-            case GameMode.BUILD:
+            case GameMode.SELECTION:
                 {
                     World.Instance.ShowShelf(true);
                 }
@@ -145,7 +145,7 @@ public class GameManager : MonoBehaviour
     private IEnumerator ResetGame()
     {
         yield return new WaitForSeconds(5.0f);
-        ChangeGameMode(GameMode.NONE);
+        ChangeGameMode(GameMode.BUILD);
     }
 
     /************************** Input Events ********************************/
@@ -183,7 +183,7 @@ public class GameManager : MonoBehaviour
     {
         if (CurrentGameMode == GameMode.DRAW)
         {
-            ChangeGameMode(GameMode.NONE);
+            ChangeGameMode(GameMode.BUILD);
         }
 
         SetHandVisibilityState(true, RightRenderer);
@@ -202,7 +202,7 @@ public class GameManager : MonoBehaviour
     {
         if (CurrentGameMode == GameMode.DELETE)
         {
-            ChangeGameMode(GameMode.NONE);
+            ChangeGameMode(GameMode.BUILD);
         }
     }
 
@@ -214,13 +214,13 @@ public class GameManager : MonoBehaviour
     /**************************************** GAME MODE ACTION **********************************/
     void ToggleBuildMode()
     {
-        if (CurrentGameMode == GameMode.BUILD)
+        if (CurrentGameMode == GameMode.SELECTION)
         {
-            ChangeGameMode(GameMode.NONE);
+            ChangeGameMode(GameMode.BUILD);
         }
         else
         {
-            ChangeGameMode(GameMode.BUILD);
+            ChangeGameMode(GameMode.SELECTION);
         }
     }
 
