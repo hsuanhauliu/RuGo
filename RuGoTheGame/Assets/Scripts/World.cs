@@ -156,6 +156,7 @@ public class World : MonoBehaviour
     {
         if (!show)
         {
+            BurstBubble();
             StartCoroutine(DelayHideShelf());
         }
         else
@@ -184,6 +185,29 @@ public class World : MonoBehaviour
                 StartCoroutine(ShiftContainer(shelfGadgetContainersPositions.Length + i, shelfFileContainersPositions[i]));
             }
         }
+    }
+
+    private void BurstBubble()
+    {
+        int numOfBubbles = mGadgetShelf.transform.childCount;
+
+        for (int i = 0; i < numOfBubbles; i++)
+        {
+            Gadget gadget = mGadgetShelf.transform.GetChild(i).GetChild(1).GetComponent<Gadget>();
+            if (gadget.CurrentGadgetState == Gadget.GadgetState.FirstPlacement)
+            {
+                Transform containerBubble = mGadgetShelf.transform.GetChild(i).GetChild(0);
+                containerBubble.GetChild(0).gameObject.SetActive(false);
+                containerBubble.GetChild(1).GetComponent<ParticleSystem>().Play();
+                StartCoroutine("EnableBubble", containerBubble.GetChild(0).gameObject);
+            }
+        }
+    }
+
+    private IEnumerator EnableBubble(GameObject bubble)
+    {
+        yield return new WaitForSeconds(0.3f);
+        bubble.SetActive(true);
     }
 
     private IEnumerator DelayHideShelf()
