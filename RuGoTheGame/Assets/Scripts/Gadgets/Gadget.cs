@@ -202,7 +202,7 @@ public abstract class Gadget : MonoBehaviour
             ChangeState(GadgetState.FirstPlacement);
 
             mInteractableObject.OverridePreviousState(World.Instance.transform, false, true);
-            GameManager.Instance.ChangeGameMode(GameMode.NONE);
+            GameManager.Instance.ChangeGameMode(GameMode.BUILD);
         }
 
         MakeTransparent();

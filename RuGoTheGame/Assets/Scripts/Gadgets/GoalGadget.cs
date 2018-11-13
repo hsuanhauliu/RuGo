@@ -63,7 +63,6 @@ public class GoalGadget : Gadget {
 
             foreach (GameObject goalObject in goalObjects)
             {
-
                 ParticleSystem pSystem = goalObject.GetComponent<ParticleSystem>();
 
                 if (pSystem)
