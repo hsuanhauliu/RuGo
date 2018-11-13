@@ -106,7 +106,7 @@ GameObject:
   - component: {fileID: 4277585878698200}
   - component: {fileID: 33441297661160982}
   - component: {fileID: 23756590210885938}
-  - component: {fileID: 136242871856232652}
+  - component: {fileID: 65311804864488722}
   m_Layer: 0
   m_Name: LeftPole
   m_TagString: Untagged
@@ -226,7 +226,7 @@ GameObject:
   - component: {fileID: 4387264089452306}
   - component: {fileID: 33719384999483060}
   - component: {fileID: 23246984651315532}
-  - component: {fileID: 136842622327119444}
+  - component: {fileID: 65391631956215236}
   m_Layer: 0
   m_Name: RightPole
   m_TagString: Untagged
@@ -772,6 +772,30 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!65 &65311804864488722
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1305449971748228}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.9727689, y: 1.9999999, z: 1.0000002}
+  m_Center: {x: -0.013615175, y: 0, z: -0.0000001030485}
+--- !u!65 &65391631956215236
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1939793371213882}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.9727687, y: 1.9999999, z: 1.0000002}
+  m_Center: {x: -0.013614859, y: 0, z: -0.000000099802385}
 --- !u!65 &65606611708879048
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -1213,29 +1237,3 @@ LineRenderer:
     generateLightingData: 0
   m_UseWorldSpace: 0
   m_Loop: 0
---- !u!136 &136242871856232652
-CapsuleCollider:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1305449971748228}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.5000001
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
---- !u!136 &136842622327119444
-CapsuleCollider:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1939793371213882}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.5000001
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
