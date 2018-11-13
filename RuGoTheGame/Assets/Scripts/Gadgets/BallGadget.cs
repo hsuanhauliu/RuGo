@@ -20,7 +20,10 @@ public class BallGadget : Gadget
     void OnCollisionEnter(Collision col)
     {
         print("\ncalling OnCollisionEnter with " + this.name + " and " + col.gameObject.name);
-        if (col.gameObject.name == "Ball" || col.gameObject.name == "button")
+        if (col.gameObject.name == "Ball" 
+        	|| col.gameObject.name == "button"
+        	|| col.gameObject.name == "CubeRoom_GEO"
+        	|| col.gameObject.name == "Floater")
         {
         	mAudioData[0].Play();
         }

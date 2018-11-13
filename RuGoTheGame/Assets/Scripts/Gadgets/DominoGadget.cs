@@ -25,7 +25,7 @@ public class DominoGadget : Gadget
 
     void OnCollisionEnter(Collision col)
     {
-        // print("\ncalling OnCollisionEnter with " + this.name + " and " + col.gameObject.name);
+        print("\ncalling OnCollisionEnter with " + this.name + " and " + col.gameObject.name);
         if(col.gameObject.name == "Domino")
         {
             mAudioData.Play();
