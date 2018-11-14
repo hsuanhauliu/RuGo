@@ -4739,8 +4739,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.33, y: 0.03807972, z: 0.31328264}
-  m_Center: {x: 0, y: -0.000115087525, z: -0.00000003193106}
+  m_Size: {x: 0.31429815, y: 0.038080126, z: 0.31328264}
+  m_Center: {x: -0.000000042574747, y: -0.00011508952, z: -0.00000003193106}
 --- !u!114 &114119257727941632
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4754,5 +4754,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MakeGadgetSolid: 0
   CurrentGadgetState: 0
-  amplitude: 0.002
-  frequency: 1
