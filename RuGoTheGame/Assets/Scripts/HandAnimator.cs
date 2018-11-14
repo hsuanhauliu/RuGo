@@ -83,10 +83,19 @@ public class HandAnimator : MonoBehaviour
     public void MakeHandLaser()
     {
         mFingerLayerWeights[(int)Finger.Index]  = 0.0f;
-        mFingerLayerWeights[(int)Finger.Middle] = 0.7f;
-        mFingerLayerWeights[(int)Finger.Ring]   = 0.7f;
-        mFingerLayerWeights[(int)Finger.Thumb]  = 0.7f;
-        mFingerLayerWeights[(int)Finger.Pinky]  = 0.7f;
+        mFingerLayerWeights[(int)Finger.Middle] = 1.0f;
+        mFingerLayerWeights[(int)Finger.Ring]   = 1.0f;
+        mFingerLayerWeights[(int)Finger.Thumb]  = 1.0f;
+        mFingerLayerWeights[(int)Finger.Pinky]  = 1.0f;
+    }
+
+    public void MakeHandGrab()
+    {
+        mFingerLayerWeights[(int)Finger.Index]  = 1.0f;
+        mFingerLayerWeights[(int)Finger.Middle] = 1.0f;
+        mFingerLayerWeights[(int)Finger.Ring]   = 1.0f;
+        mFingerLayerWeights[(int)Finger.Thumb]  = 1.0f;
+        mFingerLayerWeights[(int)Finger.Pinky]  = 1.0f;
     }
 
     public void SetHandGhost(bool isGhost)

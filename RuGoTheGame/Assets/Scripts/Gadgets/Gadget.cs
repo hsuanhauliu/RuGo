@@ -168,6 +168,9 @@ public abstract class Gadget : MonoBehaviour
     private void OnGadgetUnGrabbed(object sender, VRTK.InteractableObjectEventArgs e)
     {
         UnGrabGradget();
+
+        // TODO: We should be doing this in the GameManager, so that there is a global reference to gadget being grabbed
+        GameManager.Instance.RightAnimator.MakeHandIdle();
     }
 
     protected virtual void UnGrabGradget()
@@ -193,6 +196,9 @@ public abstract class Gadget : MonoBehaviour
     private void OnGadgetGrabbed(object sender, VRTK.InteractableObjectEventArgs e)
     {
         GrabGradget();
+
+        // TODO: We should be doing this in the GameManager, so that there is a global reference to gadget being grabbed
+        GameManager.Instance.RightAnimator.MakeHandGrab();
     }
 
     protected virtual void GrabGradget()
