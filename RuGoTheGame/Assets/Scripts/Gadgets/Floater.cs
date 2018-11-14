@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Floater : Gadget
 {
-    public float amplitude = 0.001f;
-    public float frequency = 1.1f;
+    private readonly float amplitude = 0.001f;
+    private readonly float frequency = 1.1f;
 
     void Update()
     {
