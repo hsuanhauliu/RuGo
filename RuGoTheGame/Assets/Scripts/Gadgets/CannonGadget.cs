@@ -119,11 +119,12 @@ public class CannonGadget : Gadget
     private void FireCannon() 
     {
         mAudioData.Play(0);
-        GameObject cannonBall = Instantiate(CannonBallPrefab, mBarrel);
-        cannonBall.transform.localPosition = mHeading.localPosition;
+        GameObject cannonBall = Instantiate(CannonBallPrefab, mBarrelTip);
+        cannonBall.transform.localPosition = mBarrelTip.localPosition;
         Rigidbody rigidBody = cannonBall.GetComponent<Rigidbody>();
+        print(cannonBall.transform.position);
 
-        Vector3 barrelDirection = mHeading.forward * 1.3f;
+        Vector3 barrelDirection = mBarrelTip.forward * 1.3f;
         rigidBody.AddForce(barrelDirection, ForceMode.Impulse);
 
         IEnumerator coroutine = CleanCannon(cannonBall);
