@@ -41,6 +41,8 @@ public class HandAnimator : MonoBehaviour
         mHandRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
         mHandRenderer.material.SetInt("_ZWrite", 1);
 
+        SetHandGhost(true);
+
         MakeHandIdle();
     }
 	
