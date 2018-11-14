@@ -37,7 +37,7 @@ public class PathTool : MonoBehaviour
         {
             VisualizeStartingPoint();
         }
-        else
+        else if (drawingPath.Count > 1)
         {
             VisualizeNewPoint();
         }
