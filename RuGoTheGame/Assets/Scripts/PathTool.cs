@@ -186,23 +186,6 @@ public class PathTool : MonoBehaviour
 
 
     /// <summary>
-    /// Visualizes the straight line from starting point to the mouse cursor.
-    /// </summary>
-    private void VisualizeStraightLine()
-    {
-        /* TODO: Get Selector Ray From VRTK
-        Ray ray = RuGoInteraction.Instance.SelectorRay;
-        RaycastHit hit;
-
-        if (Physics.Raycast(ray, out hit))
-        {
-            pathVisualizer.SetPosition(1, hit.point);
-        }
-        */
-    }
-
-
-    /// <summary>
     /// Visualizes a newly added point on the drawing path.
     /// </summary>
     private void VisualizeNewPoint()

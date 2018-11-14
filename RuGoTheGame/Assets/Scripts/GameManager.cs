@@ -236,10 +236,12 @@ public class GameManager : MonoBehaviour
     private void CreateGadgetAlongPath(Vector3[] path)
     {
         string gadgetName = "Domino";
+        int min_Dominos = 5;
+
         GameObject gadgetPreb = Resources.Load(gadgetName) as GameObject;
         int numOfPoints = path.Length;
 
-        if (numOfPoints > 1)
+        if (numOfPoints > min_Dominos)
         {
             for (int p = 0; p < numOfPoints - 1; p++)
             {
@@ -263,16 +265,6 @@ public class GameManager : MonoBehaviour
             lastGadget.Deselect();
             lastGadget.SetDominoInWorld();
             World.Instance.InsertGadget(lastGadget);
-        }
-        else if (numOfPoints == 1)
-        {
-            GameObject gadgetGameObject = Instantiate(gadgetPreb, this.transform);
-            DominoGadget gadget = gadgetGameObject.GetComponent<DominoGadget>();
-
-            gadget.transform.position = path[0];
-            gadget.Deselect();
-            gadget.SetDominoInWorld();
-            World.Instance.InsertGadget(gadget);
         }
     }
 }
