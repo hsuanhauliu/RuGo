@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028334, g: 0.22571328, b: 0.3069217, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -165,7 +165,8 @@ Prefab:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 262bb64baa2a33c4595a706264ef355e, type: 2}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 114963189862696322, guid: afec65f27dcd2c74cba31fc61eea61e6, type: 2}
   m_SourcePrefab: {fileID: 100100000, guid: afec65f27dcd2c74cba31fc61eea61e6, type: 2}
   m_IsPrefabAsset: 0
 --- !u!4 &82970537 stripped
@@ -1068,8 +1069,8 @@ MonoBehaviour:
   RightInteractNearTouch: {fileID: 0}
   RightInteractGrab: {fileID: 0}
   RightInteractTouch: {fileID: 0}
-  RightRenderer: {fileID: 0}
-  LeftRenderer: {fileID: 0}
+  RightAnimator: {fileID: 0}
+  LeftAnimator: {fileID: 0}
   PathTool: {fileID: 210995599}
   RightControllerEvents: {fileID: 745988739}
   LeftControllerEvents: {fileID: 746911767}
@@ -1180,6 +1181,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.1, y: 0.05, z: 0.18}
   m_Center: {x: 0, y: 0, z: 0.12}
+--- !u!114 &683454308
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 683454306}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a39e286c1fcb6e488da4e2a49257ac5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Hand: 0
 --- !u!1 &696005401
 GameObject:
   m_ObjectHideFlags: 0
@@ -2132,7 +2145,8 @@ Prefab:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 262bb64baa2a33c4595a706264ef355e, type: 2}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 114963189862696322, guid: afec65f27dcd2c74cba31fc61eea61e6, type: 2}
   m_SourcePrefab: {fileID: 100100000, guid: afec65f27dcd2c74cba31fc61eea61e6, type: 2}
   m_IsPrefabAsset: 0
 --- !u!4 &1093514014 stripped
@@ -2155,6 +2169,23 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4220431479120062, guid: afec65f27dcd2c74cba31fc61eea61e6,
     type: 2}
   m_PrefabInternal: {fileID: 1093514013}
+--- !u!1 &1093514018 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1469220889570388, guid: afec65f27dcd2c74cba31fc61eea61e6,
+    type: 2}
+  m_PrefabInternal: {fileID: 1093514013}
+--- !u!114 &1093514019
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1093514018}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a39e286c1fcb6e488da4e2a49257ac5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Hand: 1
 --- !u!21 &1110229171
 Material:
   serializedVersion: 6
