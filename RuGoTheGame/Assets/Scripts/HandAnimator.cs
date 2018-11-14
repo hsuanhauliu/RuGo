@@ -1,0 +1,98 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public enum HandSide
+{
+    Left,
+    Right
+}
+
+public enum Finger
+{
+    Thumb,
+    Index,
+    Middle,
+    Ring,
+    Pinky,
+    Num
+}
+
+public class HandAnimator : MonoBehaviour
+{
+    public HandSide Hand;
+
+    private readonly float INTERP_SPEED = 0.6f;
+    private Animator mHandAnimator;
+    private Renderer mHandRenderer;
+
+    private float[] mFingerLayerWeights = new float[(int)Finger.Num];
+
+    // Use this for initialization
+    void Awake ()
+    {
+		if(Hand == HandSide.Left)
+        {
+            // Do we need control reference to update scale of model instead?
+            transform.localScale = new Vector3(-1.0f, 1.0f, 1.0f);
+        }
+
+        mHandAnimator = GetComponent<Animator>();
+        mHandRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
+        mHandRenderer.material.SetInt("_ZWrite", 1);
+
+        MakeHandIdle();
+    }
+	
+	// Update is called once per frame
+	void Update ()
+    {
+        for(int fingerIndex = 0; fingerIndex < (int)Finger.Num; fingerIndex++)
+        {
+            AnimateFinger(fingerIndex);
+        }
+    }
+
+    private void AnimateFinger(Finger finger)
+    {
+        AnimateFinger((int)finger);
+    }
+
+    private void AnimateFinger(int fingerIndex)
+    {
+        int fingerLayer = fingerIndex + 1;
+
+        float currentLayerWeight = mHandAnimator.GetLayerWeight(fingerLayer);
+        float newLayerWeight = Mathf.Lerp(currentLayerWeight, mFingerLayerWeights[fingerIndex], INTERP_SPEED); // 0.6f is the Interp speed
+
+        if(!Mathf.Approximately(currentLayerWeight, newLayerWeight))
+        {
+            mHandAnimator.SetLayerWeight(fingerLayer, newLayerWeight);
+        }   
+    }
+
+    public void MakeHandIdle()
+    {
+        mFingerLayerWeights[(int)Finger.Index]  = 0.0f;
+        mFingerLayerWeights[(int)Finger.Middle] = 0.0f;
+        mFingerLayerWeights[(int)Finger.Ring]   = 0.0f;
+        mFingerLayerWeights[(int)Finger.Thumb]  = 0.0f;
+        mFingerLayerWeights[(int)Finger.Pinky]  = 0.0f;
+    }
+
+    public void MakeHandLaser()
+    {
+        mFingerLayerWeights[(int)Finger.Index]  = 0.0f;
+        mFingerLayerWeights[(int)Finger.Middle] = 0.7f;
+        mFingerLayerWeights[(int)Finger.Ring]   = 0.7f;
+        mFingerLayerWeights[(int)Finger.Thumb]  = 0.7f;
+        mFingerLayerWeights[(int)Finger.Pinky]  = 0.7f;
+    }
+
+    public void SetHandGhost(bool isGhost)
+    {
+        Color currentColor = mHandRenderer.material.color;
+        currentColor.a = isGhost ? 0.5f : 1.0f;
+        mHandRenderer.material.color = currentColor;
+    }
+}
