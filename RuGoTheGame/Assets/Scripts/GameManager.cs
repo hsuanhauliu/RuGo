@@ -227,7 +227,7 @@ public class GameManager : MonoBehaviour
     {
         string gadgetName = "Domino";
         GameObject gadgetPreb = Resources.Load(gadgetName) as GameObject;
-        float offset = gadgetPreb.transform.localScale.y * 0.5f + 0.05f;
+        float offset = gadgetPreb.transform.localScale.y * 0.5f;
         int numOfPoints = path.Length;
         int minNumOfGadgets = 5;
 

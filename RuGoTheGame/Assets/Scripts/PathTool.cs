@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 public class PathTool : MonoBehaviour
 {
-    private const float yLevelTolerance = 0.005f;
+    private const float yLevelTolerance = 0.02f;
     private const float minGadgetDistance = 0.04f;
 
     private Action<Vector3[]> pathCompleteCallBack;
@@ -52,10 +52,10 @@ public class PathTool : MonoBehaviour
     {
         RaycastHit hit = mPointerRenderer.GetDestinationHit();
         Vector3 contactPointNormal = hit.normal;
-        int normal_x = (int)contactPointNormal.x;
-        int normal_y = (int)contactPointNormal.y;
-        int normal_z = (int)contactPointNormal.z;
-
+        int normal_x = (int)(contactPointNormal.x * 100);
+        int normal_y = (int)(contactPointNormal.y * 100);
+        int normal_z = (int)(contactPointNormal.z * 100);
+        
         if (hit.collider != null &&
             !(normal_x == 0 && normal_y == 0) &&
             !(normal_z == 0 && normal_y == 0) &&
