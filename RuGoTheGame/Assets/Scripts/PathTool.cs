@@ -5,8 +5,8 @@ using System.Collections.Generic;
 
 public class PathTool : MonoBehaviour
 {
-    private const float yLevelTolerance = 0.001f;
-    private const float gadgetDistance = 0.04f;
+    private const float yLevelTolerance = 0.005f;
+    private const float minGadgetDistance = 0.04f;
 
     private Action<Vector3[]> pathCompleteCallBack;
     private List<Vector3> drawingPath;
@@ -51,8 +51,15 @@ public class PathTool : MonoBehaviour
     private void StorePointPosition()
     {
         RaycastHit hit = mPointerRenderer.GetDestinationHit();
+        Vector3 contactPointNormal = hit.normal;
+        int normal_x = (int)contactPointNormal.x;
+        int normal_y = (int)contactPointNormal.y;
+        int normal_z = (int)contactPointNormal.z;
 
-        if (hit.collider != null)
+        if (hit.collider != null &&
+            !(normal_x == 0 && normal_y == 0) &&
+            !(normal_z == 0 && normal_y == 0) &&
+            !(normal_x == 0 && normal_y < 0 && normal_z == 0))
         {
             if (drawingPath.Count != 0)
             {
@@ -61,7 +68,7 @@ public class PathTool : MonoBehaviour
                 float gap = Vector3.Distance(hit.point, previousPoint);
 
                 if (Math.Abs(hit.point.y - previousY) < yLevelTolerance &&
-                    gap >= gadgetDistance)
+                    gap >= minGadgetDistance)
                 {
                     drawingPath.Add(hit.point);
                 }
@@ -94,34 +101,34 @@ public class PathTool : MonoBehaviour
 
                 if (leftover == 0)
                 {
-                    int count = (int)(segmentLength / gadgetDistance);
+                    int count = (int)(segmentLength / minGadgetDistance);
                     for (int n = 0; n < count; n++)
                     {
-                        Vector3 newPoint = previousPoint + segmentVector * gadgetDistance;
+                        Vector3 newPoint = previousPoint + segmentVector * minGadgetDistance;
                         newPoints.Add(newPoint);
                         previousPoint = newPoint;
                     }
-                    leftover = segmentLength - count * gadgetDistance;
+                    leftover = segmentLength - count * minGadgetDistance;
                 }
-                else if (Vector3.Distance(previousPoint, drawingPath[i]) > gadgetDistance)
+                else if (Vector3.Distance(previousPoint, drawingPath[i]) > minGadgetDistance)
                 {
                     float angle_a = CalculateAngle(drawingPath[i - 1] - previousPoint, drawingPath[i] - drawingPath[i - 1]);
                     float side_b = Vector3.Distance(drawingPath[i - 1], previousPoint);
-                    float side_c = CalculateSide(gadgetDistance, side_b, angle_a);
+                    float side_c = CalculateSide(minGadgetDistance, side_b, angle_a);
                     float remaining_segment = segmentLength - side_c;
 
                     Vector3 newPoint = drawingPath[i - 1] + side_c * segmentVector;
                     newPoints.Add(newPoint);
                     previousPoint = newPoint;
 
-                    int count = (int)(remaining_segment / gadgetDistance);
+                    int count = (int)(remaining_segment / minGadgetDistance);
                     for (int n = 0; n < count; n++)
                     {
-                        newPoint = previousPoint + segmentVector * gadgetDistance;
+                        newPoint = previousPoint + segmentVector * minGadgetDistance;
                         newPoints.Add(newPoint);
                         previousPoint = newPoint;
                     }
-                    leftover = remaining_segment - count * gadgetDistance;
+                    leftover = remaining_segment - count * minGadgetDistance;
                 }
             }
         }
@@ -190,8 +197,9 @@ public class PathTool : MonoBehaviour
     /// </summary>
     private void VisualizeNewPoint()
     {
-        pathVisualizer.positionCount += 1;
-        pathVisualizer.SetPosition(pathVisualizer.positionCount - 1, drawingPath[drawingPath.Count - 1]);
+        int numOfPoints = drawingPath.Count;
+        pathVisualizer.positionCount = numOfPoints;
+        pathVisualizer.SetPosition(numOfPoints - 1, drawingPath[numOfPoints - 1]);
     }
 
 

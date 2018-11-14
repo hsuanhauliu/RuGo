@@ -227,9 +227,11 @@ public class GameManager : MonoBehaviour
     {
         string gadgetName = "Domino";
         GameObject gadgetPreb = Resources.Load(gadgetName) as GameObject;
+        float offset = gadgetPreb.transform.localScale.y * 0.5f + 0.05f;
         int numOfPoints = path.Length;
+        int minNumOfGadgets = 5;
 
-        if (numOfPoints > 1)
+        if (numOfPoints > minNumOfGadgets)
         {
             for (int p = 0; p < numOfPoints - 1; p++)
             {
@@ -237,7 +239,7 @@ public class GameManager : MonoBehaviour
                 DominoGadget gadget = gadgetGameObject.GetComponent<DominoGadget>();
 
                 Vector3 direction = path[p + 1] - path[p];
-                gadget.transform.position = path[p];
+                gadget.transform.position = new Vector3(path[p].x, path[p].y + offset, path[p].z);
                 gadget.transform.rotation = Quaternion.LookRotation(direction);
                 gadget.Deselect();
                 gadget.SetDominoInWorld();
@@ -248,21 +250,11 @@ public class GameManager : MonoBehaviour
             DominoGadget lastGadget = lastGadgetGameObject.GetComponent<DominoGadget>();
 
             Vector3 lastPathDirection = path[numOfPoints - 1] - path[path.Length - 2];
-            lastGadget.transform.position = path[numOfPoints - 1];
+            lastGadget.transform.position = new Vector3(path[numOfPoints - 1].x, path[numOfPoints - 1].y + offset, path[numOfPoints - 1].z);
             lastGadget.transform.rotation = Quaternion.LookRotation(lastPathDirection);
             lastGadget.Deselect();
             lastGadget.SetDominoInWorld();
             World.Instance.InsertGadget(lastGadget);
-        }
-        else if (numOfPoints == 1)
-        {
-            GameObject gadgetGameObject = Instantiate(gadgetPreb, this.transform);
-            DominoGadget gadget = gadgetGameObject.GetComponent<DominoGadget>();
-
-            gadget.transform.position = path[0];
-            gadget.Deselect();
-            gadget.SetDominoInWorld();
-            World.Instance.InsertGadget(gadget);
         }
     }
 }
