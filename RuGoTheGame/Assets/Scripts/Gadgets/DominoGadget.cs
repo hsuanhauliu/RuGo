@@ -6,9 +6,9 @@ public class DominoGadget : Gadget
 {
 	protected AudioSource mAudioData;
 
-	new void Start()
+	new void Awake()
     {
-    	base.Start();
+    	base.Awake();
         mAudioData = this.GetComponent<AudioSource>();
     }
 
