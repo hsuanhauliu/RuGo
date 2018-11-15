@@ -100,43 +100,43 @@ public class PathTool : MonoBehaviour
         {
             newPoints.Add(drawingPath[0]);
             float leftover = 0f;
-
             Vector3 previousPoint = drawingPath[0];
+
             for (int i = 1; i < drawingPath.Count; i++)
             {
-                float segmentLength = Vector3.Distance(drawingPath[i], drawingPath[i - 1]);
-                Vector3 segmentVector = (drawingPath[i] - drawingPath[i - 1]) / segmentLength;
+                float distanceBetweenTwoPoints = Vector3.Distance(drawingPath[i], drawingPath[i - 1]);
+                Vector3 distanceVector = (drawingPath[i] - drawingPath[i - 1]) / distanceBetweenTwoPoints;
 
                 if (Mathf.Approximately(leftover, 0.0f))
                 {
-                    int count = (int)(segmentLength / minGadgetDistance);
-                    for (int n = 0; n < count; n++)
+                    int numOfDominosToBePlaced = (int)(distanceBetweenTwoPoints / minGadgetDistance);
+                    for (int n = 0; n < numOfDominosToBePlaced; n++)
                     {
-                        Vector3 newPoint = previousPoint + segmentVector * minGadgetDistance;
+                        Vector3 newPoint = previousPoint + distanceVector * minGadgetDistance;
                         newPoints.Add(newPoint);
                         previousPoint = newPoint;
                     }
-                    leftover = segmentLength - count * minGadgetDistance;
+                    leftover = distanceBetweenTwoPoints - numOfDominosToBePlaced * minGadgetDistance;
                 }
                 else if (Vector3.Distance(previousPoint, drawingPath[i]) > minGadgetDistance)
                 {
                     float angle_a = CalculateAngle(drawingPath[i - 1] - previousPoint, drawingPath[i] - drawingPath[i - 1]);
                     float side_b = Vector3.Distance(drawingPath[i - 1], previousPoint);
-                    float side_c = CalculateSide(minGadgetDistance, side_b, angle_a);
-                    float remaining_segment = segmentLength - side_c;
+                    float side_c = Mathf.Approximately(angle_a, 0.0f) ? 0 : CalculateSide(minGadgetDistance, side_b, angle_a);
+                    float remaining_segment = distanceBetweenTwoPoints - side_c;
 
-                    Vector3 newPoint = drawingPath[i - 1] + side_c * segmentVector;
+                    Vector3 newPoint = drawingPath[i - 1] + side_c * distanceVector;
                     newPoints.Add(newPoint);
                     previousPoint = newPoint;
 
-                    int count = (int)(remaining_segment / minGadgetDistance);
-                    for (int n = 0; n < count; n++)
+                    int numOfDominosToBePlaced = (int)(remaining_segment / minGadgetDistance);
+                    for (int n = 0; n < numOfDominosToBePlaced; n++)
                     {
-                        newPoint = previousPoint + segmentVector * minGadgetDistance;
+                        newPoint = previousPoint + distanceVector * minGadgetDistance;
                         newPoints.Add(newPoint);
                         previousPoint = newPoint;
                     }
-                    leftover = remaining_segment - count * minGadgetDistance;
+                    leftover = remaining_segment - numOfDominosToBePlaced * minGadgetDistance;
                 }
             }
         }
