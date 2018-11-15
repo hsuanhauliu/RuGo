@@ -5,11 +5,22 @@ using System.Collections.Generic;
 
 public class PathTool : MonoBehaviour
 {
-    private const float yLevelTolerance = 0.02f;
-    private const float minGadgetDistance = 0.04f;
+    [Tooltip("Maximum ray distance to check for when calculating minimum number of dominos required in draw mode.")]
+    public float maxRayDistance = 2f;
+    [Tooltip("Minimum ray distance to check for when calculating minimum number of dominos required in draw mode.")]
+    public float minRayDistance = 0f;
+    [Tooltip("Maximum threshold to limit the number of dominos being spawned.")]
+    public int maxGadgetLimit = 8;
+    [Tooltip("Minimum threshold to limit the number of dominos being spawned.")]
+    public int minGadgetLimit = 1;
+    [Tooltip("Maximum y distance limit for dominos to be placed.")]
+    public float yLevelTolerance = 0.02f;
+    [Tooltip("Minimum distance between each gadget to be placed.")]
+    public float minGadgetDistance = 0.04f;
 
-    private Action<Vector3[]> pathCompleteCallBack;
+    private Action<Vector3[], float> pathCompleteCallBack;
     private List<Vector3> drawingPath;
+    private float dominoThreshold;
     private LineRenderer pathVisualizer;
 
     private VRTK.VRTK_Pointer mPointer;
@@ -26,29 +37,20 @@ public class PathTool : MonoBehaviour
         mPointerRenderer = GameManager.Instance.RightControllerEvents.gameObject.GetComponent<VRTK.VRTK_StraightPointerRenderer>();
     }
 
+
     void Update()
     {
         if (GameManager.Instance.CurrentGameMode != GameMode.DRAW)
             return;
 
-        StorePointPosition();
-
-        if (drawingPath.Count == 1)
-        {
-            VisualizeStartingPoint();
-        }
-        else if (drawingPath.Count > 1)
-        {
-            VisualizeNewPoint();
-        }
+        AddNewPoint();
     }
 
- 
 
     /// <summary>
     /// Stores mouse click positions in drawingPath vector.
     /// </summary>
-    private void StorePointPosition()
+    private void AddNewPoint()
     {
         RaycastHit hit = mPointerRenderer.GetDestinationHit();
         Vector3 contactPointNormal = hit.normal;
@@ -71,11 +73,17 @@ public class PathTool : MonoBehaviour
                     gap >= minGadgetDistance)
                 {
                     drawingPath.Add(hit.point);
+                    VisualizeNewPoint();
                 }
             }
             else
             {
+                // claculate the minimum number of dominos required to draw the path
+                float interp = Mathf.InverseLerp(minRayDistance, maxRayDistance, hit.distance);
+                dominoThreshold = Mathf.Lerp(minGadgetLimit, maxGadgetLimit, interp);
+
                 drawingPath.Add(hit.point);
+                VisualizeStartingPoint();
             }
         }        
     }
@@ -92,43 +100,43 @@ public class PathTool : MonoBehaviour
         {
             newPoints.Add(drawingPath[0]);
             float leftover = 0f;
-
             Vector3 previousPoint = drawingPath[0];
+
             for (int i = 1; i < drawingPath.Count; i++)
             {
-                float segmentLength = Vector3.Distance(drawingPath[i], drawingPath[i - 1]);
-                Vector3 segmentVector = (drawingPath[i] - drawingPath[i - 1]) / segmentLength;
+                float distanceBetweenTwoPoints = Vector3.Distance(drawingPath[i], drawingPath[i - 1]);
+                Vector3 distanceVector = (drawingPath[i] - drawingPath[i - 1]) / distanceBetweenTwoPoints;
 
-                if (leftover == 0)
+                if (Mathf.Approximately(leftover, 0.0f))
                 {
-                    int count = (int)(segmentLength / minGadgetDistance);
-                    for (int n = 0; n < count; n++)
+                    int numOfDominosToBePlaced = (int)(distanceBetweenTwoPoints / minGadgetDistance);
+                    for (int n = 0; n < numOfDominosToBePlaced; n++)
                     {
-                        Vector3 newPoint = previousPoint + segmentVector * minGadgetDistance;
+                        Vector3 newPoint = previousPoint + distanceVector * minGadgetDistance;
                         newPoints.Add(newPoint);
                         previousPoint = newPoint;
                     }
-                    leftover = segmentLength - count * minGadgetDistance;
+                    leftover = distanceBetweenTwoPoints - numOfDominosToBePlaced * minGadgetDistance;
                 }
                 else if (Vector3.Distance(previousPoint, drawingPath[i]) > minGadgetDistance)
                 {
                     float angle_a = CalculateAngle(drawingPath[i - 1] - previousPoint, drawingPath[i] - drawingPath[i - 1]);
                     float side_b = Vector3.Distance(drawingPath[i - 1], previousPoint);
-                    float side_c = CalculateSide(minGadgetDistance, side_b, angle_a);
-                    float remaining_segment = segmentLength - side_c;
+                    float side_c = Mathf.Approximately(angle_a, 0.0f) ? 0 : CalculateSide(minGadgetDistance, side_b, angle_a);
+                    float remaining_segment = distanceBetweenTwoPoints - side_c;
 
-                    Vector3 newPoint = drawingPath[i - 1] + side_c * segmentVector;
+                    Vector3 newPoint = drawingPath[i - 1] + side_c * distanceVector;
                     newPoints.Add(newPoint);
                     previousPoint = newPoint;
 
-                    int count = (int)(remaining_segment / minGadgetDistance);
-                    for (int n = 0; n < count; n++)
+                    int numOfDominosToBePlaced = (int)(remaining_segment / minGadgetDistance);
+                    for (int n = 0; n < numOfDominosToBePlaced; n++)
                     {
-                        newPoint = previousPoint + segmentVector * minGadgetDistance;
+                        newPoint = previousPoint + distanceVector * minGadgetDistance;
                         newPoints.Add(newPoint);
                         previousPoint = newPoint;
                     }
-                    leftover = remaining_segment - count * minGadgetDistance;
+                    leftover = remaining_segment - numOfDominosToBePlaced * minGadgetDistance;
                 }
             }
         }
@@ -146,6 +154,7 @@ public class PathTool : MonoBehaviour
     private float CalculateSide(float side_a, float side_b, float angle_a)
     {
         float sin_of_angle_a = Mathf.Sin(angle_a * Mathf.PI / 180);
+        float temp = side_b * sin_of_angle_a / side_a;
         float angle_b = Mathf.Asin(side_b * sin_of_angle_a / side_a) * 180 / Mathf.PI;
         float angle_c = angle_a + angle_b;
 
@@ -207,7 +216,7 @@ public class PathTool : MonoBehaviour
     /// Activates the Path Tool.
     /// </summary>
     /// <param name="createGadgetsAlongPath">The function to call back upon finishing drawing.</param>
-    public void Activate(Action<Vector3[]> createGadgetsAlongPath)
+    public void Activate(Action<Vector3[], float> createGadgetsAlongPath)
     {
         mPointer.Toggle(true);
         mPointerRenderer.validCollisionColor = Color.green;
@@ -226,8 +235,7 @@ public class PathTool : MonoBehaviour
         mPointer.Toggle(false);
 
         EqualizePointDistances();
-        pathCompleteCallBack(drawingPath.ToArray());
-
+        pathCompleteCallBack(drawingPath.ToArray(), dominoThreshold);
         this.enabled = false;
         ResetVisualizer();
         EmptyPath();

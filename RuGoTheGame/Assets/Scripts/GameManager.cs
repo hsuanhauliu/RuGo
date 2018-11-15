@@ -223,15 +223,14 @@ public class GameManager : MonoBehaviour
 
 
     /***************************************** HELPERS ******************************************/
-    private void CreateGadgetAlongPath(Vector3[] path)
+    private void CreateGadgetAlongPath(Vector3[] path, float minThreshold)
     {
         string gadgetName = "Domino";
         GameObject gadgetPreb = Resources.Load(gadgetName) as GameObject;
         float offset = gadgetPreb.transform.localScale.y * 0.5f;
         int numOfPoints = path.Length;
-        int minNumOfGadgets = 5;
 
-        if (numOfPoints > minNumOfGadgets)
+        if (numOfPoints > minThreshold)
         {
             for (int p = 0; p < numOfPoints - 1; p++)
             {
