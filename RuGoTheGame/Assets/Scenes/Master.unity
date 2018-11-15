@@ -357,6 +357,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0372b91593aa54384bad69fa3cf00ddc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxRayDistance: 2
+  minRayDistance: 0
+  maxGadgetLimit: 8
+  minGadgetLimit: 1
+  yLevelTolerance: 0.02
+  minGadgetDistance: 0.04
 --- !u!1 &217789978
 GameObject:
   m_ObjectHideFlags: 0
@@ -858,10 +864,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BubblePrefab: {fileID: 1383514117876776, guid: 8963659779b2745809ca635e105d0dc5,
     type: 2}
-  shelfRadius: 1
-  ShiftRateMin: 1
-  ShiftRateMax: 1.2
-  GadgetOffsetMax: 0.2
 --- !u!4 &452613147
 Transform:
   m_ObjectHideFlags: 0
@@ -1193,6 +1195,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Hand: 0
+  HandDefaultColor: {r: 0.101960786, g: 0.60784316, b: 0.9254902, a: 0}
+  HandDeleteColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &696005401
 GameObject:
   m_ObjectHideFlags: 0
@@ -2186,6 +2190,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Hand: 1
+  HandDefaultColor: {r: 0.101960786, g: 0.60784316, b: 0.9254902, a: 0}
+  HandDeleteColor: {r: 0.8867924, g: 0.24445862, b: 0.16313636, a: 0}
 --- !u!21 &1110229171
 Material:
   serializedVersion: 6
@@ -3348,6 +3354,10 @@ Prefab:
       value: 
       objectReference: {fileID: 13400000, guid: ece2abce5b0eeaa439bd4b55b4db5fb3,
         type: 2}
+    - target: {fileID: 2300000, guid: 63dfaed7a92fbcd438a0901779af9918, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 021f59ce1ff85494aa699f6172e9826d, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 63dfaed7a92fbcd438a0901779af9918, type: 3}
   m_IsPrefabAsset: 0

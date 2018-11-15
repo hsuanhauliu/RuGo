@@ -21,6 +21,8 @@ public enum Finger
 public class HandAnimator : MonoBehaviour
 {
     public HandSide Hand;
+    public Color HandDefaultColor;
+    public Color HandDeleteColor;
 
     private readonly float INTERP_SPEED = 0.6f;
     private Animator mHandAnimator;
@@ -40,10 +42,8 @@ public class HandAnimator : MonoBehaviour
         mHandAnimator = GetComponent<Animator>();
         mHandRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
         mHandRenderer.material.SetInt("_ZWrite", 1);
-
-        SetHandGhost(true);
-
-        MakeHandIdle();
+        
+        MakeHandIdleAndGhost();
     }
 	
 	// Update is called once per frame
@@ -73,6 +73,12 @@ public class HandAnimator : MonoBehaviour
         }   
     }
 
+    public void MakeHandIdleAndGhost()
+    {
+        MakeHandIdle();
+        SetHandGhost(true);
+    }
+
     public void MakeHandIdle()
     {
         mFingerLayerWeights[(int)Finger.Index]  = 0.0f;
@@ -100,9 +106,21 @@ public class HandAnimator : MonoBehaviour
         mFingerLayerWeights[(int)Finger.Pinky]  = 1.0f;
     }
 
-    public void SetHandGhost(bool isGhost)
+    public void MakeHandDelete()
     {
-        Color currentColor = mHandRenderer.material.color;
+        mFingerLayerWeights[(int)Finger.Index]  = 0.5f;
+        mFingerLayerWeights[(int)Finger.Middle] = 0.5f;
+        mFingerLayerWeights[(int)Finger.Ring]   = 0.5f;
+        mFingerLayerWeights[(int)Finger.Thumb]  = 0.5f;
+        mFingerLayerWeights[(int)Finger.Pinky]  = 0.5f;
+
+        SetHandGhost(false, false);
+    }
+
+    // Right now we use isDefault as a way to spoof for delete. Should refactor to take into account hand actions.
+    public void SetHandGhost(bool isGhost, bool isDefault=true)
+    {
+        Color currentColor = isDefault ? HandDefaultColor : HandDeleteColor;
         currentColor.a = isGhost ? 0.5f : 1.0f;
         mHandRenderer.material.color = currentColor;
     }
