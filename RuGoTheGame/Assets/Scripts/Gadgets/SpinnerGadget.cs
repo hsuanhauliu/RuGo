@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class SpinnerGadget : Gadget
 {
+    public GameObject Spindle;
+
     public override GadgetInventory GetGadgetType()
     {
         return GadgetInventory.Spinner;
@@ -18,7 +20,7 @@ public class SpinnerGadget : Gadget
             foreach (Rigidbody body in rigidBodies)
             {
                 bool shouldBeKinematic = !enable;
-                if(body.gameObject.name == "Spindle")
+                if(body.gameObject == Spindle)
                 {
                     shouldBeKinematic = true;
                 }
