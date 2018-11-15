@@ -105,11 +105,13 @@ public class GameManager : MonoBehaviour
             case GameMode.DRAW:
                 {
                     PathTool.Deactivate();
-                    RightAnimator.MakeHandIdle();
-                    RightAnimator.SetHandGhost(true);
+                    RightAnimator.MakeHandIdleAndGhost();
                 }
                 break;
             case GameMode.DELETE:
+                {
+                    RightAnimator.MakeHandIdleAndGhost();
+                }
                 break;
             case GameMode.COMPLETE:
                 World.Instance.LoadCurrentSaveSlot();
@@ -135,6 +137,9 @@ public class GameManager : MonoBehaviour
                 }
                 break;
             case GameMode.DELETE:
+                {
+                    RightAnimator.MakeHandDelete();
+                }
                 break;
             case GameMode.COMPLETE:
                 IEnumerator coroutine = ResetGame();
