@@ -22,12 +22,13 @@ public class World : MonoBehaviour
     public static World Instance = null;
 
     /* Shelf control variables */
-    public readonly float shelfRadius = 0.4f;
-    public readonly float ShiftRateMin = 2.0f;
-    public readonly float ShiftRateMax = 2.5f;
-    public readonly float GadgetOffsetMax = 0.2f;
+    private readonly float shelfRadius = 0.7f;
+    private readonly float ShiftRateMin = 2.0f;
+    private readonly float ShiftRateMax = 2.5f;
+    private readonly float GadgetOffsetMax = 0.2f;
+    private readonly float rotationRate = 0.8f;
 
-    private int numOfFiles = 5;
+    private readonly int numOfFiles = 5;
 
 
     private void MakeSingleton()
@@ -166,7 +167,6 @@ public class World : MonoBehaviour
             bubbleAudio.Play();
         }
 
-
         if (show)
         {
             Transform myCamera = GameManager.Instance.MainCamera.transform;
@@ -178,6 +178,7 @@ public class World : MonoBehaviour
             for (int i = 0; i < shelfGadgetContainersPositions.Length; i++)
             {
                 StartCoroutine(ShiftContainer(i, shelfGadgetContainersPositions[i]));
+                StartCoroutine(RotateGadget(i));
             }
 
             for (int i = 0; i < numOfFiles; i++)
@@ -199,8 +200,20 @@ public class World : MonoBehaviour
                 Transform containerBubble = mGadgetShelf.transform.GetChild(i).GetChild(0);
                 containerBubble.GetChild(0).gameObject.SetActive(false);
                 containerBubble.GetChild(1).GetComponent<ParticleSystem>().Play();
-                StartCoroutine("EnableBubble", containerBubble.GetChild(0).gameObject);
+                StartCoroutine(EnableBubble(containerBubble.GetChild(0).gameObject));
             }
+        }
+    }
+
+    private IEnumerator RotateGadget(int containerIndex)
+    {
+        Transform gadgetTransform = mGadgetShelf.transform.GetChild(containerIndex).GetChild(1);
+
+        while (mGadgetShelf.activeSelf)
+        {
+            Vector3 currentRotation = gadgetTransform.localRotation.eulerAngles;
+            gadgetTransform.localRotation = Quaternion.Euler(currentRotation.x, currentRotation.y + rotationRate, currentRotation.z);
+            yield return null;
         }
     }
 
