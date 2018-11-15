@@ -5,6 +5,7 @@ using UnityEngine;
 public class CannonGadget : Gadget
 {
     public GameObject CannonBallPrefab;
+    public float FireForce = 1.0f;
 
     private LineRenderer mTrajectory;
     private Transform mHeading;
@@ -70,7 +71,7 @@ public class CannonGadget : Gadget
         {
             List<Vector3> trajectory_points = new List<Vector3>();
             
-            Vector3 initialVelocity = mBarrelTip.forward * 1.3f / mCannonBallMass;
+            Vector3 initialVelocity = mBarrelTip.forward * FireForce / mCannonBallMass;
             
             Vector3 prev = start;
             int i;
@@ -124,7 +125,7 @@ public class CannonGadget : Gadget
         Rigidbody rigidBody = cannonBall.GetComponent<Rigidbody>();
         print(cannonBall.transform.position);
 
-        Vector3 barrelDirection = mBarrelTip.forward * 1.3f;
+        Vector3 barrelDirection = mBarrelTip.forward * FireForce;
         rigidBody.AddForce(barrelDirection, ForceMode.Impulse);
 
         IEnumerator coroutine = CleanCannon(cannonBall);
