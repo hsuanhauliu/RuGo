@@ -22,7 +22,7 @@ public class World : MonoBehaviour
     public static World Instance = null;
 
     /* Shelf control variables */
-    public float shelfRadius = 1.0f;
+    public float shelfRadius = 0.4f;
     public float ShiftRateMin = 1.0f;
     public float ShiftRateMax = 1.2f;
     public float GadgetOffsetMax = 0.2f;
