@@ -368,8 +368,6 @@ public class World : MonoBehaviour
         gadgetObj.transform.localPosition = Vector3.zero;
         gadgetObj.name = gadgetName + " (OnShelf)";
         Gadget gadget = gadgetObj.GetComponent<Gadget>();
-
-        gadget.MakeTransparent(true);
        
         return gadget;
     }

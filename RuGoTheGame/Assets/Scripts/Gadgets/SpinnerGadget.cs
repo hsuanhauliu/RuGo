@@ -8,4 +8,25 @@ public class SpinnerGadget : Gadget
     {
         return GadgetInventory.Spinner;
     }
+
+    protected override void SetPhysicsMode(bool enable, bool keepCollision = false)
+    {
+        Rigidbody[] rigidBodies = this.GetComponentsInChildren<Rigidbody>();
+
+        if (rigidBodies.Length > 0)
+        {
+            foreach (Rigidbody body in rigidBodies)
+            {
+                bool shouldBeKinematic = !enable;
+                if(body.gameObject.name == "Spindle")
+                {
+                    shouldBeKinematic = true;
+                }
+
+                body.isKinematic = shouldBeKinematic;
+                body.detectCollisions = enable || keepCollision;
+            }
+        }
+        isPhysicsMode = enable;
+    }
 }

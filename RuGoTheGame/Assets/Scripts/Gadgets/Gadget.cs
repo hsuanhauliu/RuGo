@@ -55,7 +55,7 @@ public abstract class Gadget : MonoBehaviour
 
     protected bool isPhysicsMode;
     
-    public enum GadgetState { InShelf, FirstPlacement, InWorld };
+    public enum GadgetState { InShelf, FirstPlacement, InWorld, Loaded };
     public GadgetState CurrentGadgetState;
 
     protected void Start()
@@ -81,7 +81,19 @@ public abstract class Gadget : MonoBehaviour
             World.Instance.RemoveGadget(this);
         }
     }
-    
+
+    private void LateUpdate()
+    {
+        // We do this to avoid the following problem:
+        // --- On load, the gadget is instantiated but the positions are not set till end of frame. 
+        // --- So Making the gadgets solid will apply physics to the components that will try to get to the new position.
+        if(CurrentGadgetState == GadgetState.Loaded)
+        {
+            ChangeState(GadgetState.InWorld);
+            MakeSolid();
+        }
+    }
+
     public GadgetSaveData GetSaveData() {
         return new GadgetSaveData(this.GetGadgetType(), this.transform.position, this.transform.rotation);
     }
@@ -89,8 +101,7 @@ public abstract class Gadget : MonoBehaviour
     public void RestoreStateFromSaveData(GadgetSaveData data) {
         this.transform.position = data.GetPosition();
         this.transform.rotation = data.GetQuaternion();
-        this.ChangeState(GadgetState.InWorld);
-        this.MakeSolid();
+        ChangeState(GadgetState.Loaded);
     }
 
     public abstract GadgetInventory GetGadgetType();
@@ -275,6 +286,7 @@ public abstract class Gadget : MonoBehaviour
         else 
         {
             SetLayer(GadgetLayers.SHELF);
+            MakeTransparent(true);
         }
     }
 }
