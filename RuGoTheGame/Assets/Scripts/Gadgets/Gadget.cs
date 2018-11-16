@@ -51,6 +51,7 @@ public struct GadgetSaveData
 public abstract class Gadget : MonoBehaviour
 {
     public bool MakeGadgetSolid = false;
+    public bool HapticsEnabled = true;
     private VRTK.VRTK_InteractableObject mInteractableObject;
 
     protected bool isPhysicsMode;
@@ -156,11 +157,30 @@ public abstract class Gadget : MonoBehaviour
         mInteractableObject.InteractableObjectGrabbed += OnGadgetGrabbed;
         mInteractableObject.InteractableObjectUngrabbed += OnGadgetUnGrabbed;
 
+        if (HapticsEnabled) {
+            EnableHaptics();
+        }
+
         VRTK.GrabAttachMechanics.VRTK_ChildOfControllerGrabAttach childOfController = gameObject.AddComponent<VRTK.GrabAttachMechanics.VRTK_ChildOfControllerGrabAttach>();
         mInteractableObject.grabAttachMechanicScript = childOfController;
         childOfController.precisionGrab = true;
 
         mInteractableObject.enabled = true;
+    }
+
+    private void EnableHaptics() 
+    {
+        VRTK.VRTK_InteractHaptics interactHaptics = gameObject.AddComponent<VRTK.VRTK_InteractHaptics>();
+        interactHaptics.strengthOnTouch = 0.285f;
+        interactHaptics.durationOnTouch = 0.05f;
+        interactHaptics.intervalOnTouch = 0.05f;
+        interactHaptics.cancelOnUntouch = true;
+
+        interactHaptics.strengthOnGrab = 1.0f;
+        interactHaptics.durationOnGrab= 0.15f;
+        interactHaptics.intervalOnGrab = 0.02f;
+        interactHaptics.cancelOnUngrab = true;
+
     }
 
     private void OnGadgetTouched(object sender, VRTK.InteractableObjectEventArgs e)
