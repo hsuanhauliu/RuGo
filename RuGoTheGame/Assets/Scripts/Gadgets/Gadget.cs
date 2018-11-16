@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 
 public enum GadgetInventory
 {
-    Ramp, Ball, LightMarble, Goal, Box, Cannon, Spinner, Fan, Airplane, Domino, Pendulum, Floater, NUM // #TODO: If time permits, split the heirarchy to Insertable gadgets and Tools gadgets for LoadCube
+    LowRamp, MedRamp, Ball, LightMarble, Goal, Box, Cannon, Spinner, Fan, Airplane, Domino, Pendulum, Floater, NUM // #TODO: If time permits, split the heirarchy to Insertable gadgets and Tools gadgets for LoadCube
 }
 
 public class GadgetLayers
