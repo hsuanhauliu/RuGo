@@ -8,9 +8,12 @@ ModelImporter:
     2100000: wall
     2100002: grey3
     2100004: road3
+    2100006: grey
+    2100008: road
     2300000: //RootNode
     3300000: //RootNode
     4300000: roadRampLongCurvedWall
+    4300002: RampMed
   externalObjects: {}
   materials:
     importMaterials: 1
