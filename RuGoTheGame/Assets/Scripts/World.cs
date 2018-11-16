@@ -240,9 +240,11 @@ public class World : MonoBehaviour
     {
         yield return new WaitForSeconds(0.3f);
 
-        GameManager.Instance.RightInteractNearTouch.ForceStopNearTouching();
-
         mGadgetShelf.SetActive(false);
+
+        yield return new WaitForSeconds(0.3f);
+
+        GameManager.Instance.RightInteractNearTouch.ForceStopNearTouching();
     }
 
     private IEnumerator ShiftContainer(int containerIndex, Vector3 containerPosition)
