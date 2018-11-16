@@ -61,6 +61,7 @@ public class GameManager : MonoBehaviour
 
         LeftControllerEvents.SubscribeToButtonAliasEvent(VRTK.VRTK_ControllerEvents.ButtonAlias.TriggerPress, true, LeftControllerEvents_TriggerDown);
         LeftControllerEvents.SubscribeToButtonAliasEvent(VRTK.VRTK_ControllerEvents.ButtonAlias.TriggerPress, false, LeftControllerEvents_TriggerUp);
+        LeftControllerEvents.SubscribeToButtonAliasEvent(VRTK.VRTK_ControllerEvents.ButtonAlias.GripPress, false, LeftControllerEvents_GripUp);
 
         /* Setup Controller VRTK scripts */
         VRTK.VRTK_InteractGrab rightInteractGrab = RightControllerEvents.GetComponent<VRTK.VRTK_InteractGrab>();
@@ -167,6 +168,15 @@ public class GameManager : MonoBehaviour
         LeftPlatformCollider.isTrigger = true;
 
         LeftAnimator.SetHandGhost(true);
+    }
+
+    void LeftControllerEvents_GripUp(object sender, VRTK.ControllerInteractionEventArgs e) 
+    {
+        // Only clear the current save slot in delete mode
+        if (CurrentGameMode == GameMode.DELETE) 
+        {
+           World.Instance.ClearCurrentSaveSlot();
+        }
     }
 
     void RightControllerEvents_TriggerDown(object sender, VRTK.ControllerInteractionEventArgs e)

@@ -116,7 +116,7 @@ public class World : MonoBehaviour
         {
             BinaryFormatter bf = new BinaryFormatter();
             FileStream fileStream = File.Open(serializedFileName, FileMode.Open);
-            Clear();
+            RemoveGadgetsFromScene();
             if (fileStream.Length != 0) 
             {
                 List<GadgetSaveData> savedGadgets = (List<GadgetSaveData>)bf.Deserialize(fileStream);
@@ -144,7 +144,13 @@ public class World : MonoBehaviour
         return gadget;
     }
 
-    public void Clear()
+    public void ClearCurrentSaveSlot()
+    {
+        RemoveGadgetsFromScene();
+        MarkWorldModified();
+    }
+
+    private void RemoveGadgetsFromScene()
     {
         foreach (Gadget gadget in gadgetsInWorld)
         {
