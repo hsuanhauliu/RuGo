@@ -21,9 +21,9 @@ GameObject:
   - component: {fileID: 4579758700469146}
   - component: {fileID: 33422664169201008}
   - component: {fileID: 23830552811219500}
-  - component: {fileID: 65869350255925950}
   - component: {fileID: 114422692524881256}
   - component: {fileID: 54561484648748770}
+  - component: {fileID: 135251301262970370}
   m_Layer: 0
   m_Name: LoadCube
   m_TagString: Untagged
@@ -37,9 +37,9 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1647295766410308}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.32682186, y: 1.3617209, z: -1.1019989}
-  m_LocalScale: {x: 0.03, y: 0.03, z: 0.03}
+  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -59,7 +59,7 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: dff5f8615373c7e4496013f8fd21756e, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -85,7 +85,7 @@ MeshFilter:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1647295766410308}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 4300000, guid: dff5f8615373c7e4496013f8fd21756e, type: 3}
 --- !u!54 &54561484648748770
 Rigidbody:
   m_ObjectHideFlags: 1
@@ -101,18 +101,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!65 &65869350255925950
-BoxCollider:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1647295766410308}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &114422692524881256
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -125,4 +113,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MakeGadgetSolid: 0
+  HapticsEnabled: 1
   CurrentGadgetState: 0
+  Slot: 
+--- !u!135 &135251301262970370
+SphereCollider:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1647295766410308}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.038968235
+  m_Center: {x: 0, y: 0.0000000018626451, z: 0}
