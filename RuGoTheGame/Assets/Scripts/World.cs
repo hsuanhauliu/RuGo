@@ -18,7 +18,6 @@ public class World : MonoBehaviour
     private Vector3[] shelfGadgetContainersPositions;
     private Vector3[] shelfFileContainersPositions;
 
-    public GameObject CubeRoomGeo;
     public GameObject BubblePrefab;
     public static World Instance = null;
 
@@ -29,11 +28,9 @@ public class World : MonoBehaviour
     private readonly float GadgetOffsetMax = 0.2f;
     private readonly float rotationRate = 0.8f;
 
-    private readonly int numOfFiles = 4;
+    private readonly int numOfFiles = 5;
 
-    public Material[] RoomMaterials;
 
-   
     private void MakeSingleton()
     {
         if (Instance == null)
@@ -120,9 +117,6 @@ public class World : MonoBehaviour
             BinaryFormatter bf = new BinaryFormatter();
             FileStream fileStream = File.Open(serializedFileName, FileMode.Open);
             RemoveGadgetsFromScene();
-            Renderer roomRenderer = CubeRoomGeo.GetComponent<Renderer>();
-            //TODO Refactor Everything to use Integer Save Slot
-            roomRenderer.material = RoomMaterials[System.Convert.ToInt32(CurrentSaveSlot)];
             if (fileStream.Length != 0) 
             {
                 List<GadgetSaveData> savedGadgets = (List<GadgetSaveData>)bf.Deserialize(fileStream);
@@ -196,7 +190,6 @@ public class World : MonoBehaviour
             for (int i = 0; i < numOfFiles; i++)
             {
                 StartCoroutine(ShiftContainer(shelfGadgetContainersPositions.Length + i, shelfFileContainersPositions[i]));
-                StartCoroutine(RotateGadget(shelfGadgetContainersPositions.Length + i));
             }
         }
     }
@@ -240,9 +233,9 @@ public class World : MonoBehaviour
     {
         yield return new WaitForSeconds(0.3f);
 
-        GameManager.Instance.RightInteractNearTouch.ForceStopNearTouching();
-
         mGadgetShelf.SetActive(false);
+
+        GameManager.Instance.RightInteractNearTouch.ForceStopNearTouching();
     }
 
     private IEnumerator ShiftContainer(int containerIndex, Vector3 containerPosition)
@@ -320,7 +313,7 @@ public class World : MonoBehaviour
         // spawn small bubbles for saved files
         shelfFileContainersPositions = new Vector3[numOfFiles];
 
-        startDegree_xz = 30.0f;
+        startDegree_xz = -20.0f;
         if (y_pos >= 0)
         {
             y_pos += 0.3f;
@@ -351,7 +344,7 @@ public class World : MonoBehaviour
             LoadCube spawnedLoadCube = SpawnSingleGadget(gadgetName, container.transform) as LoadCube;
             spawnedLoadCube.Slot = i.ToString();
 
-            startDegree_xz -= 20.0f;
+            startDegree_xz += 10.0f;
         }
     }
 
