@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028334, g: 0.22571328, b: 0.3069217, a: 1}
+  m_IndirectSpecularColor: {r: 0.1802837, g: 0.22571404, b: 0.30692273, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -709,6 +709,11 @@ Transform:
   m_Father: {fileID: 965849455}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &415323820 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100002, guid: 63dfaed7a92fbcd438a0901779af9918,
+    type: 3}
+  m_PrefabInternal: {fileID: 1933058519}
 --- !u!1 &419184990
 GameObject:
   m_ObjectHideFlags: 0
@@ -862,8 +867,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc004bb4a874b4ce48e2db29cea73593, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CubeRoomGeo: {fileID: 415323820}
   BubblePrefab: {fileID: 1383514117876776, guid: 8963659779b2745809ca635e105d0dc5,
     type: 2}
+  RoomMaterials:
+  - {fileID: 2100000, guid: 021f59ce1ff85494aa699f6172e9826d, type: 2}
+  - {fileID: 2100000, guid: 5ee5bce128e204a238d06d9e71c8cd41, type: 2}
+  - {fileID: 2100000, guid: c02b61eb11a274148a7a924677e0e024, type: 2}
+  - {fileID: 2100000, guid: 9a694338c5f674287812c8b2dfd5bb20, type: 2}
 --- !u!4 &452613147
 Transform:
   m_ObjectHideFlags: 0
