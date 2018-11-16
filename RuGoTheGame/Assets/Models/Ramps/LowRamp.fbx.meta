@@ -10,6 +10,9 @@ ModelImporter:
     2100004: road3
     2100006: grey
     2100008: road
+    2100010: wall1
+    2100012: grey1
+    2100014: road1
     2300000: //RootNode
     3300000: //RootNode
     4300000: roadRampLongCurvedWall
