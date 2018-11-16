@@ -53,6 +53,7 @@ public abstract class Gadget : MonoBehaviour
     public bool MakeGadgetSolid = false;
     public bool HapticsEnabled = true;
     private VRTK.VRTK_InteractableObject mInteractableObject;
+    protected GadgetSaveData mGadgetSaveData;
 
     protected bool isPhysicsMode;
     
@@ -95,14 +96,30 @@ public abstract class Gadget : MonoBehaviour
         }
     }
 
-    public GadgetSaveData GetSaveData() {
-        return new GadgetSaveData(this.GetGadgetType(), this.transform.position, this.transform.rotation);
+    protected void UpdateGadgetSaveData() 
+    {
+        mGadgetSaveData.name = this.GetGadgetType().ToString();
+        mGadgetSaveData.px = this.transform.position.x;
+        mGadgetSaveData.py = this.transform.position.y;
+        mGadgetSaveData.pz = this.transform.position.z;
+        mGadgetSaveData.ox = this.transform.rotation.x;
+        mGadgetSaveData.oy = this.transform.rotation.y;
+        mGadgetSaveData.oz = this.transform.rotation.z;
+        mGadgetSaveData.ow = this.transform.rotation.w;
+    }
+
+    public GadgetSaveData GetSaveData() 
+    {
+        return mGadgetSaveData;
+
+        //return new GadgetSaveData(this.GetGadgetType(), this.transform.position, this.transform.rotation);
     }
 
     public void RestoreStateFromSaveData(GadgetSaveData data) {
         this.transform.position = data.GetPosition();
         this.transform.rotation = data.GetQuaternion();
         ChangeState(GadgetState.Loaded);
+        UpdateGadgetSaveData();
     }
 
     public abstract GadgetInventory GetGadgetType();
@@ -221,6 +238,7 @@ public abstract class Gadget : MonoBehaviour
                 break;
         }
         MakeSolid();
+        UpdateGadgetSaveData();
     }
     
 
