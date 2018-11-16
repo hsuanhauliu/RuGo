@@ -91,13 +91,19 @@ public abstract class Gadget : MonoBehaviour
         // --- So Making the gadgets solid will apply physics to the components that will try to get to the new position.
         if(CurrentGadgetState == GadgetState.Loaded)
         {
-            ChangeState(GadgetState.InWorld);
             MakeSolid();
+            ChangeState(GadgetState.InWorld);
         }
     }
 
     protected void UpdateGadgetSaveData() 
     {
+#if UNITY_EDITOR
+        if (CurrentGadgetState == GadgetState.Loaded)
+        {
+            CheckLoadSync();
+        }
+#endif
         mGadgetSaveData.name = this.GetGadgetType().ToString();
         mGadgetSaveData.px = this.transform.position.x;
         mGadgetSaveData.py = this.transform.position.y;
@@ -108,18 +114,48 @@ public abstract class Gadget : MonoBehaviour
         mGadgetSaveData.ow = this.transform.rotation.w;
     }
 
+    private void CheckLoadSync() 
+    {
+        if (!Mathf.Approximately(mGadgetSaveData.px, this.transform.position.x))
+        {
+            Debug.LogError("Load Not Synchronized: " + this.name);
+        }
+        if (!Mathf.Approximately(mGadgetSaveData.py, this.transform.position.y))
+        {
+            Debug.LogError("Load Not Synchronized: " + this.name);
+        }
+        if (!Mathf.Approximately(mGadgetSaveData.pz, this.transform.position.z))
+        {
+            Debug.LogError("Load Not Synchronized: " + this.name);
+        }
+        if (!Mathf.Approximately(mGadgetSaveData.ox, this.transform.rotation.x))
+        {
+            Debug.LogError("Load Not Synchronized: " + this.name);
+        }
+        if (!Mathf.Approximately(mGadgetSaveData.oy, this.transform.rotation.y))
+        {
+            Debug.LogError("Load Not Synchronized: " + this.name);
+        }
+        if (!Mathf.Approximately(mGadgetSaveData.oz, this.transform.rotation.z))
+        {
+            Debug.LogError("Load Not Synchronized: " + this.name);
+        }
+        if (!Mathf.Approximately(mGadgetSaveData.ow, this.transform.rotation.w))
+        {
+            Debug.LogError("Load Not Synchronized: " + this.name);
+        }
+    }
+
     public GadgetSaveData GetSaveData() 
     {
         return mGadgetSaveData;
-
-        //return new GadgetSaveData(this.GetGadgetType(), this.transform.position, this.transform.rotation);
     }
 
     public void RestoreStateFromSaveData(GadgetSaveData data) {
         this.transform.position = data.GetPosition();
         this.transform.rotation = data.GetQuaternion();
         ChangeState(GadgetState.Loaded);
-        UpdateGadgetSaveData();
+        mGadgetSaveData = data;
     }
 
     public abstract GadgetInventory GetGadgetType();
@@ -238,7 +274,7 @@ public abstract class Gadget : MonoBehaviour
                 break;
         }
         MakeSolid();
-        UpdateGadgetSaveData();
+
     }
     
 
@@ -264,14 +300,9 @@ public abstract class Gadget : MonoBehaviour
     }
 
     /************************** Public Functions **************************/
-
-    public virtual void Deselect()
+    public virtual void PerformSwitchAction() 
     {
-        MakeSolid();
-    }
 
-    public virtual void PerformSwitchAction() {
-        Debug.Log("Perform Some Action");
     }
 
     public virtual void RemoveFromScene()
@@ -297,6 +328,7 @@ public abstract class Gadget : MonoBehaviour
     public virtual void MakeSolid()
     {
         SetPhysicsMode(true);
+        UpdateGadgetSaveData();
     }
 
     public virtual void MakeTransparent(bool keepCollision=false)

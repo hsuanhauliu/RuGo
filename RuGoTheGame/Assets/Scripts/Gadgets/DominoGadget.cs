@@ -21,7 +21,7 @@ public class DominoGadget : Gadget
     {
         ChangeState(GadgetState.InWorld);
         transform.SetParent(World.Instance.transform);
-        UpdateGadgetSaveData();
+        MakeSolid();
     }
 
     void OnCollisionEnter(Collision col)

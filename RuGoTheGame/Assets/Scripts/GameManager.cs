@@ -255,7 +255,6 @@ public class GameManager : MonoBehaviour
                 Vector3 direction = path[p + 1] - path[p];
                 gadget.transform.position = new Vector3(path[p].x, path[p].y + offset, path[p].z);
                 gadget.transform.rotation = Quaternion.LookRotation(direction);
-                gadget.Deselect();
                 gadget.SetDominoInWorld();
                 World.Instance.InsertGadget(gadget);
             }
@@ -266,7 +265,6 @@ public class GameManager : MonoBehaviour
             Vector3 lastPathDirection = path[numOfPoints - 1] - path[path.Length - 2];
             lastGadget.transform.position = new Vector3(path[numOfPoints - 1].x, path[numOfPoints - 1].y + offset, path[numOfPoints - 1].z);
             lastGadget.transform.rotation = Quaternion.LookRotation(lastPathDirection);
-            lastGadget.Deselect();
             lastGadget.SetDominoInWorld();
             World.Instance.InsertGadget(lastGadget);
         }
