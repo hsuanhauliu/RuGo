@@ -306,7 +306,8 @@ public abstract class Gadget : MonoBehaviour
     }
 
     public virtual void RemoveFromScene()
-    {   
+    {
+        GameManager.Instance.RightInteractNearTouch.ForceStopNearTouching(this.gameObject);
         Destroy(this.gameObject);
     }
 
