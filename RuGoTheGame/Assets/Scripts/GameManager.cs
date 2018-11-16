@@ -186,7 +186,13 @@ public class GameManager : MonoBehaviour
             RightInteractGrab.GetGrabbedObject() != null || // .. or if we already have an object that we have grabbed
             RightInteractTouch.GetTouchedObject() != null) // .. or if we are touching an interactable object
         {
-            // .. then don't Draw
+#if UNITY_EDITOR
+            Debug.Log("Grab Cuz: Near = " + RightInteractNearTouch.GetNearTouchedObjects().Count + ", Grabbed = " + (RightInteractGrab.GetGrabbedObject() != null) + ", Touch = " + (RightInteractTouch.GetTouchedObject() != null));
+            foreach(GameObject go in RightInteractNearTouch.GetNearTouchedObjects())
+            {
+                Debug.Log("Near: " + go.name);
+            }
+#endif
             return;
         }
 
