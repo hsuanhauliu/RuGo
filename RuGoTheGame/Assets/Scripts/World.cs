@@ -196,6 +196,7 @@ public class World : MonoBehaviour
             for (int i = 0; i < numOfFiles; i++)
             {
                 StartCoroutine(ShiftContainer(shelfGadgetContainersPositions.Length + i, shelfFileContainersPositions[i]));
+                StartCoroutine(RotateGadget(shelfGadgetContainersPositions.Length + i));
             }
         }
     }
@@ -319,7 +320,7 @@ public class World : MonoBehaviour
         // spawn small bubbles for saved files
         shelfFileContainersPositions = new Vector3[numOfFiles];
 
-        startDegree_xz = -20.0f;
+        startDegree_xz = 30.0f;
         if (y_pos >= 0)
         {
             y_pos += 0.3f;
@@ -350,7 +351,7 @@ public class World : MonoBehaviour
             LoadCube spawnedLoadCube = SpawnSingleGadget(gadgetName, container.transform) as LoadCube;
             spawnedLoadCube.Slot = i.ToString();
 
-            startDegree_xz += 10.0f;
+            startDegree_xz -= 20.0f;
         }
     }
 
