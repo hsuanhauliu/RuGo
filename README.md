@@ -24,28 +24,23 @@ The Gadget class manages shared concerns such as transparency, solidification, a
 
 ### GameManager
 
-The **GameManager** manages the current mode of the game. It listens for user input to open the **GadgetSelectorMenu**.
-The GameManager also uses the GadgetManipulator to interact with objects in the 3D scene.
+The **GameManager** manages the current mode of the game. It listens for user input to open the GadgetShelf.
+
 
 Currently there are three modes.
 
 * Build Mode - The default mode in which the player can pick gadgets in the world for manipulation
 
-* Select Mode - The mode that is set when the GadgetSelectorMenu is active
+* Select Mode - The mode that is set when the GadgetShelf is visible
 
 * Draw Mode - The mode that is set when Draw/Path tooling is enabled
 
-### GadgetManipulator
-
-The **GadgetManipulator** interacts with gadgets in the world. It has a notion of a selected gadget.
-When it has a selected gadget, it will move the selected gadget to the position of the mouse.
-
-The GadgetManipulator also has the ability to insert objects into the **World**
+* Delete Mode - Gadgets touched in delete mode are deleted from the scene.
 
 
 ## World
 
-A collection of Gadgets that have been inserted into the scene.
+A collection of Gadgets that have been inserted into the scene. The world also manages auto saving to a current save slot.
 
 
 ## Adding New Gadgets
@@ -56,7 +51,6 @@ A collection of Gadgets that have been inserted into the scene.
 1. Create a prefab in the resources folder with the name of your gadget.
 2. Attach a YourGadget.cs file to your prefab. YourGadget.cs must extend the **Gadget** abstract class.
 3. Add the name of your gadget, which matches the name in the resources directory, to the GadgetInventory enum inside Gadget.cs.
-4. If your Gadget is composed of multiple GameObjects, implement GetRenderers to return the renderers you want to make transparent when your gadget is selected
 --------------------
 
 # Development Guidelines
@@ -95,44 +89,14 @@ But the difference is as follows
 
 # Game Input Controls
 
-## Keyboard Keys
-
 ### Keyboard Bindings
 
-##### Build mode
+Q - opens/closes the Gadget Shelf 
 
-M - open/close menu  
-R - reset gadgets  
-O - save current world progress  
-P - load save file  
-X - clear world  
-Left-Click - select a gadget in the world  
-Mouse - moving gadget templates  
-
-
-D - delete the selected gadget from the world  
-C - keeps on rotating gadget clock-wise around y-axis until released  
-Z - keeps on rotating gadget counter clock-wise around y-axis until released   
-Enter - place a gadget down  
-
-
-##### Gadgets
-F - fire cannon
-
-# Current Issues
-- Menu is being constantly shown in PC mode.
-- "M" is triggering gadget manipulator to reset and cause things to freeze.
-- Add physics materials to the gadgets.
-- Disable gadget functions for the gadget templates until solidified.
-- "F" (fire) will trigger multiple cannon gadgets in the world.
-- Change transparency of some gadget templates (airplane, cannon, etc.).
 
 
 ## Needed Features
-- Snapping feature of all gadgets (to fix the shaky remote situation).
-- Simulation mode.
 - Real world setting for the gadgets in AR.
-- Gadget compatibility.
 
 ## Future Gadget Ideas
 - Tracks
@@ -140,23 +104,6 @@ F - fire cannon
 - Support beams
 - Bridge (sort of like a track)
 - Trap door
-
-## Assigned Tasks (10/28)
-### Current Assigned Tasks
-- Howard: fix save function, UI
-- Kishore: work on physics of the gadgets, re-scaling
-- Mike: deletion feature
-- Darwin: gadget sound, collaborate with TA to figure out recording user's view
-- Abhi: UI, adding start & end gadgets for the game
-- Devashree: VR space design, gadget sound
-- Sarah: UI
-
-### More Tasks:
-- Add different camera viewpoints
-- Bring more gadget textures in
-- Snapping feature for placing gadgets
-- Work on cannon barrel rotation feature
-- Add collision detection for the cannon trajectory path visualization
 
 ### Schedule
 Week 1 (10/25 ~ 10/31):
