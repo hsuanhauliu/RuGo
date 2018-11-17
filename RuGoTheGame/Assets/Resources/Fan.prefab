@@ -663,7 +663,7 @@ MonoBehaviour:
   HapticsEnabled: 1
   CurrentGadgetState: 0
   WindZoneRadius: 1
-  WindZoneConeHalfAngle: 30
+  WindZoneConeHalfAngle: 45
   WindStrengthMin: 0.5
   WindStrengthMax: 3
   FanSpeed: 40
