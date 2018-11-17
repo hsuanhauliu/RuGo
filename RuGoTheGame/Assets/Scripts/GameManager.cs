@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
-
+using System.Collections.Generic;
 
 public enum GameMode { BUILD, SELECTION, DRAW, DELETE, COMPLETE};
 
@@ -179,21 +179,56 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private bool ValidateNearObjects()
+    {
+        List<GameObject> nearObjects = RightInteractNearTouch.GetNearTouchedObjects();
+        foreach(GameObject nearObject in nearObjects)
+        {
+            if(nearObject == null)
+            {
+                RightInteractNearTouch.ForceStopNearTouching(null);
+                return false;
+            }
+            else
+            {
+                // We couldn't possible be near anything else. So that means if gadget isn't active in heirarchy then our shelf is inactive.
+                if (!nearObject.activeInHierarchy)
+                {
+                    RightInteractNearTouch.ForceStopNearTouching(null);
+                    return false;
+                }
+            }
+        }
+        
+        return true;
+    }
+
     void RightControllerEvents_TriggerDown(object sender, VRTK.ControllerInteractionEventArgs e)
     {
         
-        if (RightInteractNearTouch.GetNearTouchedObjects().Count > 0 || // If we near interactable objects
-            RightInteractGrab.GetGrabbedObject() != null || // .. or if we already have an object that we have grabbed
+        if (RightInteractGrab.GetGrabbedObject() != null || // If we already have an object that we have grabbed
             RightInteractTouch.GetTouchedObject() != null) // .. or if we are touching an interactable object
         {
 #if UNITY_EDITOR
-            Debug.Log("Grab Cuz: Near = " + RightInteractNearTouch.GetNearTouchedObjects().Count + ", Grabbed = " + (RightInteractGrab.GetGrabbedObject() != null) + ", Touch = " + (RightInteractTouch.GetTouchedObject() != null));
-            foreach(GameObject go in RightInteractNearTouch.GetNearTouchedObjects())
-            {
-                Debug.Log("Near: " + go.name);
-            }
+            Debug.Log("Grab Cuz: Grabbed = " + (RightInteractGrab.GetGrabbedObject() != null) + ", Touch = " + (RightInteractTouch.GetTouchedObject() != null));
+            
 #endif
             return;
+        }
+
+        if(RightInteractNearTouch.GetNearTouchedObjects().Count > 0) // If we near interactable objects
+        {
+            if(ValidateNearObjects())
+            {
+#if UNITY_EDITOR
+                foreach (GameObject go in RightInteractNearTouch.GetNearTouchedObjects())
+                {
+                    Debug.Log("Can't Grab cuz Near: " + go.name);
+                }
+#endif
+
+                return;
+            }
         }
 
         ChangeGameMode(GameMode.DRAW);
