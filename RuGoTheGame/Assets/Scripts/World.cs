@@ -388,7 +388,7 @@ public class World : MonoBehaviour
                 string gadgetName = "LoadCube" ;
                 LoadCube spawnedLoadCube = SpawnSingleGadget(gadgetName, placeHolder) as LoadCube;
                 Renderer r = spawnedLoadCube.GetComponent<Renderer>();
-                r.material.color = RoomColors[i];
+                r.material.color = RoomColors[slot];
                 spawnedLoadCube.Slot = slot.ToString();
             }
         }
