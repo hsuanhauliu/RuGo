@@ -11,10 +11,20 @@ public class LoadCube : Gadget
         return GadgetInventory.NUM; // #TODO: If time permits, figure out gadget types for this guy.
     }
 
-    protected override void UnGrabGradget()
+    protected override void GrabGradget()
     {
+        if (CurrentGadgetState == GadgetState.InShelf)
+        {
+            GameManager.Instance.ChangeGameMode(GameMode.BUILD);
+        }
+
+        MakeTransparent();
+    }
+
+    protected override void UnGrabGradget()
+    {   
         World.Instance.LoadSaveSlot(Slot);
-        RemoveFromScene();
-        World.Instance.RespawnFiles();
+
+        transform.localPosition = Vector3.zero;
     }
 }
