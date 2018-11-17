@@ -8,6 +8,7 @@ ModelImporter:
     400000: //RootNode
     400002: CubeRoom_GEO
     2100000: surfaceShader1SG
+    2100002: CubeRoom_GEOMat
     2300000: CubeRoom_GEO
     3300000: CubeRoom_GEO
     4300000: CubeRoom_GEO
@@ -84,7 +85,6 @@ ModelImporter:
     legStretch: 0.05
     feetSpacing: 0
     rootMotionBoneName: 
-    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 1
