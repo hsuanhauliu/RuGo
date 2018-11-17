@@ -47,8 +47,10 @@ public class FanGadget : Gadget
         AffectVisual.SetActive(false);
     }
 
-    void Update()
+    new void Update()
     {
+        base.Update();
+
         // DEBUG ONLY
         if(ForceFanToggle)
         {
@@ -118,7 +120,10 @@ public class FanGadget : Gadget
     public override void MakeTransparent(bool keepCollision = false)
     {
         base.MakeTransparent(keepCollision);
-        mIsFanOn = false;
+        if (mIsFanOn)
+        {
+            PerformSwitchAction();
+        }
 
         if (CurrentGadgetState == GadgetState.InWorld || CurrentGadgetState == GadgetState.FirstPlacement) 
         {

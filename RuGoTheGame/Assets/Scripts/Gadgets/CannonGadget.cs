@@ -46,8 +46,10 @@ public class CannonGadget : Gadget
         FireCannon();
     }
 
-    private void Update()
+    new void Update()
     {
+        base.Update();
+
         if (mTrajectory != null && mTrajectory.enabled) 
         {
             PlotTrajectory();   
