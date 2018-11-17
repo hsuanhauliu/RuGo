@@ -9,8 +9,7 @@ public class FanGadget : Gadget
     private AudioSource mAudioData;
 
     public float WindZoneRadius = 1.0f;
-    public float WindZoneConeHalfAngle = 30.0f;
-    public float WindZoneOffset = -0.5f;
+    public float WindZoneConeHalfAngle = 45.0f;
     public float WindStrengthMin = 5.0f;     public float WindStrengthMax = 25.0f;
     public float FanSpeed = 5.0f; 
 
@@ -24,7 +23,6 @@ public class FanGadget : Gadget
     private bool mIsFanOn = false;
     private float mCurFanSpeed = 0.0f;
     private float mTargetFanSpeed = 0.0f;
-    private Vector3 mOffset = Vector3.zero;
     private float mThreshold = 0.0f;
 
     new void Start()
@@ -36,33 +34,32 @@ public class FanGadget : Gadget
 
         mCurFanSpeed = 0.0f;
         mTargetFanSpeed = 0.0f;
-        mOffset.x = WindZoneOffset;
 
         mThreshold = Mathf.Cos(WindZoneConeHalfAngle * Mathf.Deg2Rad);
 
         ConeHelper coneHelper = AffectVisual.GetComponent<ConeHelper>();
         coneHelper.Length = WindZoneRadius;
         coneHelper.ConeHalfAngle = WindZoneConeHalfAngle;
-        AffectVisual.transform.localPosition = mOffset;
         AffectVisual.SetActive(false);
     }
 
     void Update()
     {
-        // DEBUG ONLY
+#if UNITY_EDITOR
         if(ForceFanToggle)
         {
             PerformSwitchAction();
             ForceFanToggle = false;
         }
+#endif
 
         Vector3 fanForward = Blades.transform.right;
         mCurFanSpeed = Mathf.Lerp(mCurFanSpeed, mTargetFanSpeed, Time.deltaTime);
         Blades.Rotate(Vector3.right, mCurFanSpeed);
 
-        if (mIsFanOn)
+        if (mIsFanOn && isPhysicsMode)
         {
-            Vector3 windZonePosition = Blades.transform.position + mOffset;
+            Vector3 windZonePosition = Blades.transform.position;
             
             Collider[] hitColliders = Physics.OverlapSphere(windZonePosition, WindZoneRadius, mLayerMask);
 

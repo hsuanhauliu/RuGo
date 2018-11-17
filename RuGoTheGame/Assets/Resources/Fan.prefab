@@ -157,8 +157,8 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1460933856789318}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.6209024, y: 0.20610844, z: 0}
+  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.047775302, y: -0.005685159, z: 0.000000009536743}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4763594955126320}
@@ -170,15 +170,15 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1442764543443160}
-  m_LocalRotation: {x: 0, y: 0.953717, z: -0, w: -0.30070576}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.1567, z: 0.1758}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
   - {fileID: 4763594955126320}
   - {fileID: 4619611514054034}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 215, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4619611514054034
 Transform:
   m_ObjectHideFlags: 1
@@ -510,7 +510,7 @@ Rigidbody:
   m_GameObject: {fileID: 1442764543443160}
   serializedVersion: 2
   m_Mass: 1000
-  m_Drag: 10
+  m_Drag: 2
   m_AngularDrag: 10
   m_UseGravity: 1
   m_IsKinematic: 0
@@ -660,12 +660,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MakeGadgetSolid: 0
+  HapticsEnabled: 1
   CurrentGadgetState: 0
   WindZoneRadius: 1
   WindZoneConeHalfAngle: 30
-  WindZoneOffset: 0
-  WindStrengthMin: 5
-  WindStrengthMax: 25
+  WindStrengthMin: 0.5
+  WindStrengthMax: 3
   FanSpeed: 40
   Blades: {fileID: 4162010513022942}
   Swivel: {fileID: 4763594955126320}

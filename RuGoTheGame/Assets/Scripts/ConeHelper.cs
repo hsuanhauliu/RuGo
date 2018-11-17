@@ -9,6 +9,7 @@ public class ConeHelper : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         BuildFanAffect();
+        GetComponent<Renderer>().material.SetInt("_ZWrite", 0);
 	}
 	
 	// Update is called once per frame
