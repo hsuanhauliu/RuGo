@@ -79,7 +79,7 @@ public class FanGadget : Gadget
                         if (dotToCollider > mThreshold)
                         {
                             affect = affect / WindZoneRadius;
-                            affect = affect * dotToCollider;
+                            affect = (1.0f - affect) * dotToCollider;
                             float windStrength = Mathf.Lerp(WindStrengthMin, WindStrengthMax, affect);
                             colliderInWindZone.GetComponent<Rigidbody>().AddForce(fanForward * windStrength, ForceMode.Acceleration);
                         }
