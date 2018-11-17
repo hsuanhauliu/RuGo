@@ -875,6 +875,11 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 5ee5bce128e204a238d06d9e71c8cd41, type: 2}
   - {fileID: 2100000, guid: c02b61eb11a274148a7a924677e0e024, type: 2}
   - {fileID: 2100000, guid: 9a694338c5f674287812c8b2dfd5bb20, type: 2}
+  RoomColors:
+  - {r: 0.3137255, g: 0.6431373, b: 0.81960785, a: 0}
+  - {r: 0.654902, g: 0.8235294, b: 0.3254902, a: 0}
+  - {r: 0.7647059, g: 0.25490198, b: 0.23921569, a: 0}
+  - {r: 0.8, g: 0.8, b: 0.8, a: 0}
 --- !u!4 &452613147
 Transform:
   m_ObjectHideFlags: 0

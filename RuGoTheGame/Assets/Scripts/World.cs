@@ -33,6 +33,7 @@ public class World : MonoBehaviour
 
     public Material[] RoomMaterials;
 
+    public Color[] RoomColors;
    
     private void MakeSingleton()
     {
@@ -349,6 +350,8 @@ public class World : MonoBehaviour
             // Create gadget
             string gadgetName = "LoadCube" ;
             LoadCube spawnedLoadCube = SpawnSingleGadget(gadgetName, container.transform) as LoadCube;
+            Renderer r = spawnedLoadCube.GetComponent<Renderer>();
+            r.material.color = RoomColors[i];
             spawnedLoadCube.Slot = i.ToString();
 
             startDegree_xz -= 20.0f;
@@ -382,6 +385,8 @@ public class World : MonoBehaviour
                 int slot = i - (int)GadgetInventory.NUM;
                 string gadgetName = "LoadCube" ;
                 LoadCube spawnedLoadCube = SpawnSingleGadget(gadgetName, placeHolder) as LoadCube;
+                Renderer r = spawnedLoadCube.GetComponent<Renderer>();
+                r.material.color = RoomColors[i];
                 spawnedLoadCube.Slot = slot.ToString();
             }
         }
