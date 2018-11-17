@@ -125,8 +125,7 @@ public class CannonGadget : Gadget
         GameObject cannonBall = Instantiate(CannonBallPrefab, mBarrelTip);
         cannonBall.transform.localPosition = mBarrelTip.localPosition;
         Rigidbody rigidBody = cannonBall.GetComponent<Rigidbody>();
-        print(cannonBall.transform.position);
-
+        
         Vector3 barrelDirection = mBarrelTip.forward * FireForce;
         rigidBody.AddForce(barrelDirection, ForceMode.Impulse);
 
