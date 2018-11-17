@@ -222,7 +222,7 @@ public class World : MonoBehaviour
     {
         Transform gadgetTransform = mGadgetShelf.transform.GetChild(containerIndex).GetChild(1);
 
-        while (mGadgetShelf.activeSelf)
+        while (mGadgetShelf.activeSelf && gadgetTransform != null)
         {
             Vector3 currentRotation = gadgetTransform.localRotation.eulerAngles;
             gadgetTransform.localRotation = Quaternion.Euler(currentRotation.x, currentRotation.y + rotationRate, currentRotation.z);
