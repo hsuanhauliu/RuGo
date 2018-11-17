@@ -5,9 +5,9 @@ PhysicMaterial:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: PlatformPhy
-  dynamicFriction: 0.6
-  staticFriction: 0.7
-  bounciness: 0.1
-  frictionCombine: 3
+  m_Name: BallPhy
+  dynamicFriction: 0.3
+  staticFriction: 0.5
+  bounciness: 0.6
+  frictionCombine: 0
   bounceCombine: 0

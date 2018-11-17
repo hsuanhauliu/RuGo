@@ -304,13 +304,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9316a021522854eff96e02978e2030ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MakeGadgetSolid: 0
+  HapticsEnabled: 1
+  CurrentGadgetState: 0
 --- !u!135 &135822023141662774
 SphereCollider:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1390234960133470}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 05f31012d04124a948a35b908e590d00, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2

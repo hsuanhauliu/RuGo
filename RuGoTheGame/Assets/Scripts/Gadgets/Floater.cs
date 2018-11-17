@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Floater : Gadget
 {
-    private readonly float amplitude = 0.001f;
-    private readonly float frequency = 1.1f;
+    private readonly float amplitude = 0.0005f;
+    private readonly float frequency = 1.3f;
 
     new void Update()
     {
@@ -26,5 +26,20 @@ public class Floater : Gadget
     {
         // avoid accumulating position error in shelf
         transform.localPosition = Vector3.zero;
+    }
+
+    protected override void SetPhysicsMode(bool enable, bool keepCollision = false)
+    {
+        Rigidbody[] rigidBodies = this.GetComponentsInChildren<Rigidbody>();
+
+        if (rigidBodies.Length > 0)
+        {
+            foreach (Rigidbody body in rigidBodies)
+            {
+                body.isKinematic = true;
+                body.detectCollisions = enable || keepCollision;
+            }
+        }
+        isPhysicsMode = enable;
     }
 }

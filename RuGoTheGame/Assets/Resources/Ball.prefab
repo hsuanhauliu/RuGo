@@ -305,6 +305,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MakeGadgetSolid: 0
+  HapticsEnabled: 1
   CurrentGadgetState: 0
 --- !u!135 &135495319771623374
 SphereCollider:
@@ -312,7 +313,7 @@ SphereCollider:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1840316128584214}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 83f5a8559ac157f40a701a241100bbb7, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
