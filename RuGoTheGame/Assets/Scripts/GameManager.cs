@@ -191,7 +191,7 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-                // We couldn't possible be near anything else. So that means if gadget isn't active in heirarchy then our shelf is inactive.
+                // We couldn't possiblu be near anything else. So that means if gadget isn't active in heirarchy then our shelf is inactive.
                 if (!nearObject.activeInHierarchy)
                 {
                     RightInteractNearTouch.ForceStopNearTouching(null);
@@ -209,10 +209,6 @@ public class GameManager : MonoBehaviour
         if (RightInteractGrab.GetGrabbedObject() != null || // If we already have an object that we have grabbed
             RightInteractTouch.GetTouchedObject() != null) // .. or if we are touching an interactable object
         {
-#if UNITY_EDITOR
-            Debug.Log("Grab Cuz: Grabbed = " + (RightInteractGrab.GetGrabbedObject() != null) + ", Touch = " + (RightInteractTouch.GetTouchedObject() != null));
-            
-#endif
             return;
         }
 
@@ -220,13 +216,6 @@ public class GameManager : MonoBehaviour
         {
             if(ValidateNearObjects())
             {
-#if UNITY_EDITOR
-                foreach (GameObject go in RightInteractNearTouch.GetNearTouchedObjects())
-                {
-                    Debug.Log("Can't Grab cuz Near: " + go.name);
-                }
-#endif
-
                 return;
             }
         }
