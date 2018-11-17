@@ -71,7 +71,7 @@ public abstract class Gadget : MonoBehaviour
         ChangeState(GadgetState.InShelf);
     }
 
-    private void Update()
+    protected void Update()
     {
         if (MakeGadgetSolid)
         {

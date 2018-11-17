@@ -7,8 +7,10 @@ public class Floater : Gadget
     private readonly float amplitude = 0.001f;
     private readonly float frequency = 1.1f;
 
-    void Update()
+    new void Update()
     {
+        base.Update();
+
         if (CurrentGadgetState == GadgetState.InShelf)
         {
             transform.localPosition += (Vector3.up * (Mathf.Sin(Time.fixedTime * Mathf.PI * frequency) * amplitude));

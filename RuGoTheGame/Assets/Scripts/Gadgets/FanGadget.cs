@@ -9,7 +9,7 @@ public class FanGadget : Gadget
     private AudioSource mAudioData;
 
     public float WindZoneRadius = 1.0f;
-    public float WindZoneConeHalfAngle = 45.0f;
+    public float WindZoneConeHalfAngle = 30.0f;
     public float WindStrengthMin = 5.0f;     public float WindStrengthMax = 25.0f;
     public float FanSpeed = 5.0f; 
 
@@ -43,15 +43,16 @@ public class FanGadget : Gadget
         AffectVisual.SetActive(false);
     }
 
-    void Update()
+    new void Update()
     {
-#if UNITY_EDITOR
+        base.Update();
+
+        // DEBUG ONLY
         if(ForceFanToggle)
         {
             PerformSwitchAction();
             ForceFanToggle = false;
         }
-#endif
 
         Vector3 fanForward = Blades.transform.right;
         mCurFanSpeed = Mathf.Lerp(mCurFanSpeed, mTargetFanSpeed, Time.deltaTime);
@@ -115,7 +116,10 @@ public class FanGadget : Gadget
     public override void MakeTransparent(bool keepCollision = false)
     {
         base.MakeTransparent(keepCollision);
-        mIsFanOn = false;
+        if (mIsFanOn)
+        {
+            PerformSwitchAction();
+        }
 
         if (CurrentGadgetState == GadgetState.InWorld || CurrentGadgetState == GadgetState.FirstPlacement) 
         {
