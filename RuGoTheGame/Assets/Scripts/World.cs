@@ -223,7 +223,7 @@ public class World : MonoBehaviour
     {
         Transform gadgetTransform = mGadgetShelf.transform.GetChild(containerIndex).GetChild(1);
 
-        while (mGadgetShelf.activeSelf)
+        while (mGadgetShelf.activeSelf && gadgetTransform != null)
         {
             Vector3 currentRotation = gadgetTransform.localRotation.eulerAngles;
             gadgetTransform.localRotation = Quaternion.Euler(currentRotation.x, currentRotation.y + rotationRate, currentRotation.z);
@@ -241,9 +241,11 @@ public class World : MonoBehaviour
     {
         yield return new WaitForSeconds(0.3f);
 
-        GameManager.Instance.RightInteractNearTouch.ForceStopNearTouching();
-
         mGadgetShelf.SetActive(false);
+
+        yield return new WaitForSeconds(0.3f);
+
+        GameManager.Instance.RightInteractNearTouch.ForceStopNearTouching();
     }
 
     private IEnumerator ShiftContainer(int containerIndex, Vector3 containerPosition)
