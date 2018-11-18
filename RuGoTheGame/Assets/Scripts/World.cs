@@ -18,6 +18,9 @@ public class World : MonoBehaviour
     private Vector3[] shelfGadgetContainersPositions;
     private Vector3[] shelfFileContainersPositions;
 
+    public int NUM_REQUIRED_GOALS = 2;
+    public Transform[] GoalSpawnLocations;
+
     public GameObject CubeRoomGeo;
     public GameObject BubblePrefab;
     public static World Instance = null;
@@ -34,7 +37,16 @@ public class World : MonoBehaviour
     public Material[] RoomMaterials;
 
     public Color[] RoomColors;
-   
+
+    public bool AllGoalsComplete
+    {
+        get
+        {
+            List<Gadget> goalGadgets = gadgetsInWorld.FindAll((Gadget obj) => obj is GoalGadget);
+            return goalGadgets.TrueForAll((Gadget g) => ((GoalGadget)g).IsGoalComplete);
+        }
+    }
+
     private void MakeSingleton()
     {
         if (Instance == null)
@@ -128,14 +140,51 @@ public class World : MonoBehaviour
             {
                 List<GadgetSaveData> savedGadgets = (List<GadgetSaveData>)bf.Deserialize(fileStream);
                 gadgetsInWorld = savedGadgets.ConvertAll<Gadget>(ConvertSavedDataToGadget);
-
             }
+            SpawnGoalGadgets();
+
             fileStream.Close();
         }
         else
         {
             Debug.Log("Loading Data failed. File " + serializedFileName + "doesn't exist");
         }
+    }
+
+    private int GetGoalGadgetCount() 
+    {
+        return gadgetsInWorld.FindAll((Gadget g) => g is GoalGadget).Count;
+    }
+
+    private void SpawnGoalGadgets()
+    {
+        int numberOfGoalsInScene = GetGoalGadgetCount();
+        print(numberOfGoalsInScene);
+
+        if (numberOfGoalsInScene < NUM_REQUIRED_GOALS)
+        {
+            HashSet<int> randomSpawnLocations = new HashSet<int>();
+
+            while (randomSpawnLocations.Count < NUM_REQUIRED_GOALS - numberOfGoalsInScene) 
+            {
+                randomSpawnLocations.Add(UnityEngine.Random.Range(0, GoalSpawnLocations.Length));
+            }
+          
+            foreach (int spawnLocation in randomSpawnLocations)
+            {
+                SpawnGoalGadgetInSpawnLocation(spawnLocation);
+            }
+        }
+    }
+
+    private void SpawnGoalGadgetInSpawnLocation(int spawnNumber)
+    {
+        GameObject goalPrefab = Resources.Load("Goal") as GameObject;
+        GameObject goalGameObject = Instantiate(goalPrefab, GoalSpawnLocations[spawnNumber]);
+        GoalGadget goalGadget = goalGameObject.GetComponent<GoalGadget>();
+        goalGadget.SetGoalInWorld();
+        InsertGadget(goalGadget);
+
     }
 
     private Gadget ConvertSavedDataToGadget(GadgetSaveData savedGadgetData)

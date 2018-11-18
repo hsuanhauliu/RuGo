@@ -5,6 +5,7 @@ using UnityEngine;
 public class GoalGadget : Gadget {
     private AudioSource mAudioData;
 
+    public bool IsGoalComplete = false;
     public Transform LeftPole;
     public Transform RightPole;
     public float THICKNESS = 0.01f;
@@ -51,13 +52,21 @@ public class GoalGadget : Gadget {
             IgnoreCollisionSelf(child);
         }
     }
-    
+    public void SetGoalInWorld()
+    {
+        ChangeState(GadgetState.InWorld);
+        MakeSolid();
+    }
 
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.GetComponentInParent<Gadget>() != null && !GameManager.Instance.IsGameOver)
         {
-            GameManager.Instance.ChangeGameMode(GameMode.COMPLETE);
+            this.IsGoalComplete = true;
+            if (World.Instance.AllGoalsComplete)
+            {
+                GameManager.Instance.ChangeGameMode(GameMode.COMPLETE);
+            }
 
             GameObject[] goalObjects = GameObject.FindGameObjectsWithTag("Goal");
 
