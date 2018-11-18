@@ -667,7 +667,7 @@ MonoBehaviour:
   WindStrengthMin: 0.75
   WindStrengthMax: 3
   FanSpeed: 40
-  AirplaneForceScale: 1.5
+  AirplaneForceScale: 0.5
   Blades: {fileID: 4162010513022942}
   Swivel: {fileID: 4763594955126320}
   AffectVisual: {fileID: 1460933856789318}
