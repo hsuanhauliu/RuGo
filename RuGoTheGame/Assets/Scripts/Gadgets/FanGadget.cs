@@ -71,7 +71,9 @@ public class FanGadget : Gadget
                     if(colliderInWindZone.GetComponentInParent<Gadget>().transform != this.transform)
                     {
                         Vector3 directionToCollider = colliderInWindZone.transform.position - windZonePosition;
-                        float affect = directionToCollider.magnitude;
+                        Vector3 directionOnXZ = directionToCollider;
+                        directionOnXZ.y = 0.0f;
+                        float affect = directionOnXZ.magnitude;
                         directionToCollider.Normalize();
 
                         float dotToCollider = Vector3.Dot(fanForward, directionToCollider);
