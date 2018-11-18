@@ -664,9 +664,10 @@ MonoBehaviour:
   CurrentGadgetState: 0
   WindZoneRadius: 1
   WindZoneConeHalfAngle: 30
-  WindStrengthMin: 2
-  WindStrengthMax: 5
+  WindStrengthMin: 0.75
+  WindStrengthMax: 3
   FanSpeed: 40
+  AirplaneForceScale: 1.5
   Blades: {fileID: 4162010513022942}
   Swivel: {fileID: 4763594955126320}
   AffectVisual: {fileID: 1460933856789318}

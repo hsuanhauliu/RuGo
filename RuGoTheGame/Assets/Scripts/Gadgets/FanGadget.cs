@@ -11,7 +11,8 @@ public class FanGadget : Gadget
     public float WindZoneRadius = 1.0f;
     public float WindZoneConeHalfAngle = 30.0f;
     public float WindStrengthMin = 5.0f;     public float WindStrengthMax = 25.0f;
-    public float FanSpeed = 5.0f; 
+    public float FanSpeed = 5.0f;
+    public float AirplaneForceScale = 4.0f;
 
     // Swivel and Blades
     public Transform Blades;
@@ -68,7 +69,8 @@ public class FanGadget : Gadget
             {
                 if (colliderInWindZone.GetComponent<Rigidbody>() != null)
                 {
-                    if(colliderInWindZone.GetComponentInParent<Gadget>().transform != this.transform)
+                    Gadget affectedGadget = colliderInWindZone.GetComponentInParent<Gadget>();
+                    if (affectedGadget.transform != this.transform)
                     {
                         Vector3 directionToCollider = colliderInWindZone.transform.position - windZonePosition;
                         float affect = directionToCollider.magnitude;
@@ -81,7 +83,15 @@ public class FanGadget : Gadget
                             affect = affect / WindZoneRadius;
                             affect = (1.0f - affect) * dotToCollider;
                             float windStrength = Mathf.Lerp(WindStrengthMin, WindStrengthMax, affect);
-                            colliderInWindZone.GetComponent<Rigidbody>().AddForce(fanForward * windStrength, ForceMode.Acceleration);
+
+                            if(affectedGadget is AirplaneGadget)
+                            {
+                                colliderInWindZone.GetComponent<Rigidbody>().AddForce(fanForward * windStrength * AirplaneForceScale, ForceMode.Acceleration);
+                            }
+                            else
+                            {
+                                colliderInWindZone.GetComponent<Rigidbody>().AddForce(fanForward * windStrength, ForceMode.Acceleration);
+                            }
                         }
                     }
                 }
