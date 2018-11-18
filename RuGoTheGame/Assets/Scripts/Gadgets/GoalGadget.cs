@@ -63,22 +63,26 @@ public class GoalGadget : Gadget {
         if (other.gameObject.GetComponentInParent<Gadget>() != null && !GameManager.Instance.IsGameOver)
         {
             this.IsGoalComplete = true;
+
             if (World.Instance.AllGoalsComplete)
             {
                 GameManager.Instance.ChangeGameMode(GameMode.COMPLETE);
-            }
 
-            GameObject[] goalObjects = GameObject.FindGameObjectsWithTag("Goal");
+                GameObject[] goalObjects = GameObject.FindGameObjectsWithTag("Goal");
 
-            foreach (GameObject goalObject in goalObjects)
-            {
-                ParticleSystem pSystem = goalObject.GetComponent<ParticleSystem>();
-
-                if (pSystem)
+                foreach (GameObject goalObject in goalObjects)
                 {
-                    pSystem.Play(true);
+                    ParticleSystem pSystem = goalObject.GetComponent<ParticleSystem>();
+
+                    if (pSystem)
+                    {
+                        pSystem.Play(true);
+                    }
                 }
+                mAudioData.Play();
             }
+
+
 
             LineRenderer[] lasers = this.GetComponentsInChildren<LineRenderer>();
             foreach (LineRenderer laser in lasers)
@@ -88,8 +92,6 @@ public class GoalGadget : Gadget {
                 laser.startColor = Color.green;
                 laser.endColor = Color.green;
             }
-
-            mAudioData.Play();
         }
     }
 }
