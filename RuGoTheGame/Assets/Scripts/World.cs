@@ -184,7 +184,6 @@ public class World : MonoBehaviour
         GoalGadget goalGadget = goalGameObject.GetComponent<GoalGadget>();
         goalGadget.SetGoalInWorld();
         InsertGadget(goalGadget);
-
     }
 
     private Gadget ConvertSavedDataToGadget(GadgetSaveData savedGadgetData)
@@ -203,6 +202,7 @@ public class World : MonoBehaviour
     public void ClearCurrentSaveSlot()
     {
         RemoveGadgetsFromScene();
+        SpawnGoalGadgets();
         MarkWorldModified();
     }
 

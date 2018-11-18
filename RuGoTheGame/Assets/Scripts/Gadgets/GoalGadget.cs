@@ -52,6 +52,12 @@ public class GoalGadget : Gadget {
             IgnoreCollisionSelf(child);
         }
     }
+
+    protected override void GadgetTouched()
+    {
+        // Do Nothing To Avoid Deleting Gadgets by Touch
+    }
+
     public void SetGoalInWorld()
     {
         ChangeState(GadgetState.InWorld);
@@ -81,8 +87,6 @@ public class GoalGadget : Gadget {
                 }
                 mAudioData.Play();
             }
-
-
 
             LineRenderer[] lasers = this.GetComponentsInChildren<LineRenderer>();
             foreach (LineRenderer laser in lasers)
