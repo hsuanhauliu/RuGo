@@ -225,17 +225,36 @@ public class World : MonoBehaviour
         else
         {
             mGadgetShelf.SetActive(show);
-            AudioSource bubbleAudio = mGadgetShelf.GetComponent<AudioSource>();
-            bubbleAudio.Play();
-        }
+            mGadgetShelf.GetComponent<AudioSource>().Play();
 
-        if (show)
-        {
             Transform myCamera = GameManager.Instance.MainCamera.transform;
             Vector3 pureCameraRotation = myCamera.rotation.eulerAngles;
 
             mGadgetShelf.transform.position = myCamera.position;
             mGadgetShelf.transform.rotation = Quaternion.Euler(0.0f, myCamera.rotation.eulerAngles.y - 90.0f, 0.0f);
+
+            // Get play area size
+            Valve.VR.HmdQuad_t roomSize = new Valve.VR.HmdQuad_t();
+            Vector3 offset = Vector3.zero;
+
+            if (SteamVR_PlayArea.GetBounds(SteamVR_PlayArea.Size.Calibrated, ref roomSize))
+            {
+                Valve.VR.HmdVector3_t[] roomCorners = new Valve.VR.HmdVector3_t[] { roomSize.vCorners0, roomSize.vCorners1, roomSize.vCorners2, roomSize.vCorners3 };
+
+                Vector3 cornerPosition = new Vector3(roomCorners[0].v0, roomCorners[0].v1, roomCorners[0].v2);
+
+                // check x
+                if (Math.Abs(myCamera.position.x) + shelfRadius > Math.Abs(cornerPosition.x))
+                {
+                    offset -= new Vector3(shelfRadius * (myCamera.position.x / Math.Abs(myCamera.position.x)), 0, 0);
+                }
+
+                // check y
+                if (Math.Abs(myCamera.position.z) + shelfRadius > Math.Abs(cornerPosition.z))
+                {
+                    offset -= new Vector3(0, 0, shelfRadius * (myCamera.position.z / Math.Abs(myCamera.position.z)));
+                }
+            }
 
             for (int i = 0; i < shelfGadgetContainersPositions.Length; i++)
             {
