@@ -208,26 +208,31 @@ public class World : MonoBehaviour
 
         for (int i = 0; i < numOfBubbles; i++)
         {
-            Gadget gadget = mGadgetShelf.transform.GetChild(i).GetChild(1).GetComponent<Gadget>();
-            if (gadget.CurrentGadgetState == Gadget.GadgetState.FirstPlacement)
+            if (mGadgetShelf.transform.GetChild(i).childCount > 1)
             {
-                Transform containerBubble = mGadgetShelf.transform.GetChild(i).GetChild(0);
-                containerBubble.GetChild(0).gameObject.SetActive(false);
-                containerBubble.GetChild(1).GetComponent<ParticleSystem>().Play();
-                StartCoroutine(EnableBubble(containerBubble.GetChild(0).gameObject));
+                Gadget gadget = mGadgetShelf.transform.GetChild(i).GetChild(1).GetComponent<Gadget>();
+                if (gadget != null && gadget.CurrentGadgetState == Gadget.GadgetState.FirstPlacement)
+                {
+                    Transform containerBubble = mGadgetShelf.transform.GetChild(i).GetChild(0);
+                    containerBubble.GetChild(0).gameObject.SetActive(false);
+                    containerBubble.GetChild(1).GetComponent<ParticleSystem>().Play();
+                    StartCoroutine(EnableBubble(containerBubble.GetChild(0).gameObject));
+                }
             }
         }
     }
 
     private IEnumerator RotateGadget(int containerIndex)
     {
-        Transform gadgetTransform = mGadgetShelf.transform.GetChild(containerIndex).GetChild(1);
-
-        while (mGadgetShelf.activeSelf && gadgetTransform != null)
+        if (mGadgetShelf.transform.GetChild(containerIndex).childCount > 1)
         {
-            Vector3 currentRotation = gadgetTransform.localRotation.eulerAngles;
-            gadgetTransform.localRotation = Quaternion.Euler(currentRotation.x, currentRotation.y + rotationRate, currentRotation.z);
-            yield return null;
+            Transform gadgetTransform = mGadgetShelf.transform.GetChild(containerIndex).GetChild(1);
+            while (mGadgetShelf.activeSelf && gadgetTransform != null)
+            {
+                Vector3 currentRotation = gadgetTransform.localRotation.eulerAngles;
+                gadgetTransform.localRotation = Quaternion.Euler(currentRotation.x, currentRotation.y + rotationRate, currentRotation.z);
+                yield return null;
+            }
         }
     }
 
@@ -258,7 +263,8 @@ public class World : MonoBehaviour
         float rate = UnityEngine.Random.Range(ShiftRateMin, ShiftRateMax);
 
         Transform childContainer = mGadgetShelf.transform.GetChild(containerIndex);
-        childContainer.GetComponentInChildren<Gadget>().ShowShelf(true);
+        if (childContainer.GetComponentInChildren<Gadget>() != null)
+            childContainer.GetComponentInChildren<Gadget>().ShowShelf(true);
 
         while (fraction * rate <= 1)
         {
