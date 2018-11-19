@@ -31,7 +31,7 @@ public class World : MonoBehaviour
     private readonly float ShiftRateMax = 2.5f;
     private readonly float GadgetOffsetMax = 0.2f;
     private readonly float rotationRate = 0.8f;
-
+    private AudioSource mAudioData;
     private readonly int numOfFiles = 4;
 
     public Material[] RoomMaterials;
@@ -73,6 +73,7 @@ public class World : MonoBehaviour
     {
         MakeSingleton();
         mGadgetShelf = transform.Find("GadgetShelf").gameObject;
+        mAudioData = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -84,7 +85,26 @@ public class World : MonoBehaviour
             isWorldStateModified = false;
         }
     }
+    public void NotifyGoalComplete()
+    {
+        if (AllGoalsComplete)
+        {
+            GameManager.Instance.ChangeGameMode(GameMode.COMPLETE);
 
+            GameObject[] goalObjects = GameObject.FindGameObjectsWithTag("Goal");
+
+            foreach (GameObject goalObject in goalObjects)
+            {
+                ParticleSystem pSystem = goalObject.GetComponent<ParticleSystem>();
+
+                if (pSystem)
+                {
+                    pSystem.Play(true);
+                }
+            }
+            mAudioData.Play();
+        }
+    }
     public void LoadLastModifiedSaveSlot()
     {
         //TODO: Determine Last Modified Save Slot #
@@ -159,7 +179,7 @@ public class World : MonoBehaviour
     private void SpawnGoalGadgets()
     {
         int numberOfGoalsInScene = GetGoalGadgetCount();
-        print(numberOfGoalsInScene);
+
 
         if (numberOfGoalsInScene < NUM_REQUIRED_GOALS)
         {

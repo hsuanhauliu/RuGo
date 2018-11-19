@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GoalGadget : Gadget {
-    private AudioSource mAudioData;
-
     public bool IsGoalComplete = false;
     public Transform LeftPole;
     public Transform RightPole;
@@ -20,7 +18,7 @@ public class GoalGadget : Gadget {
         base.Start();
       
         mCollider = this.GetComponent<BoxCollider>();
-        mAudioData = GetComponent<AudioSource>();
+       
 
         mCollider.center = ((LeftPole.localPosition + RightPole.localPosition) / 2.0f);
         mCollider.center += new Vector3(0, transform.GetChild(0).localPosition.y, 0);
@@ -70,23 +68,9 @@ public class GoalGadget : Gadget {
         {
             this.IsGoalComplete = true;
 
-            if (World.Instance.AllGoalsComplete)
-            {
-                GameManager.Instance.ChangeGameMode(GameMode.COMPLETE);
+            World.Instance.NotifyGoalComplete();
 
-                GameObject[] goalObjects = GameObject.FindGameObjectsWithTag("Goal");
-
-                foreach (GameObject goalObject in goalObjects)
-                {
-                    ParticleSystem pSystem = goalObject.GetComponent<ParticleSystem>();
-
-                    if (pSystem)
-                    {
-                        pSystem.Play(true);
-                    }
-                }
-                mAudioData.Play();
-            }
+           
 
             LineRenderer[] lasers = this.GetComponentsInChildren<LineRenderer>();
             foreach (LineRenderer laser in lasers)
