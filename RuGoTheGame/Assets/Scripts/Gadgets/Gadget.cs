@@ -60,6 +60,8 @@ public abstract class Gadget : MonoBehaviour
     public enum GadgetState { InShelf, FirstPlacement, InWorld, Loaded };
     public GadgetState CurrentGadgetState;
 
+    public Rigidbody[] KinematicRigidbodies;
+
     protected void Start()
     {
        
@@ -188,6 +190,12 @@ public abstract class Gadget : MonoBehaviour
         {
             EnableColliders(enable);
         }
+
+        foreach(Rigidbody kinematicRigidbody in KinematicRigidbodies)
+        {
+            kinematicRigidbody.isKinematic = true;
+        }
+
         isPhysicsMode = enable;
     }
 

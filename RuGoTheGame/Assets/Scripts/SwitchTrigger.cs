@@ -6,13 +6,18 @@ public class SwitchTrigger : MonoBehaviour {
 
 	private Gadget mGadget;
     private Collider mSwitchCollider;
+    private Animation mAnimation;
 
     private void Awake()
     {
+        mAnimation = this.GetComponent<Animation>(); 
         mGadget = this.GetComponentInParent<Gadget>();
         mSwitchCollider = this.GetComponent<Collider>();
 
-        IgnoreCollisionSelf(mGadget.transform);
+        if(mGadget != null)
+        {
+            IgnoreCollisionSelf(mGadget.transform);
+        }
     }
 
     private void IgnoreCollisionSelf(Transform t)
@@ -38,8 +43,13 @@ public class SwitchTrigger : MonoBehaviour {
 
     void OnCollisionEnter(Collision collision)
     {
-        if(mGadget != null)
+        if (mGadget != null)
         {
+            if (mAnimation != null)
+            {
+                mAnimation.Play();
+            }
+
             Collider collisionCollider = collision.collider;
             Gadget otherGadget = collisionCollider.gameObject.GetComponentInParent<Gadget>();
 
@@ -55,6 +65,19 @@ public class SwitchTrigger : MonoBehaviour {
             {
                 mGadget.PerformSwitchAction();
             }
+        }
+    }
+
+    public void PerformGadgetAction()
+    {
+        if(mGadget != null)
+        {
+            if (mAnimation != null)
+            {
+                mAnimation.Play();
+            }
+
+            mGadget.PerformSwitchAction();
         }
     }
 }

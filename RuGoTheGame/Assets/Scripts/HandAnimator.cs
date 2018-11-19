@@ -28,6 +28,8 @@ public class HandAnimator : MonoBehaviour
     private Animator mHandAnimator;
     private Renderer mHandRenderer;
 
+    private bool mIsGhost;
+
     private float[] mFingerLayerWeights = new float[(int)Finger.Num];
 
     // Use this for initialization
@@ -120,8 +122,27 @@ public class HandAnimator : MonoBehaviour
     // Right now we use isDefault as a way to spoof for delete. Should refactor to take into account hand actions.
     public void SetHandGhost(bool isGhost, bool isDefault=true)
     {
+        mIsGhost = isGhost;
+
         Color currentColor = isDefault ? HandDefaultColor : HandDeleteColor;
         currentColor.a = isGhost ? 0.5f : 1.0f;
         mHandRenderer.material.color = currentColor;
+
+        if(Hand == HandSide.Left)
+        {
+            GetComponent<Rigidbody>().detectCollisions= !isGhost;
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(!mIsGhost && Hand == HandSide.Left)
+        {
+            SwitchTrigger trigger = other.GetComponentInParent<SwitchTrigger>();
+            if(trigger != null)
+            {
+                trigger.PerformGadgetAction();
+            }
+        }
     }
 }

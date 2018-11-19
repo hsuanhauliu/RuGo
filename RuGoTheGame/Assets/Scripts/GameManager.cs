@@ -42,8 +42,6 @@ public class GameManager : MonoBehaviour
     public VRTK.VRTK_ControllerEvents RightControllerEvents;
     public VRTK.VRTK_ControllerEvents LeftControllerEvents;
 
-    public BoxCollider LeftPlatformCollider;
-
     public GameMode CurrentGameMode;
 
     void Awake()
@@ -70,8 +68,6 @@ public class GameManager : MonoBehaviour
         RightInteractNearTouch = RightControllerEvents.GetComponent<VRTK.VRTK_InteractNearTouch>();
         RightInteractTouch = RightControllerEvents.GetComponent<VRTK.VRTK_InteractTouch>();
         RightInteractGrab = RightControllerEvents.GetComponent<VRTK.VRTK_InteractGrab>();
-
-        LeftPlatformCollider.isTrigger = true;
         
         RightAnimator = RightControllerEvents.gameObject.GetComponentInChildren<HandAnimator>();
         LeftAnimator = LeftControllerEvents.gameObject.GetComponentInChildren<HandAnimator>();
@@ -158,15 +154,11 @@ public class GameManager : MonoBehaviour
     /************************** Input Events ********************************/
     void LeftControllerEvents_TriggerDown(object sender, VRTK.ControllerInteractionEventArgs e)
     {
-        LeftPlatformCollider.isTrigger = false;
-
         LeftAnimator.SetHandGhost(false);
     }
 
     void LeftControllerEvents_TriggerUp(object sender, VRTK.ControllerInteractionEventArgs e)
     {
-        LeftPlatformCollider.isTrigger = true;
-
         LeftAnimator.SetHandGhost(true);
     }
 

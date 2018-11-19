@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.1802837, g: 0.22571404, b: 0.30692273, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1256,7 +1256,6 @@ MonoBehaviour:
   PathTool: {fileID: 210995599}
   RightControllerEvents: {fileID: 745988739}
   LeftControllerEvents: {fileID: 746911767}
-  LeftPlatformCollider: {fileID: 683454307}
   CurrentGameMode: 0
 --- !u!4 &498110774
 Transform:
@@ -1377,6 +1376,21 @@ MonoBehaviour:
   Hand: 0
   HandDefaultColor: {r: 0.101960786, g: 0.60784316, b: 0.9254902, a: 0}
   HandDeleteColor: {r: 0, g: 0, b: 0, a: 0}
+--- !u!54 &683454309
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 683454306}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &696005401
 GameObject:
   m_ObjectHideFlags: 0
