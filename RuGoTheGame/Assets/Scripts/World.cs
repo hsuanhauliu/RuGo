@@ -250,9 +250,6 @@ public class World : MonoBehaviour
             Transform myCamera = GameManager.Instance.MainCamera.transform;
             Vector3 pureCameraRotation = myCamera.rotation.eulerAngles;
 
-            mGadgetShelf.transform.position = myCamera.position;
-            mGadgetShelf.transform.rotation = Quaternion.Euler(0.0f, myCamera.rotation.eulerAngles.y - 90.0f, 0.0f);
-
             // Get play area size
             Valve.VR.HmdQuad_t roomSize = new Valve.VR.HmdQuad_t();
             Vector3 offset = Vector3.zero;
@@ -260,21 +257,41 @@ public class World : MonoBehaviour
             if (SteamVR_PlayArea.GetBounds(SteamVR_PlayArea.Size.Calibrated, ref roomSize))
             {
                 Valve.VR.HmdVector3_t[] roomCorners = new Valve.VR.HmdVector3_t[] { roomSize.vCorners0, roomSize.vCorners1, roomSize.vCorners2, roomSize.vCorners3 };
-
-                Vector3 cornerPosition = new Vector3(roomCorners[0].v0, roomCorners[0].v1, roomCorners[0].v2);
-
-                // check x
-                if (Math.Abs(myCamera.position.x) + shelfRadius > Math.Abs(cornerPosition.x))
+                Vector3[] cornerPositions = new Vector3[roomCorners.Length];
+                for (int i = 0; i < roomCorners.Length; i++)
                 {
-                    offset -= new Vector3(shelfRadius * (myCamera.position.x / Math.Abs(myCamera.position.x)), 0, 0);
+                    cornerPositions[i] = new Vector3(roomCorners[i].v0, roomCorners[i].v1, roomCorners[i].v2);
                 }
 
-                // check y
-                if (Math.Abs(myCamera.position.z) + shelfRadius > Math.Abs(cornerPosition.z))
+                // Get two corners
+                float minX = 0.0f;
+                float minZ = 0.0f;
+                float maxX = 0.0f;
+                float maxZ = 0.0f;
+                for (int i = 0; i < cornerPositions.Length; i++)
                 {
-                    offset -= new Vector3(0, 0, shelfRadius * (myCamera.position.z / Math.Abs(myCamera.position.z)));
+                    minX = Math.Min(minX, cornerPositions[i].x);
+                    maxX = Math.Max(maxX, cornerPositions[i].x);
+                    minZ = Math.Min(minZ, cornerPositions[i].z);
+                    maxZ = Math.Max(maxZ, cornerPositions[i].z);
                 }
+
+                // Calculate the shelf's position
+                Vector3 shelfPosition = myCamera.position + myCamera.forward * shelfRadius;
+
+                if (shelfPosition.x < 0 && shelfPosition.x < minX)
+                    offset += new Vector3(minX - shelfPosition.x, 0, 0);
+                else if (shelfPosition.x > 0 && shelfPosition.x > maxX)
+                    offset -= new Vector3(shelfPosition.x - maxX, 0, 0);
+
+                if (shelfPosition.z < 0 && shelfPosition.z < minZ)
+                    offset += new Vector3(0, 0, minZ - shelfPosition.z);
+                else if (shelfPosition.z > 0 && shelfPosition.z > maxZ)
+                    offset -= new Vector3(0, 0, shelfPosition.z - maxZ);
             }
+
+            mGadgetShelf.transform.position = myCamera.position + offset;
+            mGadgetShelf.transform.rotation = Quaternion.Euler(0.0f, myCamera.rotation.eulerAngles.y - 90.0f, 0.0f);
 
             for (int i = 0; i < shelfGadgetContainersPositions.Length; i++)
             {
