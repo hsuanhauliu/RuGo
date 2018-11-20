@@ -251,7 +251,8 @@ public abstract class Gadget : MonoBehaviour
 
     protected virtual void GadgetTouched()
     {
-        if (GameManager.Instance.CurrentGameMode == GameMode.DELETE)
+        if (GameManager.Instance.CurrentGameMode == GameMode.DELETE &&
+            CurrentGadgetState != GadgetState.InShelf)
         {
             World.Instance.RemoveGadget(this);
         }
