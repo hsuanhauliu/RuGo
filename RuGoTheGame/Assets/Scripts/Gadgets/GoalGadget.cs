@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class GoalGadget : Gadget {
     public bool IsGoalComplete = false;
-    public Transform LeftPole;
-    public Transform RightPole;
-    public float THICKNESS = 0.01f;
     private BoxCollider mCollider;
 
     public override GadgetInventory GetGadgetType()
@@ -19,13 +16,6 @@ public class GoalGadget : Gadget {
       
         mCollider = this.GetComponent<BoxCollider>();
        
-
-        mCollider.center = ((LeftPole.localPosition + RightPole.localPosition) / 2.0f);
-        mCollider.center += new Vector3(0, transform.GetChild(0).localPosition.y, 0);
-
-        float height = LeftPole.GetChild(0).position.y - LeftPole.GetChild(2).position.y;
-        float width = RightPole.GetChild(1).position.x - LeftPole.GetChild(1).position.x;
-        mCollider.size = new Vector3(width, height, THICKNESS);
         IgnoreCollisionSelf(this.transform);
 	}
 	
