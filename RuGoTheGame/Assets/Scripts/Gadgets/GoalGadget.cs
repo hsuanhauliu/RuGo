@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GoalGadget : Gadget {
     public bool IsGoalComplete = false;
-    private BoxCollider mCollider;
+    private Collider mCollider;
 
     public override GadgetInventory GetGadgetType()
     {
@@ -14,7 +14,7 @@ public class GoalGadget : Gadget {
     new void Start () {
         base.Start();
       
-        mCollider = this.GetComponent<BoxCollider>();
+        mCollider = this.GetComponent<Collider>();
        
         IgnoreCollisionSelf(this.transform);
 	}
