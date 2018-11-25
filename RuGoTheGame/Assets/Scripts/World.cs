@@ -181,7 +181,7 @@ public class World : MonoBehaviour
         int numberOfGoalsInScene = GetGoalGadgetCount();
 
 
-        if (numberOfGoalsInScene < NUM_REQUIRED_GOALS)
+        if (numberOfGoalsInScene == 0)
         {
             HashSet<int> randomSpawnLocations = new HashSet<int>();
 

@@ -18,6 +18,7 @@ public class GadgetLayers
 public struct GadgetSaveData
 {
     public string name;
+    public int colorInfo;
     public float px;
     public float py;
     public float pz;
@@ -29,6 +30,7 @@ public struct GadgetSaveData
 
     public GadgetSaveData(GadgetInventory name, Vector3 position, Quaternion orientation) {
         this.name = name.ToString();
+        colorInfo = 0;
         px = position.x;
         py = position.y;
         pz = position.z;
@@ -107,6 +109,7 @@ public abstract class Gadget : MonoBehaviour
         }
 #endif
         mGadgetSaveData.name = this.GetGadgetType().ToString();
+        mGadgetSaveData.colorInfo = this.GetColorInfo();
         mGadgetSaveData.px = this.transform.position.x;
         mGadgetSaveData.py = this.transform.position.y;
         mGadgetSaveData.pz = this.transform.position.z;
@@ -114,6 +117,11 @@ public abstract class Gadget : MonoBehaviour
         mGadgetSaveData.oy = this.transform.rotation.y;
         mGadgetSaveData.oz = this.transform.rotation.z;
         mGadgetSaveData.ow = this.transform.rotation.w;
+    }
+
+    protected virtual int GetColorInfo()
+    {
+        return 0;
     }
 
     private void CheckLoadSync() 
@@ -148,6 +156,11 @@ public abstract class Gadget : MonoBehaviour
         }
     }
 
+    protected virtual void RestoreColorInfo(int colorInfo)
+    {
+
+    }
+
     public GadgetSaveData GetSaveData() 
     {
         return mGadgetSaveData;
@@ -156,6 +169,7 @@ public abstract class Gadget : MonoBehaviour
     public void RestoreStateFromSaveData(GadgetSaveData data) {
         this.transform.position = data.GetPosition();
         this.transform.rotation = data.GetQuaternion();
+        this.RestoreColorInfo(data.colorInfo);
         ChangeState(GadgetState.Loaded);
         mGadgetSaveData = data;
     }
