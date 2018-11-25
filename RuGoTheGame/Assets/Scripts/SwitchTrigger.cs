@@ -52,8 +52,7 @@ public class SwitchTrigger : MonoBehaviour {
                 return;
             }
 
-            VRTK.VRTK_PlayerObject isPlayer = collisionCollider.gameObject.GetComponentInParent<VRTK.VRTK_PlayerObject>();
-            if ((otherGadget != null && otherGadget.GetPhysicsMode()) || isPlayer != null)
+            if (otherGadget != null && otherGadget.GetPhysicsMode())
             {
                 PerformGadgetAction();
             }
@@ -62,13 +61,9 @@ public class SwitchTrigger : MonoBehaviour {
 
     public void PerformGadgetAction()
     {
-        if(mGadget != null)
+        if (mGadget != null && mAnimation != null && !mAnimation.isPlaying)
         {
-            if (mAnimation != null)
-            {
-                mAnimation.Play();
-            }
-
+            mAnimation.Play();
             mGadget.PerformSwitchAction();
         }
     }
