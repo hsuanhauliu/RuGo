@@ -41,29 +41,21 @@ public class SwitchTrigger : MonoBehaviour {
         }
     }
 
-    void OnCollisionEnter(Collision collision)
+    void OnTriggerEnter(Collider collisionCollider)
     {
         if (mGadget != null)
         {
-            if (mAnimation != null)
-            {
-                mAnimation.Play();
-            }
-
-            Collider collisionCollider = collision.collider;
             Gadget otherGadget = collisionCollider.gameObject.GetComponentInParent<Gadget>();
-
 
             // Avoid trigger due to collision with Floating Platform
             if (otherGadget is Floater || otherGadget is BoxGadget) {
                 return;
             }
 
-
             VRTK.VRTK_PlayerObject isPlayer = collisionCollider.gameObject.GetComponentInParent<VRTK.VRTK_PlayerObject>();
             if ((otherGadget != null && otherGadget.GetPhysicsMode()) || isPlayer != null)
             {
-                mGadget.PerformSwitchAction();
+                PerformGadgetAction();
             }
         }
     }
