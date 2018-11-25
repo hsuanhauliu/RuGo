@@ -150,12 +150,15 @@ public class World : MonoBehaviour
     {
         if (File.Exists(serializedFileName))
         {
-            BinaryFormatter bf = new BinaryFormatter();
-            FileStream fileStream = File.Open(serializedFileName, FileMode.Open);
-            RemoveGadgetsFromScene();
+#if RUGO_VR
             Renderer roomRenderer = CubeRoomGeo.GetComponent<Renderer>();
             //TODO Refactor Everything to use Integer Save Slot
             roomRenderer.material = RoomMaterials[System.Convert.ToInt32(CurrentSaveSlot)];
+#endif
+            BinaryFormatter bf = new BinaryFormatter();
+            FileStream fileStream = File.Open(serializedFileName, FileMode.Open);
+            RemoveGadgetsFromScene();
+
             if (fileStream.Length != 0) 
             {
                 List<GadgetSaveData> savedGadgets = (List<GadgetSaveData>)bf.Deserialize(fileStream);

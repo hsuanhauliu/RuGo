@@ -9,6 +9,7 @@
 Assets/AssetStoreTools*
 [Dd]ebug/
 #RuGoTheGame/SavedGames
+RuGoTheGame/Assets/ZED/Examples*
 
 # Visual Studio cache directory
 .vs/
