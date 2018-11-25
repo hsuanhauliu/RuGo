@@ -221,4 +221,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MakeGadgetSolid: 0
+  HapticsEnabled: 1
   CurrentGadgetState: 0
+  KinematicRigidbodies: []
+  DominoColors:
+  - {fileID: 2100000, guid: 3daf27a1b44c941b08393806b7d1f071, type: 2}
+  - {fileID: 2100000, guid: 222a3d15fdd19492e891e8776898c91d, type: 2}
+  - {fileID: 2100000, guid: eb4f4132fa184414d890927bb21797af, type: 2}
+  - {fileID: 2100000, guid: d005256fc83304ae2aca4cc4c538968d, type: 2}
+  DominoColorIndex: 3
