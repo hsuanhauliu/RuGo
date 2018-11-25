@@ -678,7 +678,6 @@ MonoBehaviour:
   HapticsEnabled: 1
   CurrentGadgetState: 0
   KinematicRigidbodies:
-  - {fileID: 0}
   - {fileID: 54720289664113010}
   WindZoneRadius: 1
   WindZoneConeHalfAngle: 30
