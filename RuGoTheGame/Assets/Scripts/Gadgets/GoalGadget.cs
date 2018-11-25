@@ -60,8 +60,6 @@ public class GoalGadget : Gadget {
 
             World.Instance.NotifyGoalComplete();
 
-           
-
             LineRenderer[] lasers = this.GetComponentsInChildren<LineRenderer>();
             foreach (LineRenderer laser in lasers)
             {
