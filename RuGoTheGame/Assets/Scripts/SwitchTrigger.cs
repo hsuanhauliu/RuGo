@@ -55,7 +55,7 @@ public class SwitchTrigger : MonoBehaviour {
 
 
             // Avoid trigger due to collision with Floating Platform
-            if (otherGadget is Floater) {
+            if (otherGadget is Floater || otherGadget is BoxGadget) {
                 return;
             }
 

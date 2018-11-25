@@ -54,7 +54,14 @@ public class GoalGadget : Gadget {
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.GetComponentInParent<Gadget>() != null && !GameManager.Instance.IsGameOver)
+        Gadget otherGadget = other.gameObject.GetComponentInParent<Gadget>();
+
+        if (otherGadget == null || otherGadget is Floater || otherGadget is BoxGadget)
+        {
+            return;
+        }
+
+        if (!GameManager.Instance.IsGameOver)
         {
             this.IsGoalComplete = true;
 
