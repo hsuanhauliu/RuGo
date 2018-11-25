@@ -493,8 +493,8 @@ Rigidbody:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1442764543443160}
   serializedVersion: 2
-  m_Mass: 1000
-  m_Drag: 2
+  m_Mass: 50
+  m_Drag: 1
   m_AngularDrag: 10
   m_UseGravity: 1
   m_IsKinematic: 0
@@ -531,7 +531,7 @@ BoxCollider:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1442764543443160}
-  m_Material: {fileID: 13400000, guid: 99cc02a588dc625419374b9a3d1b23ce, type: 2}
+  m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
