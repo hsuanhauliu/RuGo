@@ -64,6 +64,8 @@ public class PlatformContainer : MonoBehaviour
 
     private Vector3 mTrackerAPos = Vector3.zero;
     private Vector3 mTrackerBPos = Vector3.zero;
+    private Vector3 mTrackerARot = Vector3.zero;
+    private Vector3 mTrackerBRot = Vector3.zero;
 
     private readonly float epsilon = 0.001f;
 
@@ -83,28 +85,54 @@ public class PlatformContainer : MonoBehaviour
             return;
 
         Vector3 newTrackerAPos = mTrackerA.position;
+        Vector3 newTrackerARot = mTrackerA.rotation.eulerAngles;
         Vector3 newTrackerBPos = mTrackerB.position;
+        Vector3 newTrackerBRot = mTrackerB.rotation.eulerAngles;
 
-        bool trackerADirtied = (newTrackerAPos - mTrackerAPos).sqrMagnitude > epsilon;
-        bool trackerBDirtied = (newTrackerBPos - mTrackerBPos).sqrMagnitude > epsilon;
+        bool trackerAPosDirtied = (newTrackerAPos - mTrackerAPos).sqrMagnitude > epsilon;
+        bool trackerBPosDirtied = (newTrackerBPos - mTrackerBPos).sqrMagnitude > epsilon;
+        bool trackerARotDirtied = (newTrackerARot - mTrackerARot).sqrMagnitude > epsilon;
+        bool trackerBRotDirtied = (newTrackerBRot - mTrackerBRot).sqrMagnitude > epsilon;
 
-        if (trackerADirtied || trackerBDirtied)
+        if (!trackerAPosDirtied && !trackerBPosDirtied && !trackerARotDirtied && !trackerBRotDirtied)
         {
-            mTrackerAPos = newTrackerAPos;
-            mTrackerBPos = newTrackerBPos;
-
-            Vector3 bottomLeft = new Vector3(Mathf.Min(mTrackerAPos.x, mTrackerBPos.x), Mathf.Min(mTrackerAPos.y, mTrackerBPos.y), Mathf.Min(mTrackerAPos.z, mTrackerBPos.z));
-            Vector3 topRight = new Vector3(Mathf.Max(mTrackerAPos.x, mTrackerBPos.x), Mathf.Max(mTrackerAPos.y, mTrackerBPos.y), Mathf.Max(mTrackerAPos.z, mTrackerBPos.z));
-
-            Vector3 boxSize = topRight - bottomLeft;
-            boxSize.y = TableThickness;
-
-            Vector3 tableLocation = bottomLeft * 0.5f + topRight * 0.5f;
-            tableLocation.y = tableLocation.y - boxSize.y * 0.5f;
-
-            mARTableCollider.transform.position = tableLocation;
-            mARTableCollider.size = boxSize;
+            return;
         }
+
+        mTrackerAPos = newTrackerAPos;
+        mTrackerBPos = newTrackerBPos;
+        mTrackerARot = newTrackerARot;
+        mTrackerBRot = newTrackerBRot;
+
+        
+        // Updated Table Position
+        Vector3 tableLocation = mTrackerAPos * 0.5f + mTrackerBPos * 0.5f;
+        mARTableCollider.transform.position = tableLocation;
+
+        // Updated Table Rotation
+        float dirToTrackerA = Vector3.Dot(mARTableCollider.transform.forward, mTrackerA.forward);
+        mARTableCollider.transform.rotation = mTrackerA.rotation;
+        mARTableCollider.transform.rotation = Quaternion.Euler(0.0f, mARTableCollider.transform.rotation.eulerAngles.y, 0.0f);
+
+        if (dirToTrackerA < 0.0)
+        {
+            print("Rotated Other Way");
+            mARTableCollider.transform.Rotate(mARTableCollider.transform.up, 180.0f);
+        }
+
+
+        // Update Table Dimensions
+        Vector3 trackerAInTableSpace = mARTableCollider.transform.worldToLocalMatrix * mTrackerAPos;
+        Vector3 trackerBInTableSpace = mARTableCollider.transform.worldToLocalMatrix * mTrackerBPos;
+
+        Vector3 bottomLeft = new Vector3(Mathf.Min(trackerAInTableSpace.x, trackerBInTableSpace.x), Mathf.Min(trackerAInTableSpace.y, trackerBInTableSpace.y), Mathf.Min(trackerAInTableSpace.z, trackerBInTableSpace.z));
+        Vector3 topRight = new Vector3(Mathf.Max(trackerAInTableSpace.x, trackerBInTableSpace.x), Mathf.Max(trackerAInTableSpace.y, trackerBInTableSpace.y), Mathf.Max(trackerAInTableSpace.z, trackerBInTableSpace.z));
+
+        Vector3 boxSize = topRight - bottomLeft;
+        boxSize.y = TableThickness;
+        tableLocation.y = tableLocation.y - boxSize.y * 0.5f;
+
+        mARTableCollider.size = boxSize;
     }
 #endif
 }
