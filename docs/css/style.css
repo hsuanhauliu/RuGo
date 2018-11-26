@@ -920,6 +920,7 @@
 
 	.slider {
 		position: relative;
+		height: 28em;
 	}
 
 		.slider .viewer {
