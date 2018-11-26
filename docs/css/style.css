@@ -920,14 +920,14 @@
 
 	.slider {
 		position: relative;
-		height: 28em;
+		height: 27em;
 	}
 
 		.slider .viewer {
 			position: relative;
 			border-radius: 0.5em;
-			border: solid 1.5em #fff;
-			height: 25em;
+			border: solid 0.5em #fff;
+			height: 23em;
 			margin: 0 auto;
 			overflow: hidden;
 			width: 80%;
