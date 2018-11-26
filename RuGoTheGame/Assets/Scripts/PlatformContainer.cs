@@ -57,8 +57,8 @@ public class PlatformContainer : MonoBehaviour
 #if RUGO_AR
     public float TableThickness = 0.01f;
 
-    private Transform mTrackerA;
-    private Transform mTrackerB;
+    private GameObject mTrackerA;
+    private GameObject mTrackerB;
     
     private BoxCollider mARTableCollider;
 
@@ -73,21 +73,21 @@ public class PlatformContainer : MonoBehaviour
     {
         if (mTrackerA == null)
         {
-            mTrackerA = GameObject.Find("TrackerA").transform;
+            mTrackerA = GameObject.Find("TrackerA");
         }
 
         if(mTrackerB == null)
         {
-            mTrackerB = GameObject.Find("TrackerB").transform;
+            mTrackerB = GameObject.Find("TrackerB");
         }
 
         if (mARTableCollider == null || mTrackerA == null || mTrackerB == null)
             return;
 
-        Vector3 newTrackerAPos = mTrackerA.position;
-        Vector3 newTrackerARot = mTrackerA.rotation.eulerAngles;
-        Vector3 newTrackerBPos = mTrackerB.position;
-        Vector3 newTrackerBRot = mTrackerB.rotation.eulerAngles;
+        Vector3 newTrackerAPos = mTrackerA.transform.position;
+        Vector3 newTrackerARot = mTrackerA.transform.rotation.eulerAngles;
+        Vector3 newTrackerBPos = mTrackerB.transform.position;
+        Vector3 newTrackerBRot = mTrackerB.transform.rotation.eulerAngles;
 
         bool trackerAPosDirtied = (newTrackerAPos - mTrackerAPos).sqrMagnitude > epsilon;
         bool trackerBPosDirtied = (newTrackerBPos - mTrackerBPos).sqrMagnitude > epsilon;
@@ -110,13 +110,12 @@ public class PlatformContainer : MonoBehaviour
         mARTableCollider.transform.position = tableLocation;
 
         // Updated Table Rotation
-        float dirToTrackerA = Vector3.Dot(mARTableCollider.transform.forward, mTrackerA.forward);
-        mARTableCollider.transform.rotation = mTrackerA.rotation;
-        mARTableCollider.transform.rotation = Quaternion.Euler(0.0f, mARTableCollider.transform.rotation.eulerAngles.y, 0.0f);
+        float dirToTrackerA = Vector3.Dot(mARTableCollider.transform.forward, mTrackerA.transform.forward);
+        mARTableCollider.transform.rotation = mTrackerA.transform.rotation;
+        //mARTableCollider.transform.rotation = Quaternion.Euler(0.0f, 0.0f, mARTableCollider.transform.rotation.eulerAngles.z);
 
         if (dirToTrackerA < 0.0)
         {
-            print("Rotated Other Way");
             mARTableCollider.transform.Rotate(mARTableCollider.transform.up, 180.0f);
         }
 
@@ -129,8 +128,8 @@ public class PlatformContainer : MonoBehaviour
         Vector3 topRight = new Vector3(Mathf.Max(trackerAInTableSpace.x, trackerBInTableSpace.x), Mathf.Max(trackerAInTableSpace.y, trackerBInTableSpace.y), Mathf.Max(trackerAInTableSpace.z, trackerBInTableSpace.z));
 
         Vector3 boxSize = topRight - bottomLeft;
-        boxSize.y = TableThickness;
-        tableLocation.y = tableLocation.y - boxSize.y * 0.5f;
+        boxSize.z = TableThickness;
+        tableLocation.z = tableLocation.z - boxSize.z * 0.5f;
 
         mARTableCollider.size = boxSize;
     }

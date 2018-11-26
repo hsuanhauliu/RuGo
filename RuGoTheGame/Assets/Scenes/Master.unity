@@ -4796,7 +4796,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   left: {fileID: 1053714780}
   right: {fileID: 396057860}
-  objects: []
+  objects:
+  - {fileID: 1739892060}
+  - {fileID: 578378262}
   assignAllBeforeIdentified: 0
 --- !u!1 &2117089209 stripped
 GameObject:
