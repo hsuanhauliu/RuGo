@@ -920,7 +920,7 @@
 
 	.slider {
 		position: relative;
-		height: 27em;
+		height: 25em;
 	}
 
 		.slider .viewer {
@@ -930,7 +930,7 @@
 			height: 23em;
 			margin: 0 auto;
 			overflow: hidden;
-			width: 75%;
+			width: 72.5%;
 		}
 
 		.slider .slide img {
