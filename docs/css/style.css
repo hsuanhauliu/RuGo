@@ -11,6 +11,7 @@
 
 	body {
 		background: #fff;
+		overflow-x: hidden;
 	}
 
 		body.is-loading * {
