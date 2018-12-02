@@ -32,7 +32,7 @@ public class World : MonoBehaviour
     private readonly float GadgetOffsetMax = 0.2f;
     private readonly float rotationRate = 0.8f;
     private AudioSource mAudioData;
-    private readonly int numOfFiles = 4;
+    private readonly int NUM_SAVE_SLOTS = 4;
 
     public Material[] RoomMaterials;
 
@@ -74,6 +74,7 @@ public class World : MonoBehaviour
         MakeSingleton();
         mGadgetShelf = transform.Find("GadgetShelf").gameObject;
         mAudioData = GetComponent<AudioSource>();
+        InitializeSaveSlots();
     }
 
     void Update()
@@ -105,10 +106,38 @@ public class World : MonoBehaviour
             mAudioData.Play();
         }
     }
+
     public void LoadLastModifiedSaveSlot()
     {
         //TODO: Determine Last Modified Save Slot #
         LoadSaveSlot("0");
+    }
+
+    private void InitializeSaveSlots()
+    {
+        // If the Saved Games Directory does not exist, Create Save Slots
+        if (!File.Exists(SAVED_GAME_DIR))
+        {
+            try
+            {
+                DirectoryInfo savedGamesDirectoryInfo = Directory.CreateDirectory(SAVED_GAME_DIR);
+                if (savedGamesDirectoryInfo.Exists)
+                {
+                    for (int saveSlot = 0; saveSlot < NUM_SAVE_SLOTS; saveSlot++)
+                    {
+                        Directory.CreateDirectory(SAVED_GAME_DIR + saveSlot + "/");
+                        FileStream saveSlotFile = File.Create(SAVED_GAME_DIR + saveSlot + "/" + AUTO_SAVE_FILE);
+                        saveSlotFile.Close();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.LogError(e);
+                Application.Quit();
+            }
+           
+        }
     }
 
     private void AutoSave()
@@ -299,7 +328,7 @@ public class World : MonoBehaviour
                 StartCoroutine(RotateGadget(i));
             }
 
-            for (int i = 0; i < numOfFiles; i++)
+            for (int i = 0; i < NUM_SAVE_SLOTS; i++)
             {
                 StartCoroutine(ShiftContainer(shelfGadgetContainersPositions.Length + i, shelfFileContainersPositions[i]));
                 StartCoroutine(RotateGadget(shelfGadgetContainersPositions.Length + i));
@@ -432,7 +461,7 @@ public class World : MonoBehaviour
         }
 
         // spawn small bubbles for saved files
-        shelfFileContainersPositions = new Vector3[numOfFiles];
+        shelfFileContainersPositions = new Vector3[NUM_SAVE_SLOTS];
 
         startDegree_xz = 30.0f;
         if (y_pos >= 0)
@@ -445,7 +474,7 @@ public class World : MonoBehaviour
             y_pos = -y_pos;
         }
 
-        for (int i = 0; i < numOfFiles; i++)
+        for (int i = 0; i < NUM_SAVE_SLOTS; i++)
         {
             GameObject container = new GameObject("File Container " + i.ToString());
             container.transform.SetParent(mGadgetShelf.transform);
