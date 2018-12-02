@@ -433,7 +433,6 @@
 		.box.post {
 			margin-left: auto;
 			margin-right: auto;
-			text-align: center;
 		}
 
 			.box.post .image:first-child {
@@ -921,16 +920,17 @@
 
 	.slider {
 		position: relative;
+		height: 40%;
 	}
 
 		.slider .viewer {
 			position: relative;
 			border-radius: 0.5em;
-			border: solid 1.5em #fff;
-			height: 20em;
+			border: solid 0.5em #fff;
+			height: 23em;
 			margin: 0 auto;
 			overflow: hidden;
-			width: 80%;
+			width: 75%;
 		}
 
 		.slider .slide img {

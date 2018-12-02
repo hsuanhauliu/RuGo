@@ -52,11 +52,26 @@ public class GoalGadget : Gadget {
         MakeSolid();
     }
 
+    private bool ShouldIgnoreCollision(Gadget otherGadget)
+    {
+        if (CurrentGadgetState == GadgetState.InShelf)
+        {
+            return true;
+        }
+
+        if (otherGadget == null || otherGadget is Floater || otherGadget is BoxGadget || otherGadget is GoalGadget)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
     void OnTriggerEnter(Collider other)
     {
         Gadget otherGadget = other.gameObject.GetComponentInParent<Gadget>();
 
-        if (otherGadget == null || otherGadget is Floater || otherGadget is BoxGadget)
+        if (ShouldIgnoreCollision(otherGadget))
         {
             return;
         }

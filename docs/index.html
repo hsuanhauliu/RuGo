@@ -6,6 +6,8 @@
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<meta name="description" content="" />
 		<meta name="keywords" content="" />
+		<link rel="stylesheet" href="css/style_new.css" />
+		<link rel="shortcut icon" href="favicon.ico?v=2" />
 		<!-- [if lte IE 8]><script src="css/ie/html5shiv.js"></script><![endif]> -->
 		<script src="js/jquery.min.js"></script>
 		<script src="js/jquery.dropotron.min.js"></script>
@@ -30,12 +32,12 @@
 				<!-- <h1><a href="index.html">HTML5 Website <span>by Html5webtemplates.co.uk</span></a></h1> -->
 				<nav id="nav">
 					<ul>
-						<li><a href="index.html">RuGo</a></li>
-						<li><a href="index.html#one">About</a></li>
-						<li><a href="index.html#two">Features</a></li>
-						<li><a href="index.html#three">Gadgets</a></li>
-						<li><a href="index.html#four">The Team</a></li>
-						<li><a href="index.html#cta">Play</a></li>
+						<li><a href="#about" class="scrolly">About</a></li>
+						<li><a href="#features" class="scrolly">Features</a></li>
+						<li><a href="#gadgets" class="scrolly">Gadgets</a></li>
+						<li><a href="#team" class="scrolly">The Team</a></li>
+						<li><a href="#vrtrailer" class="scrolly">VR Trailer</a></li>
+						<li><a href="#arexperiment" class="scrolly">AR Experiment</a></li>
 					</ul>
 				</nav>
 			</header>
@@ -43,22 +45,24 @@
 		<!-- Banner -->
 			<section id="banner">
 				<div class="inner">
-					<img class="img-fluid" src="images/rugo_logo.png" style="width:600px; height:380;" alt="">
+					<img class="img-fluid" src="images/rugo_logo.png" style="margin-top: 10%; max-width: 100%;" alt="RuGo">
 					<p>UNLEASH YOUR MIND</p>
 					<ul class="actions">
-						<li><a href="#one" class="button big scrolly">Learn More</a></li>
+						<li><a href="#about" class="button big scrolly">Learn More</a></li>
 					</ul>
 				</div>
 			</section>
 
-		<!-- One -->
-			<section id="one" class="wrapper style1">
+		<!-- About Section -->
+			<section id="about" class="wrapper style1">
 				<div class="container">
 					<header class="major">
-						<h2>Experience the magic of RuGo</h2>
+						<h2>Experience the magic of RuGo!</h2>
 						<p>
-							Welcome to a virtual space where one can create, 
-							visualize, and share Rube Goldberg machines. 
+							RuGo is the ultimate geek-out destination to build and test unnecessarily complicated yet fun physics machines,<br>
+							or as we call it, <i>Physics Symphonies</i>!
+							<br><br>
+							RuGo is a virtual space to create, visualize, and share Rube Goldberg machines.
 							Unlike the physical world, RuGo allows people to prototype their creations in a sandbox environment where space and resources are not constrained.
 						</p>
 					</header>
@@ -70,10 +74,10 @@
 									<img class="image fit" src="images/scene1.png" alt="" />
 								</div>
 								<div class="slide">
-									<img class="image fit" src="images/scene2.png" alt="" />
+									<img class="image fit" src="images/scene4.png" alt="" />
 								</div>
 								<div class="slide">
-									<img class="image fit" src="images/scene3.png" alt="" />
+									<img class="image fit" src="images/scene6.png" alt="" />
 								</div>
 							</div>
 						</div>
@@ -81,129 +85,163 @@
 					</div>
 				</div>
 			</section>
-			
-		<!-- Two -->
-			<section id="two" class="wrapper style2">
+
+		<!-- Features Section -->
+			<section id="features" class="wrapper style2">
 				<div class="container">
 					<header class="major">
 						<h2>Gameplay Features</h2>
 					</header>
 					<div class="row uniform">
-						<div class="4u 6u(2) 12u$(3)">
+						<div class="6u 6u(2) 12u$(3)">
 							<section class="feature fa-briefcase">
-								<h3>Natoque phasellus</h3>
-								<p>Ipsum dolor tempus commodo amet sed accumsan et adipiscing blandit porttitor sed faucibus.</p>
+								<h3>Realistic Physics</h3>
+								<p>RuGo players can select and insert a variety of different physics-based gadgets that can interact with one another in a realistic manner.</p>
 							</section>
 						</div>
-						<div class="4u 6u$(2) 12u$(3)">
-							<section class="feature fa-code">
-								<h3>Ultricies dolore</h3>
-								<p>Ipsum dolor tempus commodo amet sed accumsan et adipiscing blandit porttitor sed faucibus.</p>
-							</section>
-						</div>
-						<div class="4u$ 6u(2) 12u$(3)">
+						<div class="6u 6u$(2) 12u$(3)">
 							<section class="feature fa-save">
-								<h3>Magna lacinia</h3>
-								<p>Ipsum dolor tempus commodo amet sed accumsan et adipiscing blandit porttitor sed faucibus.</p>
+								<h3>Load and Save Scenes</h3>
+								<p>Users can easily save existing creations with a simple button press. Or they can load and edit an old scene that they've already made!</p>
 							</section>
 						</div>
-						<div class="4u 6u$(2) 12u$(3)">
-							<section class="feature fa-desktop">
-								<h3>Praesent lacinia</h3>
-								<p>Ipsum dolor tempus commodo amet sed accumsan et adipiscing blandit porttitor sed faucibus.</p>
-							</section>
-						</div>
-						<!-- <div class="4u 6u(2) 12u$(3)">
-							<section class="feature fa-camera-retro">
-								<h3>Morbi semper</h3>
-								<p>Ipsum dolor tempus commodo amet sed accumsan et adipiscing blandit porttitor sed faucibus.</p>
-							</section>
-						</div>
-						<div class="4u$ 6u$(2) 12u$(3)">
+						<div class="6u 6u(2) 12u$(3)">
 							<section class="feature fa-cog">
-								<h3>Arcu consequat</h3>
-								<p>Ipsum dolor tempus commodo amet sed accumsan et adipiscing blandit porttitor sed faucibus.</p>
+								<h3>Easy Reset</h3>
+								<p>In the real world, resetting every object is often one of the most tedious parts of creating a Rube Goldberg machine. But in RuGo, resetting everything is as easy as one button.</p>
 							</section>
-						</div> -->
+						</div>
+						<div class="6u 6u$(2) 12u$(3)">
+							<section class="feature fa-volume-up">
+								<h3>Cool Sound Effects</h3>
+								<p>Many of the effects in the game feature realistic sounds, like the sound of a ball rolling across a floor, or a fan blowing air, or even a line of dominos getting knocked off in a series.</p>
+							</section>
+						</div>
 					</div>
 				</div>
 			</section>
-			
-		<!-- Three -->
-			<section id="three" class="wrapper style1">
+
+		<!-- Gadgets Section -->
+			<section id="gadgets" class="wrapper style1">
 				<div class="container">
 					<header class="major">
-						<h2>RuGo Gadgets</h2>
+						<h2>Gadgets</h2>
 						<p>
-							RuGo gives you the oppurtunity to play and build with a number of different gadgets, each complete with their own unique properties.
-							<br>
-							Here are just a couple of the amazing devices you will get to use in your virtual world.
+							RuGo allows you to play and build with a number of different gadgets, each complete with their own unique properties.
 						</p>
 					</header>
+
 					<div class="row">
 						<div class="4u 6u(2) 12u$(3)">
 							<article class="box post">
-								<a href="#" class="image fit"><img src="images/dominos.png" alt="" /></a>
+								<div class="image fit"><img src="images/dominos.png" alt="" /></div>
 								<h3>Domino Path Gadget</h3>
-								<p>Just point and click to draw an elaborate path of dominos across the room without having to take even a single step!</p>
+								<p>Point and click to draw elaborate paths of dominos across the room without having to take even a single step!</p>
 							</article>
 						</div>
 						<div class="4u 6u$(2) 12u$(3)">
 							<article class="box post">
-								<a href="#" class="image fit"><img src="images/ball.png" alt="" /></a>
+								<div class="image fit"><img src="images/ball.png" alt="" /></div>
 								<h3>Ball Gadgets</h3>
-								<p>The quintessential gadget. Comes in light and heavy versions and can be used to knock down dominos, trigger the cannon, and much more!</p>
+								<p>Comes in light and heavy versions and can be used to knock down dominos, trigger the cannon, and much more!</p>
 							</article>
 						</div>
 						<div class="4u$ 6u(2) 12u$(3)">
 							<article class="box post">
-								<a href="#" class="image fit"><img src="images/ramp.png" alt="" /></a>
-								<h3>Ramp Gadget</h3>
-								<p>With the ramp, you can easily create a seemless path between two different heights for the ball gadget!</p>
+								<div class="image fit"><img src="images/ramp.png" alt="" /></div>
+								<h3>Ramp Gadgets</h3>
+								<p>With the ramp, you can easily create a seemless path between two different heights for the ball gadget!&nbsp;&nbsp;&nbsp; &nbsp;</p>
 							</article>
 						</div>
 						<div class="4u 6u$(2) 12u$(3)">
 							<article class="box post">
-								<a href="#" class="image fit"><img src="images/box.png" alt="" /></a>
+								<div class="image fit"><img src="images/box.png" alt="" /></div>
 								<h3>Box Gadget</h3>
 								<p>Useful for placing almost any gadget one. You can also compete with your friends to see who can create the tallest stack of boxes!</p>
 							</article>
 						</div>
 						<div class="4u 6u(2) 12u$(3)">
 							<article class="box post">
-								<a href="#" class="image fit"><img src="images/cannon.png" alt="" /></a>
+								<div class="image fit"><img src="images/cannon.png" alt="" /></div>
 								<h3>Cannon Gadget</h3>
 								<p>Use this gadget to fire tiny projectiles at other objects in your scene, and with the built-in trajectory, aiming the cannon is super easy!</p>
 							</article>
 						</div>
 						<div class="4u$ 6u$(2) 12u$(3)">
 							<article class="box post">
-								<a href="#" class="image fit"><img src="images/floater.png" alt="" /></a>
+								<div class="image fit"><img src="images/floater.png" alt="" /></div>
 								<h3>Floating Platform Gadget</h3>
 								<p>Introduce verticality into your scene with floating platform gadgets that can be placed at any angle or height anywhere in the room!</p>
+							</article>
+						</div>
+						<div class="4u 6u(2) 12u$(3)">
+							<article class="box post">
+								<div class="image fit"><img src="images/fan.png" alt="" /></div>
+								<h3>Fan Gadget</h3>
+								<p>Place the fan in front of any other gadget in your scene, then when the it is activated, watch the other gadgets get blown away by the fan's wind!</p>
+							</article>
+						</div>
+						<div class="4u 6u$(2) 12u$(3)">
+							<article class="box post">
+								<div class="image fit"><img src="images/airplane.png" alt="" /></div>
+								<h3>Airplane Gadget</h3>
+								<p>You can put the airplane gadget anywhere in your scene, then watch as it takes off in front of you and interacts with other gadgets!</p>
+							</article>
+						</div>
+						<div class="4u$ 6u(2) 12u$(3)">
+							<article class="box post">
+								<div class="image fit"><img src="images/goal.png" alt="" /></div>
+								<h3>Goal Gadget</h3>
+								<p>Place the goal in your scene to mark the end of the level. Then when your scene finishes, you can just sit back and watch the fireworks!</p>
 							</article>
 						</div>
 					</div>
 				</div>
 			</section>
 
-			<section id="four" class="wrapper style2">
+			<section id="team" class="wrapper style2">
 				<div class="container">
 					<header class="major">
-						<h2>The Dev Team</h2>
-						<p>Abhishek Bhatt, Darwin Mendyke, Devashree Shirude, Hsuan-Hua Liu, <br> Kishore Venkateshan, Michael Ray Root, and Sarah Riaz</p>
+						<h2>Creators of RuGo</h2>
+						<p>Abhishek Bhatt, Darwin Mendyke, Devashree Shirude, Hsuan-Hau Liu, <br> Kishore Venkateshan, Michael Ray Root, and Sarah Riaz</p>
 					</header>
 				</div>
 			</section>
-			
-		<!-- CTA -->
-			<section id="cta" class="wrapper style3">
-				<h2>Watch RuGo in action</h2>
-				<ul class="actions">
-					<li><a href="#" class="button big">Youtube Link here</a></li>
-				</ul>
+
+		<!-- VR Trailer Video -->
+			<section id="vrtrailer" class="wrapper style3">
+				<header class="major">
+					<h2>RuGo in Virtual Reality</h2>
+				</header>
+				<div id="video_container1">
+					<iframe id="trailer" width="560" height="315" src="https://www.youtube.com/embed/0fqfMIYmBng" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+				</div>
+				<br>
 			</section>
-			
+
+			<!-- AR Trailer Video -->
+			<section id="arexperiment" class="wrapper style1">
+				<header class="major">
+					<h2>RuGo in Augmented Reality</h2>
+				</header>
+				<div id="video_container2">
+					<iframe id="demo" width="560" height="315" src="https://www.youtube.com/embed/JUJIyuu1ueA" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+				</div>
+				<br>
+			</section>
+
+			<!-- AR Trailer Video -->
+			<section id="vrspectator" class="wrapper style1">
+				<header class="major">
+					<h2>Spectator View in Virtual Reality</h2>
+				</header>
+				<div id="video_container2">
+					<iframe id="demo" width="560" height="315" src="https://www.youtube.com/embed/MqTqnhilKYo" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+				</div>
+				<br>
+			</section>
+
+
 		<!-- Footer -->
 			<footer id="footer">
 				<img class="img-logo" src="images/gamepipe_logo.png" alt="">
