@@ -68,9 +68,16 @@ public class GameManager : MonoBehaviour
         RightInteractNearTouch = RightControllerEvents.GetComponent<VRTK.VRTK_InteractNearTouch>();
         RightInteractTouch = RightControllerEvents.GetComponent<VRTK.VRTK_InteractTouch>();
         RightInteractGrab = RightControllerEvents.GetComponent<VRTK.VRTK_InteractGrab>();
-        
+
         RightAnimator = RightControllerEvents.gameObject.GetComponentInChildren<HandAnimator>();
         LeftAnimator = LeftControllerEvents.gameObject.GetComponentInChildren<HandAnimator>();
+
+#if RUGO_AR
+        VRTK.VRTK_SDKManager vrtkManager = VRTK.VRTK_SDKManager.instance;
+        VRTK.VRTK_SDKSetup loadedSetup = vrtkManager.loadedSetup;
+        MeshRenderer boundaryRenderer = loadedSetup.actualBoundaries.GetComponent<MeshRenderer>();
+        boundaryRenderer.enabled = false;
+#endif
     }
 
 
