@@ -19,10 +19,11 @@ public class World : MonoBehaviour
     private Vector3[] shelfFileContainersPositions;
 
 #if RUGO_AR
-    public int NUM_REQUIRED_GOALS = 0;
+    private readonly int NUM_REQUIRED_GOALS = 0;
 #elif RUGO_VR
-    public int NUM_REQUIRED_GOALS = 2;
+    private readonly int NUM_REQUIRED_GOALS = 2;
 #endif
+
     public Transform[] GoalSpawnLocations;
 
     public GameObject CubeRoomGeo;
