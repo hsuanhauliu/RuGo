@@ -76,11 +76,15 @@ public class GameManager : MonoBehaviour
         VRTK.VRTK_SDKManager vrtkManager = VRTK.VRTK_SDKManager.instance;
         vrtkManager.LoadedSetupChanged += (sender, e) => {
             VRTK.VRTK_SDKSetup loadedSetup = vrtkManager.loadedSetup;
-            SteamVR_PlayArea playArea = loadedSetup.actualBoundaries.GetComponent<SteamVR_PlayArea>();
-            playArea.drawInGame = false;
+            if (loadedSetup){
+                SteamVR_PlayArea playArea = loadedSetup.actualBoundaries.GetComponent<SteamVR_PlayArea>();
+                playArea.drawInGame = false;
+
+                MeshRenderer playAreaRenderer = loadedSetup.actualBoundaries.GetComponent<MeshRenderer>();
+                playAreaRenderer.enabled = false;
+            }
         };
 #endif
-
     }
 
 
