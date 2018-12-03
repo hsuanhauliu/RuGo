@@ -36,7 +36,7 @@ public class World : MonoBehaviour
     private readonly float GadgetOffsetMax = 0.2f;
     private readonly float rotationRate = 0.8f;
     private AudioSource mAudioData;
-    private readonly int numOfFiles = 4;
+    private readonly int NUM_SAVE_SLOTS = 4;
 
     public Material[] RoomMaterials;
 
@@ -78,6 +78,7 @@ public class World : MonoBehaviour
         MakeSingleton();
         mGadgetShelf = transform.Find("GadgetShelf").gameObject;
         mAudioData = GetComponent<AudioSource>();
+        InitializeSaveSlots();
     }
 
     void Update()
@@ -109,15 +110,43 @@ public class World : MonoBehaviour
             mAudioData.Play();
         }
     }
+
     public void LoadLastModifiedSaveSlot()
     {
         //TODO: Determine Last Modified Save Slot #
         LoadSaveSlot("0");
     }
 
+    private void InitializeSaveSlots()
+    {
+        // If the Saved Games Directory does not exist, Create Save Slots
+        if (!File.Exists(SAVED_GAME_DIR))
+        {
+            try
+            {
+                DirectoryInfo savedGamesDirectoryInfo = Directory.CreateDirectory(SAVED_GAME_DIR);
+                if (savedGamesDirectoryInfo.Exists)
+                {
+                    for (int saveSlot = 0; saveSlot < NUM_SAVE_SLOTS; saveSlot++)
+                    {
+                        Directory.CreateDirectory(SAVED_GAME_DIR + saveSlot + "/");
+                        FileStream saveSlotFile = File.Create(SAVED_GAME_DIR + saveSlot + "/" + AUTO_SAVE_FILE);
+                        saveSlotFile.Close();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.LogError(e);
+                Application.Quit();
+            }
+
+        }
+    }
+
     private void AutoSave()
     {
-        string currentSaveSlotFile = SAVED_GAME_DIR + CurrentSaveSlot + "/" + AUTO_SAVE_FILE ;
+        string currentSaveSlotFile = SAVED_GAME_DIR + CurrentSaveSlot + "/" + AUTO_SAVE_FILE;
 
         if (File.Exists(currentSaveSlotFile))
         {
@@ -163,7 +192,7 @@ public class World : MonoBehaviour
             FileStream fileStream = File.Open(serializedFileName, FileMode.Open);
             RemoveGadgetsFromScene();
 
-            if (fileStream.Length != 0) 
+            if (fileStream.Length != 0)
             {
                 List<GadgetSaveData> savedGadgets = (List<GadgetSaveData>)bf.Deserialize(fileStream);
                 gadgetsInWorld = savedGadgets.ConvertAll<Gadget>(ConvertSavedDataToGadget);
@@ -178,7 +207,7 @@ public class World : MonoBehaviour
         }
     }
 
-    private int GetGoalGadgetCount() 
+    private int GetGoalGadgetCount()
     {
         return gadgetsInWorld.FindAll((Gadget g) => g is GoalGadget).Count;
     }
@@ -192,11 +221,11 @@ public class World : MonoBehaviour
         {
             HashSet<int> randomSpawnLocations = new HashSet<int>();
 
-            while (randomSpawnLocations.Count < NUM_REQUIRED_GOALS - numberOfGoalsInScene) 
+            while (randomSpawnLocations.Count < NUM_REQUIRED_GOALS - numberOfGoalsInScene)
             {
                 randomSpawnLocations.Add(UnityEngine.Random.Range(0, GoalSpawnLocations.Length));
             }
-          
+
             foreach (int spawnLocation in randomSpawnLocations)
             {
                 SpawnGoalGadgetInSpawnLocation(spawnLocation);
@@ -306,7 +335,7 @@ public class World : MonoBehaviour
                 StartCoroutine(RotateGadget(i));
             }
 
-            for (int i = 0; i < numOfFiles; i++)
+            for (int i = 0; i < NUM_SAVE_SLOTS; i++)
             {
                 StartCoroutine(ShiftContainer(shelfGadgetContainersPositions.Length + i, shelfFileContainersPositions[i]));
                 StartCoroutine(RotateGadget(shelfGadgetContainersPositions.Length + i));
@@ -439,7 +468,7 @@ public class World : MonoBehaviour
         }
 
         // spawn small bubbles for saved files
-        shelfFileContainersPositions = new Vector3[numOfFiles];
+        shelfFileContainersPositions = new Vector3[NUM_SAVE_SLOTS];
 
         startDegree_xz = 30.0f;
         if (y_pos >= 0)
@@ -452,7 +481,7 @@ public class World : MonoBehaviour
             y_pos = -y_pos;
         }
 
-        for (int i = 0; i < numOfFiles; i++)
+        for (int i = 0; i < NUM_SAVE_SLOTS; i++)
         {
             GameObject container = new GameObject("File Container " + i.ToString());
             container.transform.SetParent(mGadgetShelf.transform);
@@ -468,7 +497,7 @@ public class World : MonoBehaviour
             bubbleObj.transform.localScale *= 0.5f;
 
             // Create gadget
-            string gadgetName = "LoadCube" ;
+            string gadgetName = "LoadCube";
             LoadCube spawnedLoadCube = SpawnSingleGadget(gadgetName, container.transform) as LoadCube;
             Renderer r = spawnedLoadCube.GetComponent<Renderer>();
             r.material.color = RoomColors[i];
@@ -500,10 +529,10 @@ public class World : MonoBehaviour
         for (int i = (int)GadgetInventory.NUM; i < countOFchildern; i++)
         {
             Transform placeHolder = mGadgetShelf.transform.GetChild(i);
-            if(placeHolder.childCount < 2)
+            if (placeHolder.childCount < 2)
             {
                 int slot = i - (int)GadgetInventory.NUM;
-                string gadgetName = "LoadCube" ;
+                string gadgetName = "LoadCube";
                 LoadCube spawnedLoadCube = SpawnSingleGadget(gadgetName, placeHolder) as LoadCube;
                 Renderer r = spawnedLoadCube.GetComponent<Renderer>();
                 r.material.color = RoomColors[slot];
@@ -519,7 +548,7 @@ public class World : MonoBehaviour
         gadgetObj.transform.localPosition = Vector3.zero;
         gadgetObj.name = gadgetName + " (OnShelf)";
         Gadget gadget = gadgetObj.GetComponent<Gadget>();
-       
+
         return gadget;
     }
 
@@ -542,5 +571,5 @@ public class World : MonoBehaviour
         isWorldStateModified = true;
     }
 
-   
+
 }
