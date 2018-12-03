@@ -74,10 +74,13 @@ public class GameManager : MonoBehaviour
 
 #if RUGO_AR
         VRTK.VRTK_SDKManager vrtkManager = VRTK.VRTK_SDKManager.instance;
-        VRTK.VRTK_SDKSetup loadedSetup = vrtkManager.loadedSetup;
-        MeshRenderer boundaryRenderer = loadedSetup.actualBoundaries.GetComponent<MeshRenderer>();
-        boundaryRenderer.enabled = false;
+        vrtkManager.LoadedSetupChanged += (sender, e) => {
+            VRTK.VRTK_SDKSetup loadedSetup = vrtkManager.loadedSetup;
+            SteamVR_PlayArea playArea = loadedSetup.actualBoundaries.GetComponent<SteamVR_PlayArea>();
+            playArea.drawInGame = false;
+        };
 #endif
+
     }
 
 
