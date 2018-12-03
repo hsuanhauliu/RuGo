@@ -44,7 +44,11 @@ public class HandAnimator : MonoBehaviour
         mHandAnimator = GetComponent<Animator>();
         mHandRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
         mHandRenderer.material.SetInt("_ZWrite", 1);
-        
+
+#if RUGO_AR
+        mHandRenderer.enabled = false;
+#endif
+
         MakeHandIdleAndGhost();
     }
 	
