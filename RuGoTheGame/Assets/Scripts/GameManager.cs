@@ -103,8 +103,32 @@ public class GameManager : MonoBehaviour
     }
 
     /************************** State Management **************************/
+    private bool CanPerformTransition(GameMode fromGameMode, GameMode toGameMode)
+    {
+        switch(fromGameMode)
+        {
+            case GameMode.COMPLETE:
+                {
+                    if( toGameMode == GameMode.DELETE ||
+                        toGameMode == GameMode.DRAW ||
+                        toGameMode == GameMode.SELECTION)
+                    {
+                        return false;
+                    }
+                }
+                break;
+        }
+
+        return true;
+    }
+
     public void ChangeGameMode(GameMode newGameMode)
     {
+        if(!CanPerformTransition(CurrentGameMode, newGameMode))
+        {
+            return;
+        }
+
         // Exit current Game mode
         switch(CurrentGameMode)
         {
@@ -161,7 +185,7 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator ResetGame()
     {
-        yield return new WaitForSeconds(5.0f);
+        yield return new WaitForSeconds(7.5f);
         ChangeGameMode(GameMode.BUILD);
     }
 
