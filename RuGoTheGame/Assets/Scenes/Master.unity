@@ -385,12 +385,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0372b91593aa54384bad69fa3cf00ddc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxRayDistance: 2
-  minRayDistance: 0
-  maxGadgetLimit: 8
-  minGadgetLimit: 1
-  yLevelTolerance: 0.02
-  minGadgetDistance: 0.04
 --- !u!1 &217789978
 GameObject:
   m_ObjectHideFlags: 0
@@ -737,11 +731,6 @@ Transform:
   m_Father: {fileID: 965849455}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &415323820 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 100002, guid: 63dfaed7a92fbcd438a0901779af9918,
-    type: 3}
-  m_PrefabInternal: {fileID: 1933058519}
 --- !u!1 &419184990
 GameObject:
   m_ObjectHideFlags: 0
@@ -905,7 +894,6 @@ GameObject:
   m_Component:
   - component: {fileID: 452613147}
   - component: {fileID: 452613146}
-  - component: {fileID: 452613148}
   m_Layer: 0
   m_Name: World
   m_TagString: Untagged
@@ -924,27 +912,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc004bb4a874b4ce48e2db29cea73593, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NUM_REQUIRED_GOALS: 2
-  GoalSpawnLocations:
-  - {fileID: 873678721}
-  - {fileID: 1543318042}
-  - {fileID: 155947802}
-  - {fileID: 1476976602}
-  - {fileID: 420765710}
-  CubeRoomGeo: {fileID: 415323820}
   BubblePrefab: {fileID: 1383514117876776, guid: 8963659779b2745809ca635e105d0dc5,
     type: 2}
-  RoomMaterials:
-  - {fileID: 2100000, guid: 021f59ce1ff85494aa699f6172e9826d, type: 2}
-  - {fileID: 2100000, guid: 5ee5bce128e204a238d06d9e71c8cd41, type: 2}
-  - {fileID: 2100000, guid: c02b61eb11a274148a7a924677e0e024, type: 2}
-  - {fileID: 2100000, guid: 9a694338c5f674287812c8b2dfd5bb20, type: 2}
-  RoomColors:
-  - {r: 0.3137255, g: 0.6431373, b: 0.81960785, a: 0}
-  - {r: 0.654902, g: 0.8235294, b: 0.3254902, a: 0}
-  - {r: 0.7647059, g: 0.25490198, b: 0.23921569, a: 0}
-  - {r: 0.8, g: 0.8, b: 0.8, a: 0}
-  RoomLight: {fileID: 271015220}
+  BubbleStartPosition: -0.3
+  BubbleEndPosition: 0.3
+  GapBetweenGadgets: 0.3
+  ShiftRateMin: 1
+  ShiftRateMax: 1.2
+  GadgetOffsetMax: 0.2
 --- !u!4 &452613147
 Transform:
   m_ObjectHideFlags: 0
@@ -964,101 +939,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!82 &452613148
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 452613145}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 133f6764549b54d248942153c29a3566, type: 3}
-  m_PlayOnAwake: 0
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
 --- !u!1 &480371503
 GameObject:
   m_ObjectHideFlags: 0
@@ -1249,11 +1129,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2587cb3e1465438d937b0e1b8218aa9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RightInteractNearTouch: {fileID: 0}
-  RightInteractGrab: {fileID: 0}
-  RightInteractTouch: {fileID: 0}
-  RightAnimator: {fileID: 0}
-  LeftAnimator: {fileID: 0}
   PathTool: {fileID: 210995599}
   RightControllerEvents: {fileID: 745988739}
   LeftControllerEvents: {fileID: 746911767}
@@ -2971,84 +2846,6 @@ Prefab:
     - target: {fileID: 4151345494422316, guid: 7fa9356d140a84afda848c383b3a4e24, type: 2}
       propertyPath: m_RootOrder
       value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 1378233860486274, guid: 7fa9356d140a84afda848c383b3a4e24, type: 2}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1378233860486274, guid: 7fa9356d140a84afda848c383b3a4e24, type: 2}
-      propertyPath: m_TagString
-      value: Goal
-      objectReference: {fileID: 0}
-    - target: {fileID: 198549381926917526, guid: 7fa9356d140a84afda848c383b3a4e24,
-        type: 2}
-      propertyPath: EmissionModule.m_Bursts.Array.data[0].countCurve.minScalar
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 198549381926917526, guid: 7fa9356d140a84afda848c383b3a4e24,
-        type: 2}
-      propertyPath: EmissionModule.m_Bursts.Array.data[0].countCurve.scalar
-      value: 150
-      objectReference: {fileID: 0}
-    - target: {fileID: 198702864570062028, guid: 7fa9356d140a84afda848c383b3a4e24,
-        type: 2}
-      propertyPath: ShapeModule.angle
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 198702864570062028, guid: 7fa9356d140a84afda848c383b3a4e24,
-        type: 2}
-      propertyPath: ShapeModule.radius.value
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 198702864570062028, guid: 7fa9356d140a84afda848c383b3a4e24,
-        type: 2}
-      propertyPath: EmissionModule.rateOverTime.scalar
-      value: 1.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 198702864570062028, guid: 7fa9356d140a84afda848c383b3a4e24,
-        type: 2}
-      propertyPath: InitialModule.maxNumParticles
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 198624959555631616, guid: 7fa9356d140a84afda848c383b3a4e24,
-        type: 2}
-      propertyPath: InitialModule.maxNumParticles
-      value: 5000
-      objectReference: {fileID: 0}
-    - target: {fileID: 198549381926917526, guid: 7fa9356d140a84afda848c383b3a4e24,
-        type: 2}
-      propertyPath: InitialModule.maxNumParticles
-      value: 2000
-      objectReference: {fileID: 0}
-    - target: {fileID: 198358307433140658, guid: 7fa9356d140a84afda848c383b3a4e24,
-        type: 2}
-      propertyPath: InitialModule.maxNumParticles
-      value: 17000
-      objectReference: {fileID: 0}
-    - target: {fileID: 198358307433140658, guid: 7fa9356d140a84afda848c383b3a4e24,
-        type: 2}
-      propertyPath: EmissionModule.rateOverTime.scalar
-      value: 400
-      objectReference: {fileID: 0}
-    - target: {fileID: 198702864570062028, guid: 7fa9356d140a84afda848c383b3a4e24,
-        type: 2}
-      propertyPath: InitialModule.startSize.scalar
-      value: 0.025
-      objectReference: {fileID: 0}
-    - target: {fileID: 198549381926917526, guid: 7fa9356d140a84afda848c383b3a4e24,
-        type: 2}
-      propertyPath: InitialModule.startSize.scalar
-      value: 0.015
-      objectReference: {fileID: 0}
-    - target: {fileID: 198358307433140658, guid: 7fa9356d140a84afda848c383b3a4e24,
-        type: 2}
-      propertyPath: InitialModule.startSize.scalar
-      value: 0.025
-      objectReference: {fileID: 0}
-    - target: {fileID: 198624959555631616, guid: 7fa9356d140a84afda848c383b3a4e24,
-        type: 2}
-      propertyPath: InitialModule.startSize.scalar
-      value: 0.025
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7fa9356d140a84afda848c383b3a4e24, type: 2}
