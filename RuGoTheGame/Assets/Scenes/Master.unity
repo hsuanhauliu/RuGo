@@ -2982,12 +2982,72 @@ Prefab:
     - target: {fileID: 198549381926917526, guid: 7fa9356d140a84afda848c383b3a4e24,
         type: 2}
       propertyPath: EmissionModule.m_Bursts.Array.data[0].countCurve.minScalar
-      value: 25
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 198549381926917526, guid: 7fa9356d140a84afda848c383b3a4e24,
         type: 2}
       propertyPath: EmissionModule.m_Bursts.Array.data[0].countCurve.scalar
-      value: 40
+      value: 150
+      objectReference: {fileID: 0}
+    - target: {fileID: 198702864570062028, guid: 7fa9356d140a84afda848c383b3a4e24,
+        type: 2}
+      propertyPath: ShapeModule.angle
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 198702864570062028, guid: 7fa9356d140a84afda848c383b3a4e24,
+        type: 2}
+      propertyPath: ShapeModule.radius.value
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 198702864570062028, guid: 7fa9356d140a84afda848c383b3a4e24,
+        type: 2}
+      propertyPath: EmissionModule.rateOverTime.scalar
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 198702864570062028, guid: 7fa9356d140a84afda848c383b3a4e24,
+        type: 2}
+      propertyPath: InitialModule.maxNumParticles
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 198624959555631616, guid: 7fa9356d140a84afda848c383b3a4e24,
+        type: 2}
+      propertyPath: InitialModule.maxNumParticles
+      value: 5000
+      objectReference: {fileID: 0}
+    - target: {fileID: 198549381926917526, guid: 7fa9356d140a84afda848c383b3a4e24,
+        type: 2}
+      propertyPath: InitialModule.maxNumParticles
+      value: 2000
+      objectReference: {fileID: 0}
+    - target: {fileID: 198358307433140658, guid: 7fa9356d140a84afda848c383b3a4e24,
+        type: 2}
+      propertyPath: InitialModule.maxNumParticles
+      value: 17000
+      objectReference: {fileID: 0}
+    - target: {fileID: 198358307433140658, guid: 7fa9356d140a84afda848c383b3a4e24,
+        type: 2}
+      propertyPath: EmissionModule.rateOverTime.scalar
+      value: 400
+      objectReference: {fileID: 0}
+    - target: {fileID: 198702864570062028, guid: 7fa9356d140a84afda848c383b3a4e24,
+        type: 2}
+      propertyPath: InitialModule.startSize.scalar
+      value: 0.025
+      objectReference: {fileID: 0}
+    - target: {fileID: 198549381926917526, guid: 7fa9356d140a84afda848c383b3a4e24,
+        type: 2}
+      propertyPath: InitialModule.startSize.scalar
+      value: 0.015
+      objectReference: {fileID: 0}
+    - target: {fileID: 198358307433140658, guid: 7fa9356d140a84afda848c383b3a4e24,
+        type: 2}
+      propertyPath: InitialModule.startSize.scalar
+      value: 0.025
+      objectReference: {fileID: 0}
+    - target: {fileID: 198624959555631616, guid: 7fa9356d140a84afda848c383b3a4e24,
+        type: 2}
+      propertyPath: InitialModule.startSize.scalar
+      value: 0.025
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7fa9356d140a84afda848c383b3a4e24, type: 2}
