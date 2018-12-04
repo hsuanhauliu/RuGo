@@ -147,7 +147,7 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator ResetGame()
     {
-        yield return new WaitForSeconds(5.0f);
+        yield return new WaitForSeconds(7.5f);
         ChangeGameMode(GameMode.BUILD);
     }
 

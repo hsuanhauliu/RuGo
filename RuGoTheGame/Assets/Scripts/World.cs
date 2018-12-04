@@ -31,12 +31,13 @@ public class World : MonoBehaviour
     private readonly float ShiftRateMax = 2.5f;
     private readonly float GadgetOffsetMax = 0.2f;
     private readonly float rotationRate = 0.8f;
-    private AudioSource mAudioData;
     private readonly int NUM_SAVE_SLOTS = 4;
 
     public Material[] RoomMaterials;
 
     public Color[] RoomColors;
+
+    public Light RoomLight;
 
     public bool AllGoalsComplete
     {
@@ -73,7 +74,6 @@ public class World : MonoBehaviour
     {
         MakeSingleton();
         mGadgetShelf = transform.Find("GadgetShelf").gameObject;
-        mAudioData = GetComponent<AudioSource>();
         InitializeSaveSlots();
     }
 
@@ -92,18 +92,26 @@ public class World : MonoBehaviour
         {
             GameManager.Instance.ChangeGameMode(GameMode.COMPLETE);
 
-            GameObject[] goalObjects = GameObject.FindGameObjectsWithTag("Goal");
+            GameObject[] endGameCelebrations = GameObject.FindGameObjectsWithTag("Goal");
 
-            foreach (GameObject goalObject in goalObjects)
+            int celebrationChoice = UnityEngine.Random.Range(0, endGameCelebrations.Length);
+
+            GameObject celebrationObject = endGameCelebrations[celebrationChoice];
+
+            ParticleSystem pSystem = celebrationObject.GetComponent<ParticleSystem>();
+            if (pSystem)
             {
-                ParticleSystem pSystem = goalObject.GetComponent<ParticleSystem>();
-
-                if (pSystem)
-                {
-                    pSystem.Play(true);
-                }
+                pSystem.Play(true);
             }
-            mAudioData.Play();
+
+            AudioSource celebrationAudio = celebrationObject.GetComponent<AudioSource>();
+
+            if (celebrationAudio)
+            {
+                celebrationAudio.Play();
+            }
+
+            RoomLight.enabled = false;
         }
     }
 
@@ -175,6 +183,27 @@ public class World : MonoBehaviour
         AutoSave();
     }
 
+    private void DisableCelebrations()
+    {
+        GameObject[] endGameCelebrations = GameObject.FindGameObjectsWithTag("Goal");
+
+        foreach (GameObject celebration in endGameCelebrations)
+        {
+            ParticleSystem pSystem = celebration.GetComponent<ParticleSystem>();
+            if (pSystem)
+            {
+                pSystem.Stop(true);
+            }
+
+            AudioSource celebrationAudio = celebration.GetComponent<AudioSource>();
+
+            if (celebrationAudio)
+            {
+                celebrationAudio.Stop();
+            }
+        }
+    }
+
     private void LoadSerializedGadgets(string serializedFileName)
     {
         if (File.Exists(serializedFileName))
@@ -185,6 +214,11 @@ public class World : MonoBehaviour
             Renderer roomRenderer = CubeRoomGeo.GetComponent<Renderer>();
             //TODO Refactor Everything to use Integer Save Slot
             roomRenderer.material = RoomMaterials[System.Convert.ToInt32(CurrentSaveSlot)];
+
+            RoomLight.enabled = true;
+
+            DisableCelebrations();
+
             if (fileStream.Length != 0) 
             {
                 List<GadgetSaveData> savedGadgets = (List<GadgetSaveData>)bf.Deserialize(fileStream);
