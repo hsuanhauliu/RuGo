@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.1802837, g: 0.22571404, b: 0.30692273, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -385,6 +385,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0372b91593aa54384bad69fa3cf00ddc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxRayDistance: 2
+  minRayDistance: 0
+  maxGadgetLimit: 8
+  minGadgetLimit: 1
+  yLevelTolerance: 0.02
+  minGadgetDistance: 0.04
 --- !u!1 &217789978
 GameObject:
   m_ObjectHideFlags: 0
@@ -912,14 +918,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc004bb4a874b4ce48e2db29cea73593, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  GoalSpawnLocations:
+  - {fileID: 873678721}
+  - {fileID: 1543318042}
+  - {fileID: 155947802}
+  - {fileID: 1476976602}
+  - {fileID: 420765710}
+  CubeRoomGeo: {fileID: 1933058520}
   BubblePrefab: {fileID: 1383514117876776, guid: 8963659779b2745809ca635e105d0dc5,
     type: 2}
-  BubbleStartPosition: -0.3
-  BubbleEndPosition: 0.3
-  GapBetweenGadgets: 0.3
-  ShiftRateMin: 1
-  ShiftRateMax: 1.2
-  GadgetOffsetMax: 0.2
+  RoomMaterials:
+  - {fileID: 2100000, guid: 021f59ce1ff85494aa699f6172e9826d, type: 2}
+  - {fileID: 2100000, guid: 5ee5bce128e204a238d06d9e71c8cd41, type: 2}
+  - {fileID: 2100000, guid: c02b61eb11a274148a7a924677e0e024, type: 2}
+  - {fileID: 2100000, guid: 9a694338c5f674287812c8b2dfd5bb20, type: 2}
+  RoomColors:
+  - {r: 0.3137255, g: 0.6431373, b: 0.81960785, a: 0}
+  - {r: 0.654902, g: 0.8235294, b: 0.3254902, a: 0}
+  - {r: 0.7647059, g: 0.25490198, b: 0.23921569, a: 0}
+  - {r: 0.8, g: 0.8, b: 0.8, a: 0}
+  RoomLight: {fileID: 271015220}
 --- !u!4 &452613147
 Transform:
   m_ObjectHideFlags: 0
@@ -1129,6 +1147,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2587cb3e1465438d937b0e1b8218aa9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  RightInteractNearTouch: {fileID: 0}
+  RightInteractGrab: {fileID: 0}
+  RightInteractTouch: {fileID: 0}
+  RightAnimator: {fileID: 0}
+  LeftAnimator: {fileID: 0}
   PathTool: {fileID: 210995599}
   RightControllerEvents: {fileID: 745988739}
   LeftControllerEvents: {fileID: 746911767}
@@ -3917,6 +3940,11 @@ Prefab:
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 63dfaed7a92fbcd438a0901779af9918, type: 3}
   m_IsPrefabAsset: 0
+--- !u!1 &1933058520 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100002, guid: 63dfaed7a92fbcd438a0901779af9918,
+    type: 3}
+  m_PrefabInternal: {fileID: 1933058519}
 --- !u!1 &1967514521
 GameObject:
   m_ObjectHideFlags: 0
