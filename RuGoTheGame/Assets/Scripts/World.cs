@@ -18,7 +18,12 @@ public class World : MonoBehaviour
     private Vector3[] shelfGadgetContainersPositions;
     private Vector3[] shelfFileContainersPositions;
 
-    public int NUM_REQUIRED_GOALS = 2;
+#if RUGO_AR
+    private readonly int NUM_REQUIRED_GOALS = 0;
+#elif RUGO_VR
+    private readonly int NUM_REQUIRED_GOALS = 2;
+#endif
+
     public Transform[] GoalSpawnLocations;
 
     public GameObject CubeRoomGeo;
@@ -144,13 +149,13 @@ public class World : MonoBehaviour
                 Debug.LogError(e);
                 Application.Quit();
             }
-           
+
         }
     }
 
     private void AutoSave()
     {
-        string currentSaveSlotFile = SAVED_GAME_DIR + CurrentSaveSlot + "/" + AUTO_SAVE_FILE ;
+        string currentSaveSlotFile = SAVED_GAME_DIR + CurrentSaveSlot + "/" + AUTO_SAVE_FILE;
 
         if (File.Exists(currentSaveSlotFile))
         {
@@ -208,18 +213,21 @@ public class World : MonoBehaviour
     {
         if (File.Exists(serializedFileName))
         {
-            BinaryFormatter bf = new BinaryFormatter();
-            FileStream fileStream = File.Open(serializedFileName, FileMode.Open);
-            RemoveGadgetsFromScene();
+#if RUGO_VR
             Renderer roomRenderer = CubeRoomGeo.GetComponent<Renderer>();
             //TODO Refactor Everything to use Integer Save Slot
             roomRenderer.material = RoomMaterials[System.Convert.ToInt32(CurrentSaveSlot)];
+#endif
 
             RoomLight.enabled = true;
 
             DisableCelebrations();
 
-            if (fileStream.Length != 0) 
+            BinaryFormatter bf = new BinaryFormatter();
+            FileStream fileStream = File.Open(serializedFileName, FileMode.Open);
+            RemoveGadgetsFromScene();
+            
+            if (fileStream.Length != 0)
             {
                 List<GadgetSaveData> savedGadgets = (List<GadgetSaveData>)bf.Deserialize(fileStream);
                 gadgetsInWorld = savedGadgets.ConvertAll<Gadget>(ConvertSavedDataToGadget);
@@ -234,7 +242,7 @@ public class World : MonoBehaviour
         }
     }
 
-    private int GetGoalGadgetCount() 
+    private int GetGoalGadgetCount()
     {
         return gadgetsInWorld.FindAll((Gadget g) => g is GoalGadget).Count;
     }
@@ -248,11 +256,11 @@ public class World : MonoBehaviour
         {
             HashSet<int> randomSpawnLocations = new HashSet<int>();
 
-            while (randomSpawnLocations.Count < NUM_REQUIRED_GOALS - numberOfGoalsInScene) 
+            while (randomSpawnLocations.Count < NUM_REQUIRED_GOALS - numberOfGoalsInScene)
             {
                 randomSpawnLocations.Add(UnityEngine.Random.Range(0, GoalSpawnLocations.Length));
             }
-          
+
             foreach (int spawnLocation in randomSpawnLocations)
             {
                 SpawnGoalGadgetInSpawnLocation(spawnLocation);
@@ -524,7 +532,7 @@ public class World : MonoBehaviour
             bubbleObj.transform.localScale *= 0.5f;
 
             // Create gadget
-            string gadgetName = "LoadCube" ;
+            string gadgetName = "LoadCube";
             LoadCube spawnedLoadCube = SpawnSingleGadget(gadgetName, container.transform) as LoadCube;
             Renderer r = spawnedLoadCube.GetComponent<Renderer>();
             r.material.color = RoomColors[i];
@@ -556,10 +564,10 @@ public class World : MonoBehaviour
         for (int i = (int)GadgetInventory.NUM; i < countOFchildern; i++)
         {
             Transform placeHolder = mGadgetShelf.transform.GetChild(i);
-            if(placeHolder.childCount < 2)
+            if (placeHolder.childCount < 2)
             {
                 int slot = i - (int)GadgetInventory.NUM;
-                string gadgetName = "LoadCube" ;
+                string gadgetName = "LoadCube";
                 LoadCube spawnedLoadCube = SpawnSingleGadget(gadgetName, placeHolder) as LoadCube;
                 Renderer r = spawnedLoadCube.GetComponent<Renderer>();
                 r.material.color = RoomColors[slot];
@@ -575,7 +583,7 @@ public class World : MonoBehaviour
         gadgetObj.transform.localPosition = Vector3.zero;
         gadgetObj.name = gadgetName + " (OnShelf)";
         Gadget gadget = gadgetObj.GetComponent<Gadget>();
-       
+
         return gadget;
     }
 
@@ -598,5 +606,5 @@ public class World : MonoBehaviour
         isWorldStateModified = true;
     }
 
-   
+
 }
