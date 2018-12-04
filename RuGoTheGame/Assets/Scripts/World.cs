@@ -116,7 +116,7 @@ public class World : MonoBehaviour
     private void InitializeSaveSlots()
     {
         // If the Saved Games Directory does not exist, Create Save Slots
-        if (!File.Exists(SAVED_GAME_DIR))
+        if (!Directory.Exists(SAVED_GAME_DIR))
         {
             try
             {
