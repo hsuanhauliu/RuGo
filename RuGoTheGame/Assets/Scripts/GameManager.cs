@@ -177,6 +177,7 @@ public class GameManager : MonoBehaviour
                 }
                 break;
             case GameMode.COMPLETE:
+                RightAnimator.MakeHandIdleAndGhost();
                 IEnumerator coroutine = ResetGame();
                 StartCoroutine(coroutine);
                 break;
@@ -185,7 +186,7 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator ResetGame()
     {
-        yield return new WaitForSeconds(7.5f);
+        yield return new WaitForSeconds(15.0f);
         ChangeGameMode(GameMode.BUILD);
     }
 

@@ -15,6 +15,7 @@ public class CannonGadget : Gadget
     private float mCannonBallMass = 0.5f;
 
     private AudioSource mAudioData;
+    private ParticleSystem mParticleSystem;
 
     new void Awake()
     {
@@ -37,6 +38,7 @@ public class CannonGadget : Gadget
         mTrajectory.endWidth = 0.01f;
        
         mAudioData = GetComponent<AudioSource>();
+        mParticleSystem = mBarrelTip.GetChild(0).GetComponent<ParticleSystem>();
 
         mCannonBallMass = CannonBallPrefab.GetComponent<Rigidbody>().mass;
     }
@@ -122,6 +124,8 @@ public class CannonGadget : Gadget
     private void FireCannon() 
     {
         mAudioData.Play(0);
+        mParticleSystem.Play(true);
+
         GameObject cannonBall = Instantiate(CannonBallPrefab, mBarrelTip);
         cannonBall.transform.localPosition = mBarrelTip.localPosition;
         Rigidbody rigidBody = cannonBall.GetComponent<Rigidbody>();

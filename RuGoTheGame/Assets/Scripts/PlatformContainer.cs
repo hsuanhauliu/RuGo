@@ -7,8 +7,27 @@ public class PlatformContainer : MonoBehaviour
     public Transform VRContainer;
     public Transform ARContainer;
 
-	// Use this for initialization
-	void Start ()
+    public static PlatformContainer Instance = null;
+    private void MakeSingleton()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else if (Instance != this)
+        {
+            Destroy(gameObject);
+        }
+        DontDestroyOnLoad(gameObject);
+    }
+
+    private void Awake()
+    {
+        MakeSingleton();
+    }
+
+    // Use this for initialization
+    void Start ()
     {
 #if RUGO_AR
         LoadARContainer();
@@ -42,6 +61,13 @@ public class PlatformContainer : MonoBehaviour
         arTable.transform.localRotation = Quaternion.identity;
 
         mARTableCollider = arTable.AddComponent<BoxCollider>();
+
+        mARLight = ARContainer.GetChild(0).GetComponent<Light>();
+    }
+
+    public void SetARLightColor(Color color)
+    {
+        mARLight.color = color;
     }
 #endif
 
@@ -61,6 +87,8 @@ public class PlatformContainer : MonoBehaviour
     private GameObject mTrackerB;
     
     private BoxCollider mARTableCollider;
+
+    private Light mARLight;
 
     private Vector3 mTrackerAPos = Vector3.zero;
     private Vector3 mTrackerBPos = Vector3.zero;
